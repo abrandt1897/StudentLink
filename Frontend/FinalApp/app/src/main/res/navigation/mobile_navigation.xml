@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/nav_splash">
+
+    <fragment
+        android:id="@+id/nav_splash"
+        android:name="com.example.studentlink.ui.splash.SplashFragment"
+        android:label="splash"
+        tools:layout="@layout/splash_layout" />
+
+    <fragment
+        android:id="@+id/nav_login"
+        android:name="com.example.studentlink.ui.login.LoginFragment"
+        android:label="login"
+        tools:layout="@layout/login_layout" />
+
+    <fragment
+        android:id="@+id/nav_profile"
+        android:name="com.example.studentlink.ui.profile.ProfileFragment"
+        android:label="profile"
+        tools:layout="@layout/profile_layout" />
+    <fragment
+        android:id="@+id/nav_home"
+        android:name="com.example.studentlink.ui.home.HomeFragment"
+        android:label="home"
+        tools:layout="@layout/home_layout" />
+    <fragment
+        android:id="@+id/nav_chatlist"
+        android:name="com.example.studentlink.ui.chatList.ChatListFragment"
+        android:label="chatlist"
+        tools:layout="@layout/chatlist_layout" />
+</navigation>
