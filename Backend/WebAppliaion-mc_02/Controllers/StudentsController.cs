@@ -11,6 +11,9 @@ using System.Text.Json.Serialization;
 using System.Collections;
 using System.Net.Http;
 using Newtonsoft.Json.Linq;
+using Nancy.Json;
+using Microsoft.Diagnostics.Instrumentation.Extensions.Intercept;
+using System.Diagnostics;
 
 namespace WebApplication_mc_02.Controllers
 {
@@ -33,7 +36,7 @@ namespace WebApplication_mc_02.Controllers
             Students[] s = DB.Students.ToArray<Students>();
             foreach(Students student in s)
             {
-                if(student.Attributes.Length > 0)
+                if(student.Attributes != null && student.Attributes.Length > 0)
                     student.Attributes = student.Attributes.Trim();
                 student.Classification = student.Classification.Trim();
                 student.CourseIDs = student.CourseIDs.Trim();
@@ -81,10 +84,35 @@ namespace WebApplication_mc_02.Controllers
             if (response.IsSuccessStatusCode)
             {
                 string responseString = await response.Content.ReadAsStringAsync();
-                JObject json = JObject.Parse(responseString);
-                
+                JavaScriptSerializer j = new JavaScriptSerializer();
+                Object o = j.DeserializeObject(responseString);
+                Students myStu = new Students();
+                myStu.FullName = "Adam Brandt";
+                myStu.Classification = "Junior";
+                myStu.Major = "Software Engineering";
+                myStu.StudentID = 734236833;
+                myStu.UserType = "Student";
+                foreach (Nancy.Json.Simple.JsonObject o1 in (Nancy.Json.Simple.JsonArray)o)
+                {
+                    int idx = 0;
+                    foreach (string s in o1.Keys)
+                    {
+                        if (s.Equals("id"))
+                            break;
+                        idx++;
+                    }
+                    IEnumerator list = o1.Values.GetEnumerator();
+                    for (int i = 0; i < idx + 1; i++)
+                        list.MoveNext();
+                    object ID = list.Current;
+                    
+                    myStu.CourseIDs += ID.ToString() + " ";
+                    
+                    System.Diagnostics.Debug.WriteLine("**" + ID.ToString());
+                }
+                DB.Add(myStu);
+                System.Diagnostics.Debug.WriteLine("big happy");
 
-                Console.WriteLine("big happy");
                 
             }
             else

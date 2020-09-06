@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Tevatron\\source\\repos\\WebApplication-mc_02\\WebApplication-mc_02.csproj": {}
+    "C:\\Users\\Adam Brandt\\OneDrive\\Documents\\CS309\\mc_02\\Backend\\WebAppliaion-mc_02\\WebApplication-mc_02.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Tevatron\\source\\repos\\WebApplication-mc_02\\WebApplication-mc_02.csproj": {
+    "C:\\Users\\Adam Brandt\\OneDrive\\Documents\\CS309\\mc_02\\Backend\\WebAppliaion-mc_02\\WebApplication-mc_02.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Tevatron\\source\\repos\\WebApplication-mc_02\\WebApplication-mc_02.csproj",
+        "projectUniqueName": "C:\\Users\\Adam Brandt\\OneDrive\\Documents\\CS309\\mc_02\\Backend\\WebAppliaion-mc_02\\WebApplication-mc_02.csproj",
         "projectName": "WebApplication-mc_02",
-        "projectPath": "C:\\Users\\Tevatron\\source\\repos\\WebApplication-mc_02\\WebApplication-mc_02.csproj",
-        "packagesPath": "C:\\Users\\Tevatron\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Tevatron\\source\\repos\\WebApplication-mc_02\\obj\\",
+        "projectPath": "C:\\Users\\Adam Brandt\\OneDrive\\Documents\\CS309\\mc_02\\Backend\\WebAppliaion-mc_02\\WebApplication-mc_02.csproj",
+        "packagesPath": "C:\\Users\\Adam Brandt\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Adam Brandt\\OneDrive\\Documents\\CS309\\mc_02\\Backend\\WebAppliaion-mc_02\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\Tevatron\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\Adam Brandt\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -38,6 +38,10 @@
       "frameworks": {
         "netcoreapp3.0": {
           "dependencies": {
+            "Microsoft.ApplicationInsights.Agent.Intercept": {
+              "target": "Package",
+              "version": "[2.4.0, )"
+            },
             "Microsoft.EntityFrameworkCore": {
               "target": "Package",
               "version": "[3.1.7, )"
@@ -63,6 +67,14 @@
             "Microsoft.VisualStudio.Web.CodeGeneration.Design": {
               "target": "Package",
               "version": "[3.0.0, )"
+            },
+            "Nancy": {
+              "target": "Package",
+              "version": "[2.0.0, )"
+            },
+            "System.Threading.Tasks": {
+              "target": "Package",
+              "version": "[4.3.0, )"
             }
           },
           "imports": [
@@ -75,6 +87,24 @@
           ],
           "assetTargetFallback": true,
           "warn": true,
+          "downloadDependencies": [
+            {
+              "name": "Microsoft.AspNetCore.App.Ref",
+              "version": "[3.0.1, 3.0.1]"
+            },
+            {
+              "name": "Microsoft.NETCore.App.Host.win-x64",
+              "version": "[3.0.3, 3.0.3]"
+            },
+            {
+              "name": "Microsoft.NETCore.App.Ref",
+              "version": "[3.0.0, 3.0.0]"
+            },
+            {
+              "name": "Microsoft.WindowsDesktop.App.Ref",
+              "version": "[3.0.0, 3.0.0]"
+            }
+          ],
           "frameworkReferences": {
             "Microsoft.AspNetCore.App": {
               "privateAssets": "none"
@@ -83,7 +113,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.0.100\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.401\\RuntimeIdentifierGraph.json"
         }
       }
     }
