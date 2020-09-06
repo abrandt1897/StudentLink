@@ -8,6 +8,9 @@ using Microsoft.EntityFrameworkCore;
 using WebApplication_mc_02.Models;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using System.Collections;
+using System.Net.Http;
+using Newtonsoft.Json.Linq;
 
 namespace WebApplication_mc_02.Controllers
 {
@@ -16,10 +19,11 @@ namespace WebApplication_mc_02.Controllers
     public class StudentsController : ControllerBase
     {
         private readonly StudentContext DB;
-
-        public StudentsController(StudentContext context)
+        private readonly IHttpClientFactory _clientFactory;
+        public StudentsController(StudentContext context, IHttpClientFactory clientFactory)
         {
             DB = context;
+            _clientFactory = clientFactory;
         }
 
         // GET: api/Students
@@ -42,7 +46,7 @@ namespace WebApplication_mc_02.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Students>> GetStudent(int id)
         {
-            var student = await DB.Students.FindAsync(id);
+            Students student = await DB.Students.FindAsync(id);
             if (student.Attributes.Length > 0)
                 student.Attributes = student.Attributes.Trim();
             student.Classification = student.Classification.Trim();
@@ -59,17 +63,41 @@ namespace WebApplication_mc_02.Controllers
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see https://aka.ms/RazorPagesCRUD.
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutStudent(int id, [FromBody] Students student)
+        public async Task<IActionResult> PutStudent(string canvasOAuthToken)
         {
             //DB.Entry(student).State = EntityState.Modified;
-            DB.Add(student);
+            //DB.Add(student);
+
+            var request = new HttpRequestMessage(HttpMethod.Get, "https://canvas.instructure.com/api/v1/courses?enrollment_state=active&include[]=sections&include[]=term&include[]=concluded");
+            request.Headers.Add("Accept", "application/json");
+            request.Headers.Add("User-Agent", "HttpClientFactory-Sample");
+            string[] path = this.Request.Path.Value.Split("/");
+            request.Headers.Add("Authorization", "Bearer " + path[path.Length-1]);
+
+            var client = _clientFactory.CreateClient();
+
+            var response = await client.SendAsync(request);
+
+            if (response.IsSuccessStatusCode)
+            {
+                string responseString = await response.Content.ReadAsStringAsync();
+                JObject json = JObject.Parse(responseString);
+                
+
+                Console.WriteLine("big happy");
+                
+            }
+            else
+            {
+                Console.WriteLine("big sad");
+            }
             try
             {
                 DB.SaveChanges();
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!StudentExists(id))
+                if (!StudentExists(0))
                 {
                     return NotFound();
                 }
@@ -114,5 +142,11 @@ namespace WebApplication_mc_02.Controllers
         {
             return DB.Students.Any(e => e.StudentID == id);
         }
+    }
+    class courseObj
+    {
+        public int id { get; set; }
+        public string name { get; set; }
+        public Boolean concluded { get; set; }
     }
 }
