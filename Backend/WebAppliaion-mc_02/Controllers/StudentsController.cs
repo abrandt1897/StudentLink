@@ -14,6 +14,7 @@ using Newtonsoft.Json.Linq;
 using Nancy.Json;
 using Microsoft.Diagnostics.Instrumentation.Extensions.Intercept;
 using System.Diagnostics;
+using System.Text;
 
 namespace WebApplication_mc_02.Controllers
 {
@@ -33,16 +34,7 @@ namespace WebApplication_mc_02.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Students>>> GetStudents()
         {
-            Students[] s = DB.Students.ToArray<Students>();
-            foreach(Students student in s)
-            {
-                if(student.Attributes != null && student.Attributes.Length > 0)
-                    student.Attributes = student.Attributes.Trim();
-                student.Classification = student.Classification.Trim();
-                student.CourseIDs = student.CourseIDs.Trim();
-                student.FullName = student.FullName.Trim();
-            }
-            return s;
+            return DB.Students.ToArray<Students>();
         }
 
         // GET: api/Students/5
@@ -50,11 +42,6 @@ namespace WebApplication_mc_02.Controllers
         public async Task<ActionResult<Students>> GetStudent(int id)
         {
             Students student = await DB.Students.FindAsync(id);
-            if (student.Attributes.Length > 0)
-                student.Attributes = student.Attributes.Trim();
-            student.Classification = student.Classification.Trim();
-            student.CourseIDs = student.CourseIDs.Trim();
-            student.FullName = student.FullName.Trim();
             if (student == null)
             {
                 return NotFound();
@@ -65,67 +52,21 @@ namespace WebApplication_mc_02.Controllers
         // PUT: api/Students/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see https://aka.ms/RazorPagesCRUD.
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutStudent(string canvasOAuthToken)
+        [HttpPut]
+        public async Task<IActionResult> PutStudent( string canvasOAuthToken)
         {
             //DB.Entry(student).State = EntityState.Modified;
             //DB.Add(student);
-
-            var request = new HttpRequestMessage(HttpMethod.Get, "https://canvas.instructure.com/api/v1/courses?enrollment_state=active&include[]=sections&include[]=term&include[]=concluded");
-            request.Headers.Add("Accept", "application/json");
-            request.Headers.Add("User-Agent", "HttpClientFactory-Sample");
-            string[] path = this.Request.Path.Value.Split("/");
-            request.Headers.Add("Authorization", "Bearer " + path[path.Length-1]);
-
-            var client = _clientFactory.CreateClient();
-
-            var response = await client.SendAsync(request);
-
-            if (response.IsSuccessStatusCode)
-            {
-                string responseString = await response.Content.ReadAsStringAsync();
-                JavaScriptSerializer j = new JavaScriptSerializer();
-                Object o = j.DeserializeObject(responseString);
-                Students myStu = new Students();
-                myStu.FullName = "Adam Brandt";
-                myStu.Classification = "Junior";
-                myStu.Major = "Software Engineering";
-                myStu.StudentID = 734236833;
-                myStu.UserType = "Student";
-                foreach (Nancy.Json.Simple.JsonObject o1 in (Nancy.Json.Simple.JsonArray)o)
-                {
-                    int idx = 0;
-                    foreach (string s in o1.Keys)
-                    {
-                        if (s.Equals("id"))
-                            break;
-                        idx++;
-                    }
-                    IEnumerator list = o1.Values.GetEnumerator();
-                    for (int i = 0; i < idx + 1; i++)
-                        list.MoveNext();
-                    object ID = list.Current;
-                    
-                    myStu.CourseIDs += ID.ToString() + " ";
-                    
-                    System.Diagnostics.Debug.WriteLine("**" + ID.ToString());
-                }
-                DB.Add(myStu);
-                System.Diagnostics.Debug.WriteLine("big happy");
-
-                
-            }
-            else
-            {
-                Console.WriteLine("big sad");
-            }
+            Networking network = new Networking(_clientFactory);
+            Students myStu = network.getStudentProfile(canvasOAuthToken).Result;
+            DB.Add(myStu);
             try
             {
-                DB.SaveChanges();
+                await DB.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!StudentExists(0))
+                if (!StudentExists(myStu.StudentID))
                 {
                     return NotFound();
                 }
@@ -134,7 +75,6 @@ namespace WebApplication_mc_02.Controllers
                     throw;
                 }
             }
-
             return NoContent();
         }
 
@@ -156,13 +96,9 @@ namespace WebApplication_mc_02.Controllers
         {
             var student = await DB.Students.FindAsync(id);
             if (student == null)
-            {
                 return NotFound();
-            }
-
             DB.Students.Remove(student);
             await DB.SaveChangesAsync();
-
             return student;
         }
 
@@ -170,11 +106,5 @@ namespace WebApplication_mc_02.Controllers
         {
             return DB.Students.Any(e => e.StudentID == id);
         }
-    }
-    class courseObj
-    {
-        public int id { get; set; }
-        public string name { get; set; }
-        public Boolean concluded { get; set; }
     }
 }
