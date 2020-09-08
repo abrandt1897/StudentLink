@@ -29,7 +29,8 @@
         tools:layout="@layout/home_layout" />
     <fragment
         android:id="@+id/nav_chatlist"
-        android:name="com.example.studentlink.ui.chatList.ChatListFragment"
+        android:name="com.example.studentlink.ui.chat.ChatListFragment"
         android:label="chatlist"
         tools:layout="@layout/chatlist_layout" />
+
 </navigation>
