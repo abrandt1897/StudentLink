@@ -34,7 +34,7 @@ public class ChatListFragment extends Fragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 String clickedItem=(String) list.getItemAtPosition(position);
                 Toast.makeText(ChatListFragment.this.getContext(),clickedItem,Toast.LENGTH_LONG).show();
-                //openChatPage();
+                openChatPage();
             }
         });
 
@@ -42,8 +42,8 @@ public class ChatListFragment extends Fragment {
     }
 
 
-//    public void openChatPage(){
-//        Intent intent = new Intent(this.getContext(), ChatPageFragment.class);
-//        startActivity(intent);
-//    }
+    public void openChatPage(){
+        Intent intent = new Intent(getActivity(), ChatPageActivity.class);
+        startActivity(intent);
+    }
 }
