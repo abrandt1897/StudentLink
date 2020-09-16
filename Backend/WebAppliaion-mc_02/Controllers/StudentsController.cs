@@ -15,6 +15,7 @@ using Nancy.Json;
 using Microsoft.Diagnostics.Instrumentation.Extensions.Intercept;
 using System.Diagnostics;
 using System.Text;
+using MySql.Data.MySqlClient;
 
 namespace WebApplication_mc_02.Controllers
 {
@@ -24,9 +25,11 @@ namespace WebApplication_mc_02.Controllers
     {
         private readonly StudentContext DB;
         private readonly IHttpClientFactory _clientFactory;
+        private MySqlConnection conn;
         public StudentsController(StudentContext context, IHttpClientFactory clientFactory)
         {
-            DB = context;
+            conn = new MySqlConnection("server=coms-309-mc-02.cs.iastate.edu;port=3306;database=StudentLink;user=root;password=46988c18374d9b7d;");
+            conn.Open();
             _clientFactory = clientFactory;
         }
 
@@ -34,47 +37,62 @@ namespace WebApplication_mc_02.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Students>>> GetStudents()
         {
-            return DB.Students.ToArray<Students>();
+            List<Students> list = new List<Students>();
+            MySqlCommand cmd = new MySqlCommand("select * from StudentLink.Students", conn);
+            using (var reader = cmd.ExecuteReader())
+            {
+                while (reader.Read())
+                {
+                    list.Add(new Students()
+                    {
+                        StudentID = Convert.ToInt32(reader["StudentID"]),
+                        FullName = reader["FullName"].ToString(),
+                        CourseIDs = reader["CourseIDs"].ToString(),
+                        Attributes = reader["Attributes"].ToString(),
+                        Classification = reader["Classification"].ToString(),
+                        Major = reader["Major"].ToString(),
+                        UserType = reader["UserType"].ToString()
+                    });
+                }
+            }
+            return list;
         }
 
         // GET: api/Students/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Students>> GetStudent(int id)
         {
-            Students student = await DB.Students.FindAsync(id);
-            if (student == null)
+            Students student = new Students();
+            MySqlCommand cmd = new MySqlCommand("select * from StudentLink.Students where StudentID = " + id, conn);
+            using (var reader = cmd.ExecuteReader())
             {
-                return NotFound();
+                while (reader.Read())
+                {
+                    student = new Students()
+                    {
+                        StudentID = Convert.ToInt32(reader["StudentID"]),
+                        FullName = reader["FullName"].ToString(),
+                        CourseIDs = reader["CourseIDs"].ToString(),
+                        Attributes = reader["Attributes"].ToString(),
+                        Classification = reader["Classification"].ToString(),
+                        Major = reader["Major"].ToString(),
+                        UserType = reader["UserType"].ToString()
+                    };
+                }
             }
-
             return student;
         }
         // PUT: api/Students/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see https://aka.ms/RazorPagesCRUD.
         [HttpPut]
-        public async Task<IActionResult> PutStudent( string canvasOAuthToken)
+        public async Task<IActionResult> PutStudent( string canvasOAuthToken )
         {
-            //DB.Entry(student).State = EntityState.Modified;
-            //DB.Add(student);
+            //INSERT INTO Table ((int)key1, key2, key3) VALUES (value1, 'value2', 'value3')
             Networking network = new Networking(_clientFactory);
             Students myStu = network.getStudentProfile(canvasOAuthToken).Result;
-            DB.Add(myStu);
-            try
-            {
-                await DB.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!StudentExists(myStu.StudentID))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+            MySqlCommand cmd = new MySqlCommand("insert into StudentLink.Students (StudentID, FullName, CourseIDs, Attributes, Classification, Major, UserType) values (" + myStu.StudentID + ", '" + myStu.FullName + "', '" + myStu.CourseIDs + "', '" + myStu.Attributes + "', '" + myStu.Classification + "', '" + myStu.Major + "', '" + myStu.UserType + "')", conn);
+            cmd.ExecuteReader();
             return NoContent();
         }
 
@@ -82,29 +100,36 @@ namespace WebApplication_mc_02.Controllers
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see https://aka.ms/RazorPagesCRUD.
         [HttpPost]
-        public async Task<ActionResult<Students>> PostStudent(Students student)
+        public async Task<ActionResult<Students>> PostStudent(Students myStu)
         {
-            DB.Students.Add(student);
-            await DB.SaveChangesAsync();
-
-            return CreatedAtAction("GetStudent", new { id = student.StudentID }, student);
+            MySqlCommand cmd = new MySqlCommand("insert into StudentLink.Students (StudentID, FullName, CourseIDs, Attributes, Classification, Major, UserType) values (" + myStu.StudentID + ", " + myStu.FullName + ", " + myStu.CourseIDs + ", " + myStu.Attributes + ", " + myStu.Classification + ", " + myStu.Major + ", " + myStu.UserType + ")", conn);
+            cmd.ExecuteReader();
+            return CreatedAtAction("GetStudent", new { id = myStu.StudentID }, myStu);
         }
 
         // DELETE: api/Students/5
         [HttpDelete("{id}")]
         public async Task<ActionResult<Students>> DeleteStudent(int id)
         {
-            var student = await DB.Students.FindAsync(id);
-            if (student == null)
-                return NotFound();
-            DB.Students.Remove(student);
-            await DB.SaveChangesAsync();
+            Students student = GetStudent(id).Result.Value;
+            MySqlCommand cmd = new MySqlCommand("delete from StudentLink.Students where StudentID = " + id, conn);
+            using (var reader = cmd.ExecuteReader())
+            {
+                while (reader.Read())
+                {
+                    student = new Students()
+                    {
+                        StudentID = Convert.ToInt32(reader["StudentID"]),
+                        FullName = reader["FullName"].ToString(),
+                        CourseIDs = reader["CourseIDs"].ToString(),
+                        Attributes = reader["Attributes"].ToString(),
+                        Classification = reader["Classification"].ToString(),
+                        Major = reader["Major"].ToString(),
+                        UserType = reader["UserType"].ToString()
+                    };
+                }
+            }
             return student;
-        }
-
-        private bool StudentExists(int id)
-        {
-            return DB.Students.Any(e => e.StudentID == id);
         }
     }
 }
