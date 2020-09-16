@@ -2,19 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using WebApplication_mc_02.Models;
-using System.Text.Json;
-using System.Text.Json.Serialization;
-using System.Collections;
 using System.Net.Http;
-using Newtonsoft.Json.Linq;
-using Nancy.Json;
-using Microsoft.Diagnostics.Instrumentation.Extensions.Intercept;
-using System.Diagnostics;
-using System.Text;
 using MySql.Data.MySqlClient;
 
 namespace WebApplication_mc_02.Controllers
@@ -26,7 +16,7 @@ namespace WebApplication_mc_02.Controllers
         private readonly StudentContext DB;
         private readonly IHttpClientFactory _clientFactory;
         private MySqlConnection conn;
-        public StudentsController(StudentContext context, IHttpClientFactory clientFactory)
+        public StudentsController(IHttpClientFactory clientFactory)
         {
             conn = new MySqlConnection("server=coms-309-mc-02.cs.iastate.edu;port=3306;database=StudentLink;user=root;password=46988c18374d9b7d;");
             conn.Open();
@@ -86,14 +76,14 @@ namespace WebApplication_mc_02.Controllers
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see https://aka.ms/RazorPagesCRUD.
         [HttpPut]
-        public async Task<IActionResult> PutStudent( string canvasOAuthToken )
+        public async Task<ActionResult<Students>> PutStudent( string canvasOAuthToken )
         {
             //INSERT INTO Table ((int)key1, key2, key3) VALUES (value1, 'value2', 'value3')
             Networking network = new Networking(_clientFactory);
             Students myStu = network.getStudentProfile(canvasOAuthToken).Result;
             MySqlCommand cmd = new MySqlCommand("insert into StudentLink.Students (StudentID, FullName, CourseIDs, Attributes, Classification, Major, UserType) values (" + myStu.StudentID + ", '" + myStu.FullName + "', '" + myStu.CourseIDs + "', '" + myStu.Attributes + "', '" + myStu.Classification + "', '" + myStu.Major + "', '" + myStu.UserType + "')", conn);
             cmd.ExecuteReader();
-            return NoContent();
+            return myStu;
         }
 
         // POST: api/Students

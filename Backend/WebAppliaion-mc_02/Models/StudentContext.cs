@@ -14,14 +14,6 @@ namespace WebApplication_mc_02.Models
         {
         }
         public string ConnectionString { get; set; }
-        private MySqlConnection GetConnection()
-        {
-            return new MySqlConnection(ConnectionString);
-        }
         public DbSet<Students> Students { get; set; }
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-          optionsBuilder.UseMySQL("server=coms-309-mc-02.cs.iastate.edu;database=studentlink;uid=root;pwd=f49f3940f1069cd0;");
-        }
     }
 }
