@@ -26,20 +26,19 @@ public class ConnectionClass extends AppCompatActivity {
     String serverResponse = "";
 
 
-
-
     //asks for any data coming to app
     public void getRequest(String database, Context context)  {
         this.context = context;
 
-
         //Request Queue
         RequestQueue RequestQueue = Volley.newRequestQueue(context);
+       // String url = "https://b9bd0a6c-31b5-4e2a-8803-c10a85855393.mock.pstmn.io/" + database;
+
         String url = "https://b9bd0a6c-31b5-4e2a-8803-c10a85855393.mock.pstmn.io/" + database;
 
         JsonObjectRequest ObjRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
 
-            @Override
+                @Override
                     public void onResponse(JSONObject response) {
                             serverResponse = response.toString();
                     }
@@ -47,6 +46,33 @@ public class ConnectionClass extends AppCompatActivity {
             @Override
             public void onErrorResponse(VolleyError error) {
                     Toast.makeText(context, error.toString(), Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        // Add the request to the RequestQueue.
+        RequestQueue.add(ObjRequest);
+        RequestQueue.start();
+    }
+
+    public void Other_getRequest(String URL, Context context)  {
+        this.context = context;
+
+        //Request Queue
+        RequestQueue RequestQueue = Volley.newRequestQueue(context);
+        // String url = "https://b9bd0a6c-31b5-4e2a-8803-c10a85855393.mock.pstmn.io/" + database;
+
+        String url = URL;
+
+        JsonObjectRequest ObjRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+
+            @Override
+            public void onResponse(JSONObject response) {
+                serverResponse = response.toString();
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(context, error.toString(), Toast.LENGTH_SHORT).show();
             }
         });
 
