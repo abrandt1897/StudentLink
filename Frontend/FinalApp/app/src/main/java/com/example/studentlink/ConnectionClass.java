@@ -24,7 +24,7 @@ public class ConnectionClass extends AppCompatActivity {
     private Context context;
     public ConnectionClass(){};
     String serverResponse = "";
-    IResult result;
+
 
 
 
@@ -41,7 +41,7 @@ public class ConnectionClass extends AppCompatActivity {
 
             @Override
                     public void onResponse(JSONObject response) {
-
+                            serverResponse = response.toString();
                     }
                 }, new Response.ErrorListener() {
             @Override
@@ -90,12 +90,5 @@ public class ConnectionClass extends AppCompatActivity {
     public String getResponse(){
         return serverResponse;
     }
-
-    public interface IResult {
-        public void notifySuccess(String response);
-
-        public void notifyError(VolleyError error);
-    }
-
 
 }

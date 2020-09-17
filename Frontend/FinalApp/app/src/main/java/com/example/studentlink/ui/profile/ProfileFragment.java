@@ -37,18 +37,15 @@ public class ProfileFragment  extends Fragment {
 
         RequestButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                connection.getRequest("name_test", getContext(), new ConnectionClass.CustomListener(){
-                    @Override
-                    public void onVolleyResponse(String response) {
-                        requestData.setText(connection.getResponse());
-                    }
-                });
+                connection.getRequest("name_test", getContext());
+
+                requestData.setText(connection.getResponse());
+
 
             }
         });
-
         return root;
+
+
     }
-
-
 }
