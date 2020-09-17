@@ -9,7 +9,7 @@ namespace WebApplication_mc_02.Models
     public class Groups
     {
         [Key]
-        public int ID { get; set; }
+        public int GroupID { get; set; }
         public int Students { get; set; }
         public int TAs { get; set; }
         public int Mentors { get; set; }

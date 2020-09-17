@@ -28,20 +28,17 @@ namespace WebApplication_mc_02.Controllers
         public async Task<ActionResult<IEnumerable<Groups>>> GetGroup()
         {
             List<Groups> list = new List<Groups>();
-            MySqlCommand cmd = new MySqlCommand("select * from StudentLink.Students", conn);
+            MySqlCommand cmd = new MySqlCommand("select * from StudentLink.Groups", conn);
             using (var reader = cmd.ExecuteReader())
             {
                 while (reader.Read())
                 {
                     list.Add(new Groups()
                     {
-                        StudentID = Convert.ToInt32(reader["StudentID"]),
-                        FullName = reader["FullName"].ToString(),
-                        CourseIDs = reader["CourseIDs"].ToString(),
-                        Attributes = reader["Attributes"].ToString(),
-                        Classification = reader["Classification"].ToString(),
-                        Major = reader["Major"].ToString(),
-                        UserType = reader["UserType"].ToString()
+                        Students = Convert.ToInt32(reader["Students"]),
+                        GroupID = Convert.ToInt32(reader["GroupID"]),
+                        TAs = Convert.ToInt32(reader["TAs"]),
+                        Mentors = Convert.ToInt32(reader["Mentors"]),
                     });
                 }
             }
@@ -53,17 +50,17 @@ namespace WebApplication_mc_02.Controllers
         public async Task<ActionResult<Groups>> GetGroup(int id)
         {
             Groups group = new Groups();
-            MySqlCommand cmd = new MySqlCommand("select * from StudentLink.Groups where ID = " + id, conn);
+            MySqlCommand cmd = new MySqlCommand("select * from StudentLink.Groups where GroupID = " + id, conn);
             using (var reader = cmd.ExecuteReader())
             {
                 while (reader.Read())
                 {
                     group = new Groups()
                     {
-                        ID = Convert.ToInt32(reader["ID"]),
+                        GroupID = Convert.ToInt32(reader["GroupID"]),
                         Students = Convert.ToInt32(reader["Students"]),
-                        TAs = Convert.ToInt32(reader["CourseIDs"]),
-                        Mentors = Convert.ToInt32(reader["Attributes"]),
+                        TAs = Convert.ToInt32(reader["TAs"]),
+                        Mentors = Convert.ToInt32(reader["Mentors"]),
                     };
                 }
             }
@@ -79,7 +76,7 @@ namespace WebApplication_mc_02.Controllers
             //INSERT INTO Table ((int)key1, key2, key3) VALUES (value1, 'value2', 'value3')
             Groups group = new Groups();
             //the list of students will be a mix of all user types determine where each "student" should go
-            MySqlCommand cmd = new MySqlCommand("insert into StudentLink.Groups (ID, Students, TAs, Mentors) values (" + id + ", '" + studs[0].Major + "', '" + studs[0].Major + "', '" + studs[0].UserType + "')", conn);
+            MySqlCommand cmd = new MySqlCommand("insert into StudentLink.Groups (GroupID, Students, TAs, Mentors) values (" + id + ", '" + studs[0].Major + "', '" + studs[0].Major + "', '" + studs[0].UserType + "')", conn);
             cmd.ExecuteReader();
             return group;
         }
@@ -88,29 +85,29 @@ namespace WebApplication_mc_02.Controllers
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see https://aka.ms/RazorPagesCRUD.
         [HttpPost]
-        public async Task<ActionResult<Groups>> PostStudent(Students student, int groupID)
+        public async Task<ActionResult<Groups>> PostGroup(Students student, int groupID)
         {
             //adds a student to the given group id
-            MySqlCommand cmd = new MySqlCommand("insert into StudentLink.Groups (ID, Students, TAs, Mentors) values (" + groupID + ", '" + student.Major + "', '" + student.Major + "', '" + student.UserType + "')", conn); cmd.ExecuteReader();
+            MySqlCommand cmd = new MySqlCommand("insert into StudentLink.Groups (GroupID, Students, TAs, Mentors) values (" + groupID + ", '" + student.Major + "', '" + student.Major + "', '" + student.UserType + "')", conn); cmd.ExecuteReader();
             return NoContent();
         }
 
         // DELETE: api/Students/5
         [HttpDelete("{id}")]
-        public async Task<ActionResult<Groups>> DeleteStudent(int id)
+        public async Task<ActionResult<Groups>> DeleteGroup(int id)
         {
             Groups group = GetGroup(id).Result.Value;
-            MySqlCommand cmd = new MySqlCommand("delete from StudentLink.Groups where ID = " + id, conn);
+            MySqlCommand cmd = new MySqlCommand("delete from StudentLink.Groups where GroupID = " + id, conn);
             using (var reader = cmd.ExecuteReader())
             {
-                while (reader.Read())
+                while (reader.Read()) 
                 {
                     group = new Groups()
                     {
-                        ID = Convert.ToInt32(reader["ID"]),
+                        GroupID = Convert.ToInt32(reader["GroupID"]),
                         Students = Convert.ToInt32(reader["Students"]),
-                        TAs = Convert.ToInt32(reader["CourseIDs"]),
-                        Mentors = Convert.ToInt32(reader["Attributes"])
+                        TAs = Convert.ToInt32(reader["TAs"]),
+                        Mentors = Convert.ToInt32(reader["Mentors"])
                     };
                 }
             }
