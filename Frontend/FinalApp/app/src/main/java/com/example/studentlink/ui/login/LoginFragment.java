@@ -51,7 +51,7 @@ public class LoginFragment extends Fragment {
                 //cc.tryCanvasPost(getContext());
                 //cc.putRequest(usernameText.getText().toString());
                 //cc.putRequest(passwordText.getText().toString());
-                //cc.Other_getRequest("https://iastate.okta.com/api/v1/authn", getContext());
+                cc.Other_getRequest("https://iastate.okta.com/api/v1/authn", getContext());
                 //cc.sendStringPostRequest();
                 LoginText.setText(cc.getResponse());
             }
