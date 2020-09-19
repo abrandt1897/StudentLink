@@ -86,13 +86,13 @@ public class ConnectionClass extends AppCompatActivity {
     }
 
     //sends data to database
-    public void putRequest(String data){
+    public void putRequest(String data, Context c){
 
         //our api's url
         String url = "https://localhost:5001/test";
 
         //start a queue for requests for our api
-        RequestQueue ExampleRequestQueue = Volley.newRequestQueue(this);
+        RequestQueue ExampleRequestQueue = Volley.newRequestQueue(c);
 
         //create a request object for our api asking for a json object to be returned
         JsonObjectRequest ExampleRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
@@ -158,7 +158,8 @@ public class ConnectionClass extends AppCompatActivity {
         queue.add(stringRequest);
     }
 
-    private void sendStringPostRequest() {
+    // also Grace's stuff
+    private void sendStringPostRequest(Context c) {
         RequestQueue queue = Volley.newRequestQueue(this);;
         String url = "http://coms-309-mc-02.cs.iastate.edu:8080/hello";
         String postUrl = "http://coms-309-mc-02.cs.iastate.edu:8080/post";

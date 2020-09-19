@@ -41,16 +41,15 @@ public class LoginFragment extends Fragment {
         theLoginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 TextView usernameText = root.findViewById(R.id.textUserName);
                 String username = usernameText.getText().toString();
                 TextView passwordText = root.findViewById(R.id.textPassword);
                 String password = passwordText.getText().toString();
 
                 ConnectionClass cc = new ConnectionClass();
+                cc.putRequest(usernameText.toString(), getContext());
+                cc.putRequest(passwordText.toString(), getContext());
                 //cc.tryCanvasPost(getContext());
-                //cc.putRequest(usernameText.getText().toString());
-                //cc.putRequest(passwordText.getText().toString());
                 cc.Other_getRequest("https://iastate.okta.com/api/v1/authn", getContext());
                 //cc.sendStringPostRequest();
                 LoginText.setText(cc.getResponse());
