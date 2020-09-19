@@ -37,7 +37,7 @@ public class ProfileFragment  extends Fragment {
 
         RequestButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                connection.getRequest("name_test", getContext());
+                connection.getRequest("name_test");
 
                 requestData.setText(connection.getResponse());
 

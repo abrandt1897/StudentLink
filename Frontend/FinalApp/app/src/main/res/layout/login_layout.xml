@@ -37,6 +37,7 @@
         app:layout_constraintTop_toBottomOf="@+id/textPassword" />
 
     <EditText
+        android:hint="Enter Canvas Password"
         android:id="@+id/textPassword"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -44,13 +45,13 @@
         android:layout_marginEnd="96dp"
         android:layout_marginBottom="23dp"
         android:ems="10"
-        android:text="Enter Canvas password"
         android:inputType="textVisiblePassword"
         app:layout_constraintBottom_toTopOf="@+id/LoginButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textUserName" />
 
     <EditText
+        android:hint="Enter Canvas Username"
         android:id="@+id/textUserName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -58,7 +59,6 @@
         android:layout_marginEnd="100dp"
         android:ems="10"
         android:inputType="textPersonName"
-        android:text="Enter Canvas username"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>
