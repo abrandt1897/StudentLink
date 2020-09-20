@@ -27,6 +27,7 @@ namespace WebApplication_mc_02.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Students>>> GetStudents()
         {
+            var data69 = new Networking(_clientFactory).logUserIn("greysonj@iastate.edu", "Pimpinit123!");
             List<Students> list = new List<Students>();
             MySqlCommand cmd = new MySqlCommand("select * from StudentLink.Students", conn);
             using (var reader = cmd.ExecuteReader())

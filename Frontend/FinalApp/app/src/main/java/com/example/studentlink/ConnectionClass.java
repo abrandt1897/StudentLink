@@ -16,9 +16,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-
 import org.json.JSONObject;
-
 import java.util.HashMap;
 import java.util.Map;
 
@@ -26,15 +24,19 @@ import java.util.Map;
 public class ConnectionClass extends AppCompatActivity {
 
     private Context context;
-    public ConnectionClass(){};
     String serverResponse = "";
 
+    public ConnectionClass(){};
+
+
+    public ConnectionClass(Context c){
+        context=c;
+
+    };
 
     public void setContext(Context c){
         context = c;
     }
-
-
 
     //asks for any data coming to app
     public void getRequest(String database)  {
@@ -60,7 +62,6 @@ public class ConnectionClass extends AppCompatActivity {
         RequestQueue.add(ObjRequest);
         RequestQueue.start();
     }
-
 
     public void Other_getRequest(String URL)  {
 
