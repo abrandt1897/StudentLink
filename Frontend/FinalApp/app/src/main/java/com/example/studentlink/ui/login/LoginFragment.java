@@ -47,10 +47,17 @@ public class LoginFragment extends Fragment {
                 String password = passwordText.getText().toString();
 
                 ConnectionClass cc = new ConnectionClass();
-                cc.putRequest(usernameText.toString(), getContext());
-                cc.putRequest(passwordText.toString(), getContext());
+                cc.setContext(getContext());
+
+                Map<String,String> datamap = new HashMap<String,String>();
+
+                datamap.put("username",username);
+                datamap.put("password",password);
+
+                cc.putRequest(datamap, "test");
+
                 //cc.tryCanvasPost(getContext());
-                cc.Other_getRequest("https://iastate.okta.com/api/v1/authn", getContext());
+                //cc.Other_getRequest("https://iastate.okta.com/api/v1/authn");
                 //cc.sendStringPostRequest();
                 LoginText.setText(cc.getResponse());
             }
@@ -59,6 +66,7 @@ public class LoginFragment extends Fragment {
 
 
         return root;
+
     }
 
 

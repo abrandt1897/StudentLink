@@ -30,26 +30,29 @@ public class ConnectionClass extends AppCompatActivity {
     String serverResponse = "";
 
 
-    //asks for any data coming to app
-    public void getRequest(String database, Context context)  {
-        this.context = context;
+    public void setContext(Context c){
+        context = c;
+    }
 
+
+
+    //asks for any data coming to app
+    public void getRequest(String database)  {
         //Request Queue
         RequestQueue RequestQueue = Volley.newRequestQueue(context);
-       // String url = "https://b9bd0a6c-31b5-4e2a-8803-c10a85855393.mock.pstmn.io/" + database;
 
-        String url = "https://b9bd0a6c-31b5-4e2a-8803-c10a85855393.mock.pstmn.io/" + database;
+        String url = "http://coms-309-mc-02.cs.iastate.edu:5000/" + database;
 
         JsonObjectRequest ObjRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
 
-                @Override
-                    public void onResponse(JSONObject response) {
-                            serverResponse = response.toString();
-                    }
-                }, new Response.ErrorListener() {
+            @Override
+            public void onResponse(JSONObject response) {
+                serverResponse = response.toString();
+            }
+        }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                    Toast.makeText(context, error.toString(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, error.toString(), Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -58,8 +61,8 @@ public class ConnectionClass extends AppCompatActivity {
         RequestQueue.start();
     }
 
-    public void Other_getRequest(String URL, Context context)  {
-        this.context = context;
+
+    public void Other_getRequest(String URL)  {
 
         //Request Queue
         RequestQueue RequestQueue = Volley.newRequestQueue(context);
@@ -86,35 +89,43 @@ public class ConnectionClass extends AppCompatActivity {
     }
 
     //sends data to database
-    public void putRequest(String data, Context c){
+    public void putRequest(Map<String, String> data, String database){
 
-        //our api's url
-        String url = "https://localhost:5001/test";
+        //our api's urls
+        String url = "http://coms-309-mc-02.cs.iastate.edu:5000/" + database;
 
         //start a queue for requests for our api
-        RequestQueue ExampleRequestQueue = Volley.newRequestQueue(c);
+        RequestQueue RequestQueue = Volley.newRequestQueue(context);
 
         //create a request object for our api asking for a json object to be returned
-        JsonObjectRequest ExampleRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+        StringRequest putRequest = new StringRequest(Request.Method.PUT, url,
+                new Response.Listener<String>()
+                {
+                    @Override
+                    public void onResponse(String response) {
+                        serverResponse = response;
+                    }
+                },
+                new Response.ErrorListener()
+                {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        // error
+                        //Log.d("Error.Response", response);
+                    }
+                }
+        ) {
 
             @Override
-            public void onResponse(JSONObject response) {
-                //when our api responds then we do something with the data
-                Toast toast = Toast.makeText(getApplicationContext(), response.toString(), Toast.LENGTH_SHORT);
+            protected Map<String, String> getParams()
+            {
+                return data;
             }
 
-        }, new Response.ErrorListener() { //Create an error listener to handle errors appropriately.
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                //This code is executed if there is an error.
-            }
-        });
-        //add the request object to the queue of requests
-        ExampleRequestQueue.add(ExampleRequest);
-    }
+        };
 
-    public void setResponse(String string){
-        serverResponse = string;
+        RequestQueue.add(putRequest);
+        RequestQueue.start();
     }
 
     public String getResponse(){
@@ -122,11 +133,9 @@ public class ConnectionClass extends AppCompatActivity {
     }
 
 
-
-
     // Grace's stuff
-    public void tryCanvasPost(Context c) {
-        RequestQueue queue = Volley.newRequestQueue(c);
+    public void tryCanvasPost() {
+        RequestQueue queue = Volley.newRequestQueue(context);
 
         String serverUrl = "https://iastate.okta.com/api/v1/authn";
 
@@ -159,8 +168,8 @@ public class ConnectionClass extends AppCompatActivity {
     }
 
     // also Grace's stuff
-    private void sendStringPostRequest(Context c) {
-        RequestQueue queue = Volley.newRequestQueue(this);;
+    private void sendStringPostRequest() {
+        RequestQueue queue = Volley.newRequestQueue(context);;
         String url = "http://coms-309-mc-02.cs.iastate.edu:8080/hello";
         String postUrl = "http://coms-309-mc-02.cs.iastate.edu:8080/post";
         StringRequest postRequest = new StringRequest(Request.Method.POST, postUrl,
@@ -190,3 +199,4 @@ public class ConnectionClass extends AppCompatActivity {
 
 
 }
+
