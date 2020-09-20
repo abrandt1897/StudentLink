@@ -1,0 +1,8 @@
+{
+  "runtimeOptions": {
+    "additionalProbingPaths": [
+      "C:\\Users\\Tevatron\\.dotnet\\store\\|arch|\\|tfm|",
+      "C:\\Users\\Tevatron\\.nuget\\packages"
+    ]
+  }
+}

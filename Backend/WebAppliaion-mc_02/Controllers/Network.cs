@@ -19,6 +19,7 @@ namespace WebApplication_mc_02.Controllers
         public async Task<Students> getStudentProfile(string token)
         {
             //get student string data
+            
             var courseResponse = await makeRequest("https://canvas.instructure.com/api/v1/courses?enrollment_state=active&include[]=sections&include[]=term&include[]=concluded", token);
             var profileResponse = await makeRequest("https://canvas.iastate.edu/api/v1/users/self/", token);
             //parse student data to json
@@ -72,6 +73,31 @@ namespace WebApplication_mc_02.Controllers
             object ID1 = list1.Current;
 
             return ID1.ToString();
+        }
+        public async Task<String> logUserIn(string email, string password)
+        {
+            var request = new HttpRequestMessage(HttpMethod.Post, "https://iastate.okta.com/api/v1/authn");
+            request.Headers.Add("Accept", "application/json");
+            request.Headers.Add("User-Agent", "HttpClientFactory-Sample");
+            request.Headers.Add("Authorization", "SSWS 00Dn1-IfOQVpsWQ-ziuTWpBtnHu__8BvWgyyT99d4s");
+            request.Headers.Add("Cache-Control", "no-cache");
+            request.Headers.Add("X-Fowarded-For", "23.235.46.133");
+            request.Headers.Add("X-Device-Fingerprint", "application/json");
+            request.Content = new StringContent("{\"password\":\""+ password + "\",\"username\":\""+ email, System.Text.Encoding.UTF8, "application/json");
+            var client = _clientFactory.CreateClient();
+
+            var courseResponse = await client.SendAsync(request);
+            if (courseResponse.IsSuccessStatusCode)
+            {
+                string responce = await courseResponse.Content.ReadAsStringAsync();
+                return responce;
+            }
+            else
+            {
+                return "";
+            }
+
+            return "";
         }
         public async Task<String> makeRequest(string URL, string token)
         {
