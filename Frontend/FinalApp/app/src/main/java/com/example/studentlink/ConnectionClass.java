@@ -16,7 +16,15 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+
+import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.io.UnsupportedEncodingException;
+import java.net.CookieHandler;
+import java.net.CookieManager;
+import java.net.CookiePolicy;
+import java.net.CookieStore;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -134,8 +142,23 @@ public class ConnectionClass extends AppCompatActivity {
     }
 
 
-    // Grace's stuff
-    public void tryCanvasPost() {
+    // Broken due to MFA currently
+    public void tryCanvasPost(Map<String, String> data) throws JSONException {
+//        CookieStore cookieStore = new MyCookieStore();
+//        CookieManager manager = new CookieManager( cookieStore, CookiePolicy.ACCEPT_ALL );
+//        CookieHandler.setDefault( manager  );
+
+        JSONObject jsonBody = new JSONObject();
+        //HttpRequest.BodyPublishers.ofString("{\"password\":\"wolf2Link\",\"username\":\"gematera@iastate.edu\",\"options\":{\"warnBeforePasswordExpired\":true,\"multiOptionalFactorEnroll\":true}}"))
+        jsonBody.put("password", data.get("password"));
+        jsonBody.put("username", data.get("username"));
+
+        JSONObject jsonBodyOptions = new JSONObject();
+        jsonBodyOptions.put("warnBeforePasswordExpired", "true");
+        jsonBodyOptions.put("multiOptionalFactorEnroll", "true");
+        jsonBody.put("options", jsonBodyOptions);
+        final String mRequestBody = jsonBody.toString();
+
         RequestQueue queue = Volley.newRequestQueue(context);
 
         String serverUrl = "https://iastate.okta.com/api/v1/authn";
@@ -163,40 +186,55 @@ public class ConnectionClass extends AppCompatActivity {
                 headers.put("content-type", "application/json");
                 return headers;
             }
+
+            @Override
+            public String getBodyContentType() {
+                return "application/json; charset=utf-8";
+            }
+            @Override
+            public byte[] getBody() {
+                try {
+                    return mRequestBody == null ? null : mRequestBody.getBytes("utf-8");
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                    return null;
+                }
+            }
+
         };
         // Add the request to the RequestQueue.
         queue.add(stringRequest);
     }
 
-    // also Grace's stuff
-    private void sendStringPostRequest() {
-        RequestQueue queue = Volley.newRequestQueue(context);;
-        String url = "http://coms-309-mc-02.cs.iastate.edu:8080/hello";
-        String postUrl = "http://coms-309-mc-02.cs.iastate.edu:8080/post";
-        StringRequest postRequest = new StringRequest(Request.Method.POST, postUrl,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        System.out.println("RESPONSE: " + response);
-                    }
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                System.out.println("ERROR: " + error.toString());
-            }
-        }) {
-            @Override
-            public Map<String, String> getParams() {
-                Map<String, String> params = new HashMap<>();
-                params.put("name", "gematera");
-                params.put("password", "pass");
-
-                return params;
-            }
-        };
-
-        queue.add(postRequest);
-    }
+//    // also Grace's stuff
+//    private void sendStringPostRequest() {
+//        RequestQueue queue = Volley.newRequestQueue(context);;
+//        String url = "http://coms-309-mc-02.cs.iastate.edu:8080/hello";
+//        String postUrl = "http://coms-309-mc-02.cs.iastate.edu:8080/post";
+//        StringRequest postRequest = new StringRequest(Request.Method.POST, postUrl,
+//                new Response.Listener<String>() {
+//                    @Override
+//                    public void onResponse(String response) {
+//                        System.out.println("RESPONSE: " + response);
+//                    }
+//                }, new Response.ErrorListener() {
+//            @Override
+//            public void onErrorResponse(VolleyError error) {
+//                System.out.println("ERROR: " + error.toString());
+//            }
+//        }) {
+//            @Override
+//            public Map<String, String> getParams() {
+//                Map<String, String> params = new HashMap<>();
+//                params.put("name", "gematera");
+//                params.put("password", "pass");
+//
+//                return params;
+//            }
+//        };
+//
+//        queue.add(postRequest);
+//    }
 
 
 }

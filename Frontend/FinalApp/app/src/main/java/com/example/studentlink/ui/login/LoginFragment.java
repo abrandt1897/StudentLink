@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -13,8 +14,12 @@ import androidx.fragment.app.Fragment;
 import com.example.studentlink.ConnectionClass;
 import com.example.studentlink.R;
 
+import org.json.JSONException;
+
 import java.util.HashMap;
 import java.util.Map;
+import java.net.CookieManager;
+import java.net.CookiePolicy;
 
 public class LoginFragment extends Fragment {
 
@@ -22,6 +27,10 @@ public class LoginFragment extends Fragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.login_layout, container, false);
+
+        WebView myWebView = (WebView) root.findViewById(R.id.CanvasPage);
+        myWebView.loadUrl("https://canvas.iastate.edu/");
+
 
         TextView LoginText = root.findViewById(R.id.LoginText);
 
@@ -31,6 +40,9 @@ public class LoginFragment extends Fragment {
         theLoginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+//                CookieManager CM = new CookieManager();
+//                CM.setCookiePolicy(CookiePolicy.ACCEPT_ALL);
+
                 TextView usernameText = root.findViewById(R.id.textUserName);
                 String username = usernameText.getText().toString();
                 TextView passwordText = root.findViewById(R.id.textPassword);
@@ -39,16 +51,17 @@ public class LoginFragment extends Fragment {
                 ConnectionClass cc = new ConnectionClass();
                 cc.setContext(getContext());
 
-                Map<String,String> datamap = new HashMap<String,String>();
+                Map<String,String> dataMap = new HashMap<String,String>();
 
-                datamap.put("username",username);
-                datamap.put("password",password);
+                dataMap.put("username",username);
+                dataMap.put("password",password);
+//                cc.putRequest(dataMap, "test");
 
-                cc.putRequest(datamap, "test");
-
-                //cc.tryCanvasPost(getContext());
-                //cc.Other_getRequest("https://iastate.okta.com/api/v1/authn");
-                //cc.sendStringPostRequest();
+//                try {
+//                    cc.tryCanvasPost(dataMap);
+//                } catch (JSONException e) {
+//                    e.printStackTrace();
+//                }
                 LoginText.setText(cc.getResponse());
             }
 
