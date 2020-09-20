@@ -27,7 +27,8 @@ public class ProfileFragment  extends Fragment {
 
         RequestButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                connection.getRequest("name_test");
+                connection.setContext(getContext());
+                connection.getRequest("/api/Students/66872");
 
                 requestData.setText(connection.getResponse());
 
@@ -35,6 +36,7 @@ public class ProfileFragment  extends Fragment {
             }
         });
         return root;
+
 
 
     }

@@ -44,7 +44,7 @@ public class LoginFragment extends Fragment {
                 datamap.put("username",username);
                 datamap.put("password",password);
 
-                cc.putRequest(datamap, "test ");
+                cc.putRequest(datamap, "test");
 
                 //cc.tryCanvasPost(getContext());
                 //cc.Other_getRequest("https://iastate.okta.com/api/v1/authn");
@@ -56,6 +56,7 @@ public class LoginFragment extends Fragment {
 
 
         return root;
+
     }
 
 

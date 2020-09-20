@@ -47,14 +47,14 @@ public class ConnectionClass extends AppCompatActivity {
 
         JsonObjectRequest ObjRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
 
-                @Override
-                    public void onResponse(JSONObject response) {
-                            serverResponse = response.toString();
-                    }
-                }, new Response.ErrorListener() {
+            @Override
+            public void onResponse(JSONObject response) {
+                serverResponse = response.toString();
+            }
+        }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                    Toast.makeText(context, error.toString(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, error.toString(), Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -96,8 +96,7 @@ public class ConnectionClass extends AppCompatActivity {
         String url = "http://coms-309-mc-02.cs.iastate.edu:5000/" + database;
 
         //start a queue for requests for our api
-        RequestQueue ExampleRequestQueue = Volley.newRequestQueue(context);
-
+        RequestQueue RequestQueue = Volley.newRequestQueue(context);
 
         //create a request object for our api asking for a json object to be returned
         StringRequest putRequest = new StringRequest(Request.Method.PUT, url,
@@ -126,18 +125,13 @@ public class ConnectionClass extends AppCompatActivity {
 
         };
 
-        ExampleRequestQueue.add(putRequest);
-    }
-
-    public void setResponse(String string){
-        serverResponse = string;
+        RequestQueue.add(putRequest);
+        RequestQueue.start();
     }
 
     public String getResponse(){
         return serverResponse;
     }
-
-
 
 
     // Grace's stuff
@@ -206,3 +200,4 @@ public class ConnectionClass extends AppCompatActivity {
 
 
 }
+
