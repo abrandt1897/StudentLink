@@ -42,9 +42,8 @@ public class ConnectionClass extends AppCompatActivity {
     public void getRequest(String database)  {
         //Request Queue
         RequestQueue RequestQueue = Volley.newRequestQueue(context);
-       // String url = "https://b9bd0a6c-31b5-4e2a-8803-c10a85855393.mock.pstmn.io/" + database;
 
-        String url = "https://b9bd0a6c-31b5-4e2a-8803-c10a85855393.mock.pstmn.io/" + database;
+        String url = "http://coms-309-mc-02.cs.iastate.edu:5000/" + database;
 
         JsonObjectRequest ObjRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
 
@@ -94,8 +93,7 @@ public class ConnectionClass extends AppCompatActivity {
     public void putRequest(Map<String, String> data, String database){
 
         //our api's urls
-        //String url = "https://localhost:5001/test";
-        String url = "https://280c9d98-ea4a-443c-a85b-4e365b376def.mock.pstmn.io/" + database;
+        String url = "http://coms-309-mc-02.cs.iastate.edu:5000/" + database;
 
         //start a queue for requests for our api
         RequestQueue ExampleRequestQueue = Volley.newRequestQueue(context);

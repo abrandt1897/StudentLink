@@ -1,7 +1,6 @@
 package com.example.studentlink.ui.login;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,17 +8,8 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
 
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
 import com.example.studentlink.ConnectionClass;
 import com.example.studentlink.R;
 
@@ -54,7 +44,7 @@ public class LoginFragment extends Fragment {
                 datamap.put("username",username);
                 datamap.put("password",password);
 
-                cc.putRequest(datamap, "person_Info");
+                cc.putRequest(datamap, "test ");
 
                 //cc.tryCanvasPost(getContext());
                 //cc.Other_getRequest("https://iastate.okta.com/api/v1/authn");
