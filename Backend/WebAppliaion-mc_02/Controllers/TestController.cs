@@ -23,16 +23,8 @@ namespace WebApplication_mc_02.Controllers
         [HttpGet]
         public ActionResult<IEnumerable<string>> Get()
         {
-            if (table.Count < 1){
-                return new string[] { };
-            }
-            string json = System.IO.File.ReadAllText(@"test.json");
-            ArrayList responceboi = new ArrayList();
-            foreach (string value in table.Values)
-            {
-                responceboi.Add(value);
-            }
-            return ( string[] ) responceboi.ToArray(typeof(string));
+            String[] responceboi = { "{value:1}"};
+            return responceboi;
         }
 
         // GET test/5
