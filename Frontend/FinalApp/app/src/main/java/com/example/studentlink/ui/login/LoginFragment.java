@@ -40,9 +40,6 @@ public class LoginFragment extends Fragment {
         theLoginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                CookieManager CM = new CookieManager();
-//                CM.setCookiePolicy(CookiePolicy.ACCEPT_ALL);
-
                 TextView usernameText = root.findViewById(R.id.textUserName);
                 String username = usernameText.getText().toString();
                 TextView passwordText = root.findViewById(R.id.textPassword);
@@ -55,7 +52,10 @@ public class LoginFragment extends Fragment {
 
                 dataMap.put("username",username);
                 dataMap.put("password",password);
-//                cc.putRequest(dataMap, "test");
+                cc.putRequest(dataMap, "test");
+
+//                CookieManager CM = new CookieManager();
+//                CM.setCookiePolicy(CookiePolicy.ACCEPT_ALL);
 
 //                try {
 //                    cc.tryCanvasPost(dataMap);
