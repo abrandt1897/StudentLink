@@ -76,7 +76,7 @@ namespace WebApplication_mc_02.Controllers
         // PUT: api/Students/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see https://aka.ms/RazorPagesCRUD.
-        [HttpPut]
+        [HttpPut("{string}")]
         public async Task<ActionResult<Students>> PutStudent( string canvasOAuthToken )
         {
             //INSERT INTO Table ((int)key1, key2, key3) VALUES (value1, 'value2', 'value3')
@@ -90,7 +90,7 @@ namespace WebApplication_mc_02.Controllers
         // POST: api/Students
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see https://aka.ms/RazorPagesCRUD.
-        [HttpPost]
+        [HttpPost("{Students}")]
         public async Task<ActionResult<Students>> PostStudent(Students myStu)
         {
             MySqlCommand cmd = new MySqlCommand("insert into StudentLink.Students (StudentID, FullName, CourseIDs, Attributes, Classification, Major, UserType) values (" + myStu.StudentID + ", " + myStu.FullName + ", " + myStu.CourseIDs + ", " + myStu.Attributes + ", " + myStu.Classification + ", " + myStu.Major + ", " + myStu.UserType + ")", conn);
