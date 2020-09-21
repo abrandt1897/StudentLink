@@ -6,6 +6,7 @@ using System.Net.Http;
 using Nancy.Json;
 using System.Collections;
 using WebApplication_mc_02.Models;
+using MySql.Data.MySqlClient;
 
 namespace WebApplication_mc_02.Controllers
 {
@@ -20,7 +21,7 @@ namespace WebApplication_mc_02.Controllers
         {
             //get student string data
             
-            var courseResponse = await makeRequest("https://canvas.instructure.com/api/v1/courses?enrollment_state=active&include[]=sections&include[]=term&include[]=concluded", token);
+            var courseResponse = await makeRequest("https://canvas.instructure.com/api/v1/courses?include[]=sections&include[]=term&per_page=100", token);
             var profileResponse = await makeRequest("https://canvas.iastate.edu/api/v1/users/self/", token);
             //parse student data to json
             Nancy.Json.Simple.JsonArray courseJsonResponse = new JavaScriptSerializer().Deserialize<Nancy.Json.Simple.JsonArray>(courseResponse);
@@ -29,8 +30,21 @@ namespace WebApplication_mc_02.Controllers
             Students myStu = new Students();
             //retreive course data from json object
             string CourseIDs = "";
+            Courses myCourse = new Courses();
+            List<Courses> courses = new List<Courses>();
             foreach (Nancy.Json.Simple.JsonObject jsonObject in courseJsonResponse)
+            {
                 CourseIDs += getJsonValue(jsonObject, "id") + " ";
+                //Build course object
+                Courses c = new Courses();
+                c.CourseID = Int32.Parse(getJsonValue(jsonObject, "id"));
+                c.Name = getJsonValue(jsonObject, "name");
+                c.TermID = Int32.Parse(getJsonValue(new JavaScriptSerializer().Deserialize<Nancy.Json.Simple.JsonObject>(getJsonValue(jsonObject, "term")), "id"));
+                c.Term = getJsonValue(new JavaScriptSerializer().Deserialize<Nancy.Json.Simple.JsonObject>(getJsonValue(jsonObject, "term")), "name");
+                c.SectionID = Int32.Parse(getJsonValue(new JavaScriptSerializer().Deserialize<Nancy.Json.Simple.JsonObject>(getJsonValue(jsonObject, "section")), "id"));
+                c.Section = getJsonValue(new JavaScriptSerializer().Deserialize<Nancy.Json.Simple.JsonObject>(getJsonValue(jsonObject, "section")), "name");
+                courses.Add(c);
+            }
             CourseIDs = CourseIDs.Trim();
             //get name data from json object
             string studentName = getJsonValue(profileJsonResponse, "name");
@@ -55,6 +69,12 @@ namespace WebApplication_mc_02.Controllers
             myStu.StudentID = Int32.Parse(studentID);
             myStu.UserType = "Student";
             myStu.CourseIDs = CourseIDs;
+            //Insert into table
+            foreach (int i in myStu.CourseIDs)
+            {
+                MySqlCommand cmd2 = new MySqlCommand("insert into StudentLink.Courses (CourseID, Name, Mentors, TAs, Section, Term, Students, TermID, sectionID) values (" + courses[i].CourseID + ", '" + courses[i].Name + ", '" + + courses[i].Mentors + ", '" + courses[i].Section + courses[i].SectionID + ", '" + courses[i].Term + ", '" + myStu.StudentID + ", '" + courses[i].TermID + ", '" + courses[i].SectionID);
+                cmd2.ExecuteReader();
+            }
             //return
             return myStu;
         }
