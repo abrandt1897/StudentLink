@@ -396,3 +396,4 @@ C:\Users\Adam Brandt\OneDrive\Documents\CS309\mc_02\Backend\WebAppliaion-mc_02\b
 C:\Users\Adam Brandt\OneDrive\Documents\CS309\mc_02\Backend\WebAppliaion-mc_02\bin\Debug\netcoreapp3.0\runtimes\unix\lib\netcoreapp3.0\System.Drawing.Common.dll
 C:\Users\Adam Brandt\OneDrive\Documents\CS309\mc_02\Backend\WebAppliaion-mc_02\bin\Debug\netcoreapp3.0\runtimes\win\lib\netcoreapp3.0\System.Drawing.Common.dll
 E:\Documents\GitHub\mc_02\Backend\WebAppliaion-mc_02\bin\Debug\netcoreapp3.0\Properties\ServiceDependencies\309mc02 - Web Deploy\profile.arm.json
+E:\Documents\GitHub\mc_02\Backend\WebAppliaion-mc_02\obj\Debug\netcoreapp3.0\WebApplication-mc_02.csprojAssemblyReference.cache

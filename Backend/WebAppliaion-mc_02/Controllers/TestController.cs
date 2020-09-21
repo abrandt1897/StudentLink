@@ -47,7 +47,7 @@ namespace WebApplication_mc_02.Controllers
         }
 
         // POST test
-        [HttpPost("{value}")]
+        [HttpPost]
         public ActionResult<string> Post([FromBody] string value)
         {
             List<string> lines = new List<string>();
@@ -57,7 +57,7 @@ namespace WebApplication_mc_02.Controllers
         }
 
         // PUT test
-        [HttpPut("{value}")]
+        [HttpPut]
         public ActionResult<string> Put([FromBody] string value)
         {
 
@@ -68,8 +68,8 @@ namespace WebApplication_mc_02.Controllers
         }
 
         // DELETE test/5
-        [HttpDelete("{id}")]
-        public ActionResult<string> Delete(int id)
+        [HttpDelete]
+        public ActionResult<string> Delete()
         {
             return "data recieved";
         }
