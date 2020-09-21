@@ -28,7 +28,7 @@ import java.net.CookieStore;
 import java.util.HashMap;
 import java.util.Map;
 
-
+// comment from Grace
 public class ConnectionClass extends AppCompatActivity {
 
     private Context context;

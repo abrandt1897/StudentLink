@@ -20,7 +20,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.net.CookieManager;
 import java.net.CookiePolicy;
-//random comment
+
 public class LoginFragment extends Fragment {
 
     private Button theLoginButton;
@@ -30,7 +30,6 @@ public class LoginFragment extends Fragment {
 
         WebView myWebView = (WebView) root.findViewById(R.id.CanvasPage);
         myWebView.loadUrl("https://canvas.iastate.edu/");
-
 
         TextView LoginText = root.findViewById(R.id.LoginText);
 
@@ -49,7 +48,6 @@ public class LoginFragment extends Fragment {
                 cc.setContext(getContext());
 
                 Map<String,String> dataMap = new HashMap<String,String>();
-
                 dataMap.put("username",username);
                 dataMap.put("password",password);
                 cc.putRequest(dataMap, "test");
@@ -67,14 +65,9 @@ public class LoginFragment extends Fragment {
 
         });
 
-
         return root;
 
     }
-
-
-
-
 
 
 }
