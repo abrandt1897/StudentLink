@@ -2,6 +2,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using WebApplication_mc_02.Models;
@@ -10,6 +11,28 @@ namespace WebApplication_mc_02.Controllers
 {
     public class SQLConnection
     {
+        public static void update(dynamic data, Hashtable values, string condition="")
+        {
+            MySqlConnection conn = new MySqlConnection("server=coms-309-mc-02.cs.iastate.edu;port=3306;database=StudentLink;user=root;password=46988c18374d9b7d;");
+            conn.Open();
+
+            string query = "update StudentLink."+data.GetType().Name+" set ";
+            foreach(DictionaryEntry d in values)
+            {
+                query += d.Key + " = '" + d.Value + "', ";
+            }
+            query = query.Substring(0, query.Length - 3);
+            query += condition;
+
+            MySqlCommand cmd = new MySqlCommand(query);
+            
+            try
+            {
+                cmd.ExecuteReader();
+            }
+            catch (Exception e) { Debug.WriteLine(e.Message.ToString()); }
+            conn.Close();
+        }
         public static void insert(dynamic data)
         {
             MySqlConnection conn = new MySqlConnection("server=coms-309-mc-02.cs.iastate.edu;port=3306;database=StudentLink;user=root;password=46988c18374d9b7d;");
@@ -18,21 +41,28 @@ namespace WebApplication_mc_02.Controllers
             switch (data.GetType().Name)
             {
                 case "Students":
-                    cmd = new MySqlCommand("insert into StudentLink.Students (StudentID, FullName, CourseIDs, Attributes, Classification, Major, UserType, Friends) values (" + data.StudentID + ", '" + data.FullName + "', '" + data.CourseIDs + "', '" + data.Attributes + "', '" + data.Classification + "', '" + data.Major + "', '" + data.UserType + "' ')", conn);
+                    cmd = new MySqlCommand("insert into StudentLink.Students (StudentID, FullName, CourseIDs, Attributes, Classification, Major, UserType, Friends) values (" + data.StudentID + ", '" + data.FullName + "', '" + data.CourseIDs + "', '" + data.Attributes + "', '" + data.Classification + "', '" + data.Major + "', '" + data.UserType + "', '"+ data.Friends +"')", conn);
                     break;
                 case "Courses":
-                    cmd = new MySqlCommand("insert into StudentLink.Courses (CourseID, Name, Mentors, TAs, Section, Term, Students, TermID, SectionID) values (" + data.CourseID + ", '" + data.Name + "', " + data.Mentors + ", " + data.TAs + ", '" + data.Section + "', '" + data.Term + "', " + "' '" + ", " + data.TermID + ", " + data.SectionID + ")", conn);
+                    cmd = new MySqlCommand("insert into StudentLink.Courses (CourseID, Name, Mentors, TAs, Section, Term, Students, TermID, SectionID) values (" + data.CourseID + ", '" + data.Name + "', " + data.Mentors + ", " + data.TAs + ", '" + data.Section + "', '" + data.Term + "', '" + data.Students + "', " + data.TermID + ", " + data.SectionID + ")", conn);
                     break;
                 case "Groups":
                     cmd = new MySqlCommand("insert into StudentLink.Groups (GroupID, Students, TAs, Mentors) values (" + data.GroupID + ", '" + data.Students + "', " + data.TAs + ", " + data.Mentors + ")", conn);
                     break;
                 case "Chats":
-                    cmd = new MySqlCommand("insert into StudentLink.Chats (ChatID, Sender, Data) values (" + data.ChatID + ", '" + data.Sender + "', " + data.Data + ")", conn);
+                    cmd = new MySqlCommand("insert into StudentLink.Chats (ChatID, Sender, Data) values (" + data.ChatID + ", '" + data.Sender + "', '" + data.Data + "')", conn);
+                    break;
+                case "Login":
+                    cmd = new MySqlCommand("insert into StudentLink.Login (Username, Email, Password) values ('" + data.Username + "', '" + data.Email + "', " + data.Password + "')", conn);
                     break;
                 default:
                     return;
             }
-            cmd.ExecuteReader();
+            try
+            {
+                cmd.ExecuteReader();
+            }
+            catch (Exception e){ Debug.WriteLine(e.Message.ToString()); }
             conn.Close();
         }
         public static dynamic get(dynamic type, string column="*", string filter = "")

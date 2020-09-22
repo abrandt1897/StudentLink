@@ -16,6 +16,6 @@ namespace WebApplication_mc_02.Models
         public string Classification { get; set; }        
         public string Major { get; set; }
         public string UserType { get; set; }
-
+        public string Friends { get; set; }
     }
 }

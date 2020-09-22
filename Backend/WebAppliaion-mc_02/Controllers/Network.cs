@@ -8,7 +8,11 @@ using System.Collections;
 using WebApplication_mc_02.Models;
 using MySql.Data.MySqlClient;
 using Microsoft.AspNetCore.Mvc;
-
+//Future Greyson
+//allow students to be added to a course
+//to do that you need to check if the course already exists
+//and then if it does add the student to the course otherwise
+//add the course with the current student in it
 namespace WebApplication_mc_02.Controllers
 {
     public class Networking
@@ -34,31 +38,6 @@ namespace WebApplication_mc_02.Controllers
             Students myStu = new Students();
             //retreive course data from json object
             string CourseIDs = "";
-            List<Courses> courses = new List<Courses>();
-            foreach (Nancy.Json.Simple.JsonObject jsonObject in courseJsonResponse)
-            {
-                CourseIDs += getJsonValue(jsonObject, "id") + " ";
-                //Build course object
-                Courses c = new Courses();
-                if(getJsonValue(jsonObject, "name") == "Error")
-                {
-                    continue;
-                }
-                c.Name = getJsonValue(jsonObject, "name");
-                c.CourseID = Int64.Parse(getJsonValue(jsonObject, "id"));
-                c.TermID = Int64.Parse(getJsonValue(new JavaScriptSerializer().Deserialize<Nancy.Json.Simple.JsonObject>(getJsonValue(jsonObject, "term")), "id"));
-                c.Term = getJsonValue(new JavaScriptSerializer().Deserialize<Nancy.Json.Simple.JsonObject>(getJsonValue(jsonObject, "term")), "name");
-
-                string sectionsData = getJsonValue(jsonObject, "sections");
-                Nancy.Json.Simple.JsonArray asdf = new JavaScriptSerializer().Deserialize<Nancy.Json.Simple.JsonArray>(sectionsData);
-                IEnumerator e = asdf.GetEnumerator();
-                e.MoveNext();
-                Nancy.Json.Simple.JsonObject data69 = (Nancy.Json.Simple.JsonObject)e.Current;
-                string IdData = getJsonValue(data69, "id");
-                c.SectionID = Int64.Parse(IdData);
-                c.Section = getJsonValue(data69, "name");
-                courses.Add(c);
-            }
             CourseIDs = CourseIDs.Trim();
             //get name data from json object
             string studentName = getJsonValue(profileJsonResponse, "name");
@@ -83,8 +62,36 @@ namespace WebApplication_mc_02.Controllers
             myStu.StudentID = Int32.Parse(studentID);
             myStu.UserType = "Student";
             myStu.CourseIDs = CourseIDs;
+            myStu.Friends = " ";
+
+            List<Courses> courses = new List<Courses>();
+            foreach (Nancy.Json.Simple.JsonObject jsonObject in courseJsonResponse)
+            {
+                CourseIDs += getJsonValue(jsonObject, "id") + " ";
+                //Build course object
+                Courses c = new Courses();
+                if (getJsonValue(jsonObject, "name") == "Error")
+                {
+                    continue;
+                }
+                c.Name = getJsonValue(jsonObject, "name");
+                c.CourseID = Int64.Parse(getJsonValue(jsonObject, "id"));
+                c.TermID = Int64.Parse(getJsonValue(new JavaScriptSerializer().Deserialize<Nancy.Json.Simple.JsonObject>(getJsonValue(jsonObject, "term")), "id"));
+                c.Term = getJsonValue(new JavaScriptSerializer().Deserialize<Nancy.Json.Simple.JsonObject>(getJsonValue(jsonObject, "term")), "name");
+                c.Students = studentID;
+                string sectionsData = getJsonValue(jsonObject, "sections");
+                Nancy.Json.Simple.JsonArray asdf = new JavaScriptSerializer().Deserialize<Nancy.Json.Simple.JsonArray>(sectionsData);
+                IEnumerator e = asdf.GetEnumerator();
+                e.MoveNext();
+                Nancy.Json.Simple.JsonObject data69 = (Nancy.Json.Simple.JsonObject)e.Current;
+                string IdData = getJsonValue(data69, "id");
+                c.SectionID = Int64.Parse(IdData);
+                c.Section = getJsonValue(data69, "name");
+                courses.Add(c);
+            }
+
             //Insert into table
-            for(int i = 0; i < courses.Count; i++)
+            for (int i = 0; i < courses.Count; i++)
             {
                 SQLConnection.insert(courses[i]);
                 //MySqlCommand cmd2 = new MySqlCommand("insert into StudentLink.Courses (CourseID, Name, Mentors, TAs, Section, Term, Students, TermID, sectionID) values (" + courses[i].CourseID + ", '" + courses[i].Name + "', " +  courses[i].Mentors + ", " + courses[i].TAs + ", '" + courses[i].Section + "', '" + courses[i].Term + "', " + myStu.StudentID + ", " + courses[i].TermID + ", " + courses[i].SectionID + ")", conn);

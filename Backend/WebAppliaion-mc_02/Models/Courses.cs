@@ -15,6 +15,7 @@ namespace WebApplication_mc_02.Models
         public int TAs { get; set; }
         public string Section { get; set; }
         public string Term { get; set; }
+        public string Students { get; set; }
         public long TermID { get; set; }
         public long SectionID { get; set; }
     }
