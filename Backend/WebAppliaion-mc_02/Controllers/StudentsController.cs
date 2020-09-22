@@ -80,8 +80,10 @@ namespace WebApplication_mc_02.Controllers
         public async Task<ActionResult<Students>> PutStudent( string canvasOAuthToken )
         {
             //INSERT INTO Table ((int)key1, key2, key3) VALUES (value1, 'value2', 'value3')
+            conn.Close();
             Networking network = new Networking(_clientFactory);
             Students myStu = network.getStudentProfile(canvasOAuthToken).Result;
+            conn.Open();
             MySqlCommand cmd = new MySqlCommand("insert into StudentLink.Students (StudentID, FullName, CourseIDs, Attributes, Classification, Major, UserType) values (" + myStu.StudentID + ", '" + myStu.FullName + "', '" + myStu.CourseIDs + "', '" + myStu.Attributes + "', '" + myStu.Classification + "', '" + myStu.Major + "', '" + myStu.UserType + "')", conn);
             cmd.ExecuteReader();
             return myStu;

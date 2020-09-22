@@ -7,15 +7,19 @@ using Nancy.Json;
 using System.Collections;
 using WebApplication_mc_02.Models;
 using MySql.Data.MySqlClient;
+using Microsoft.AspNetCore.Mvc;
 
 namespace WebApplication_mc_02.Controllers
 {
     public class Networking
     {
-        IHttpClientFactory _clientFactory;
+        private IHttpClientFactory _clientFactory;
+        private MySqlConnection conn;
         public Networking(IHttpClientFactory clientFactory)
         {
             _clientFactory = clientFactory;
+            conn = new MySqlConnection("server=coms-309-mc-02.cs.iastate.edu;port=3306;database=StudentLink;user=root;password=46988c18374d9b7d;");
+            conn.Open();
         }
         public async Task<Students> getStudentProfile(string token)
         {
@@ -30,19 +34,29 @@ namespace WebApplication_mc_02.Controllers
             Students myStu = new Students();
             //retreive course data from json object
             string CourseIDs = "";
-            Courses myCourse = new Courses();
             List<Courses> courses = new List<Courses>();
             foreach (Nancy.Json.Simple.JsonObject jsonObject in courseJsonResponse)
             {
                 CourseIDs += getJsonValue(jsonObject, "id") + " ";
                 //Build course object
                 Courses c = new Courses();
-                c.CourseID = Int32.Parse(getJsonValue(jsonObject, "id"));
+                if(getJsonValue(jsonObject, "name") == "Error")
+                {
+                    continue;
+                }
                 c.Name = getJsonValue(jsonObject, "name");
-                c.TermID = Int32.Parse(getJsonValue(new JavaScriptSerializer().Deserialize<Nancy.Json.Simple.JsonObject>(getJsonValue(jsonObject, "term")), "id"));
+                c.CourseID = Int64.Parse(getJsonValue(jsonObject, "id"));
+                c.TermID = Int64.Parse(getJsonValue(new JavaScriptSerializer().Deserialize<Nancy.Json.Simple.JsonObject>(getJsonValue(jsonObject, "term")), "id"));
                 c.Term = getJsonValue(new JavaScriptSerializer().Deserialize<Nancy.Json.Simple.JsonObject>(getJsonValue(jsonObject, "term")), "name");
-                c.SectionID = Int32.Parse(getJsonValue(new JavaScriptSerializer().Deserialize<Nancy.Json.Simple.JsonObject>(getJsonValue(jsonObject, "section")), "id"));
-                c.Section = getJsonValue(new JavaScriptSerializer().Deserialize<Nancy.Json.Simple.JsonObject>(getJsonValue(jsonObject, "section")), "name");
+
+                string sectionsData = getJsonValue(jsonObject, "sections");
+                Nancy.Json.Simple.JsonArray asdf = new JavaScriptSerializer().Deserialize<Nancy.Json.Simple.JsonArray>(sectionsData);
+                IEnumerator e = asdf.GetEnumerator();
+                e.MoveNext();
+                Nancy.Json.Simple.JsonObject data69 = (Nancy.Json.Simple.JsonObject)e.Current;
+                string IdData = getJsonValue(data69, "id");
+                c.SectionID = Int64.Parse(IdData);
+                c.Section = getJsonValue(data69, "name");
                 courses.Add(c);
             }
             CourseIDs = CourseIDs.Trim();
@@ -70,22 +84,31 @@ namespace WebApplication_mc_02.Controllers
             myStu.UserType = "Student";
             myStu.CourseIDs = CourseIDs;
             //Insert into table
-            foreach (int i in myStu.CourseIDs)
+            for(int i = 0; i < courses.Count; i++)
             {
-                MySqlCommand cmd2 = new MySqlCommand("insert into StudentLink.Courses (CourseID, Name, Mentors, TAs, Section, Term, Students, TermID, sectionID) values (" + courses[i].CourseID + ", '" + courses[i].Name + ", '" + + courses[i].Mentors + ", '" + courses[i].Section + courses[i].SectionID + ", '" + courses[i].Term + ", '" + myStu.StudentID + ", '" + courses[i].TermID + ", '" + courses[i].SectionID);
+                MySqlCommand cmd2 = new MySqlCommand("insert into StudentLink.Courses (CourseID, Name, Mentors, TAs, Section, Term, Students, TermID, sectionID) values (" + courses[i].CourseID + ", '" + courses[i].Name + "', " +  courses[i].Mentors + ", " + courses[i].TAs + ", '" + courses[i].Section + "', '" + courses[i].Term + "', " + myStu.StudentID + ", " + courses[i].TermID + ", " + courses[i].SectionID + ")", conn);
                 cmd2.ExecuteReader();
             }
+            conn.Close();
             //return
             return myStu;
         }
         public String getJsonValue(Nancy.Json.Simple.JsonObject obj, string key)
         {
             int idx1 = 0;
+            bool temp = false;
             foreach (string s in obj.Keys)
             {
                 if (s.Equals(key))
+                {
+                    temp = true;
                     break;
+                }
                 idx1++;
+            }
+            if(!temp)
+            {
+                return "Error";
             }
             IEnumerator list1 = obj.Values.GetEnumerator();
             for (int i = 0; i < idx1 + 1; i++)

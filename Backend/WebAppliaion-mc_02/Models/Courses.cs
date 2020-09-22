@@ -9,13 +9,13 @@ namespace WebApplication_mc_02.Models
     public class Courses
     {
         [Key]
-        public int CourseID { get; set; }
+        public long CourseID { get; set; }
         public string Name { get; set; }
         public int Mentors { get; set; }
         public int TAs { get; set; }
         public string Section { get; set; }
         public string Term { get; set; }
-        public int TermID { get; set; }
-        public int SectionID { get; set; }
+        public long TermID { get; set; }
+        public long SectionID { get; set; }
     }
 }
