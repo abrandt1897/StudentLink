@@ -35,14 +35,9 @@ namespace WebApplication_mc_02.Controllers
 
         // GET test/5
         [HttpGet("{id}")]
-        public ActionResult<IEnumerable<string>> Get(int id)
+        public ActionResult<string> Get(int id)
         {
-            string[] responceboi = { "[]" };
-            try
-            {
-                responceboi = System.IO.File.ReadAllLines(@"testData.txt");
-            }
-            catch { }
+            string responceboi = "singular boi";
             return responceboi;
         }
 
