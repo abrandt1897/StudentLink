@@ -7,6 +7,9 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Collections;
 using WebApplication_mc_02.Models;
+using Nancy;
+using Nancy.Json;
+using Newtonsoft.Json;
 
 namespace WebApplication_mc_02.Controllers
 {
@@ -23,38 +26,55 @@ namespace WebApplication_mc_02.Controllers
         [HttpGet]
         public ActionResult<IEnumerable<string>> Get()
         {
-            String[] responceboi = { "{value:1}"};
+            string[] responceboi = { "[]" };
+            try
+            {
+                responceboi = System.IO.File.ReadAllLines(@"testData.txt");
+            }
+            catch { }
             return responceboi;
         }
 
         // GET test/5
         [HttpGet("{id}")]
-        public ActionResult<string> Get(int id)
+        public string Get(int id)
         {
-            foreach(string value in table.Values)
-                return table[id].ToString();
-            return "Null: id doesnt exist";
+            var std = new Chats
+            {
+                ChatID = 420,
+                Data = "yeet",
+                Sender = 69
+            };
+            return JsonConvert.SerializeObject(std);
+
         }
 
         // POST test
         [HttpPost]
-        public void Post([FromBody] Students value)
+        public ActionResult<string> Post([FromBody] string value)
         {
-            table.Add(rollingID, value);
+            List<string> lines = new List<string>();
+            lines.Add(value);
+            System.IO.File.WriteAllLines(@"testData.txt", lines);
+            return "data recieved";
         }
 
         // PUT test
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] Students value)
+        [HttpPut]
+        public ActionResult<string> Put([FromBody] string value)
         {
-            table.Add(id, value);
+
+            List<string> lines = new List<string>();
+            lines.Add(value);
+            System.IO.File.WriteAllLines(@"testData.txt", lines);
+            return "data recieved";
         }
 
         // DELETE test/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
+        [HttpDelete]
+        public ActionResult<string> Delete()
         {
-            table.Remove(id);
+            return "data recieved";
         }
     }
 }
