@@ -14,12 +14,12 @@ namespace WebApplication_mc_02.Controllers
     public class Networking
     {
         private IHttpClientFactory _clientFactory;
-        private MySqlConnection conn;
+        //private MySqlConnection conn;
         public Networking(IHttpClientFactory clientFactory)
         {
             _clientFactory = clientFactory;
-            conn = new MySqlConnection("server=coms-309-mc-02.cs.iastate.edu;port=3306;database=StudentLink;user=root;password=46988c18374d9b7d;");
-            conn.Open();
+            //conn = new MySqlConnection("server=coms-309-mc-02.cs.iastate.edu;port=3306;database=StudentLink;user=root;password=46988c18374d9b7d;");
+            //conn.Open();
         }
         public async Task<Students> getStudentProfile(string token)
         {
@@ -86,10 +86,11 @@ namespace WebApplication_mc_02.Controllers
             //Insert into table
             for(int i = 0; i < courses.Count; i++)
             {
-                MySqlCommand cmd2 = new MySqlCommand("insert into StudentLink.Courses (CourseID, Name, Mentors, TAs, Section, Term, Students, TermID, sectionID) values (" + courses[i].CourseID + ", '" + courses[i].Name + "', " +  courses[i].Mentors + ", " + courses[i].TAs + ", '" + courses[i].Section + "', '" + courses[i].Term + "', " + myStu.StudentID + ", " + courses[i].TermID + ", " + courses[i].SectionID + ")", conn);
-                cmd2.ExecuteReader();
+                SQLConnection.insert(courses[i]);
+                //MySqlCommand cmd2 = new MySqlCommand("insert into StudentLink.Courses (CourseID, Name, Mentors, TAs, Section, Term, Students, TermID, sectionID) values (" + courses[i].CourseID + ", '" + courses[i].Name + "', " +  courses[i].Mentors + ", " + courses[i].TAs + ", '" + courses[i].Section + "', '" + courses[i].Term + "', " + myStu.StudentID + ", " + courses[i].TermID + ", " + courses[i].SectionID + ")", conn);
+                //cmd2.ExecuteReader();
             }
-            conn.Close();
+            //conn.Close();
             //return
             return myStu;
         }

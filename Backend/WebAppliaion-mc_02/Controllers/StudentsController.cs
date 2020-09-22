@@ -18,8 +18,8 @@ namespace WebApplication_mc_02.Controllers
         private MySqlConnection conn;
         public StudentsController(IHttpClientFactory clientFactory)
         {
-            conn = new MySqlConnection("server=coms-309-mc-02.cs.iastate.edu;port=3306;database=StudentLink;user=root;password=46988c18374d9b7d;");
-            conn.Open();
+            //conn = new MySqlConnection("server=coms-309-mc-02.cs.iastate.edu;port=3306;database=StudentLink;user=root;password=46988c18374d9b7d;");
+            //conn.Open();
             _clientFactory = clientFactory;
         }
 
@@ -27,25 +27,10 @@ namespace WebApplication_mc_02.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Students>>> GetStudents()
         {
-            var data69 = new Networking(_clientFactory).logUserIn("greysonj@iastate.edu", "Pimpinit123!");
             List<Students> list = new List<Students>();
-            MySqlCommand cmd = new MySqlCommand("select * from StudentLink.Students", conn);
-            using (var reader = cmd.ExecuteReader())
-            {
-                while (reader.Read())
-                {
-                    list.Add(new Students()
-                    {
-                        StudentID = Convert.ToInt32(reader["StudentID"]),
-                        FullName = reader["FullName"].ToString(),
-                        CourseIDs = reader["CourseIDs"].ToString(),
-                        Attributes = reader["Attributes"].ToString(),
-                        Classification = reader["Classification"].ToString(),
-                        Major = reader["Major"].ToString(),
-                        UserType = reader["UserType"].ToString()
-                    });
-                }
-            }
+            //MySqlCommand cmd = new MySqlCommand("select * from StudentLink.Students", conn);
+            list = SQLConnection.get(new Students().GetType());
+            
             return list;
         }
 
@@ -54,23 +39,7 @@ namespace WebApplication_mc_02.Controllers
         public async Task<ActionResult<Students>> GetStudent(int id)
         {
             Students student = new Students();
-            MySqlCommand cmd = new MySqlCommand("select * from StudentLink.Students where StudentID = " + id, conn);
-            using (var reader = cmd.ExecuteReader())
-            {
-                while (reader.Read())
-                {
-                    student = new Students()
-                    {
-                        StudentID = Convert.ToInt32(reader["StudentID"]),
-                        FullName = reader["FullName"].ToString(),
-                        CourseIDs = reader["CourseIDs"].ToString(),
-                        Attributes = reader["Attributes"].ToString(),
-                        Classification = reader["Classification"].ToString(),
-                        Major = reader["Major"].ToString(),
-                        UserType = reader["UserType"].ToString()
-                    };
-                }
-            }
+            student = SQLConnection.get(new Students().GetType(), "*", "WHERE StudentID = " + id);
             return student;
         }
         // PUT: api/Students/5
@@ -80,12 +49,13 @@ namespace WebApplication_mc_02.Controllers
         public async Task<ActionResult<Students>> PutStudent( string canvasOAuthToken )
         {
             //INSERT INTO Table ((int)key1, key2, key3) VALUES (value1, 'value2', 'value3')
-            conn.Close();
+            //conn.Close();
             Networking network = new Networking(_clientFactory);
             Students myStu = network.getStudentProfile(canvasOAuthToken).Result;
-            conn.Open();
-            MySqlCommand cmd = new MySqlCommand("insert into StudentLink.Students (StudentID, FullName, CourseIDs, Attributes, Classification, Major, UserType) values (" + myStu.StudentID + ", '" + myStu.FullName + "', '" + myStu.CourseIDs + "', '" + myStu.Attributes + "', '" + myStu.Classification + "', '" + myStu.Major + "', '" + myStu.UserType + "')", conn);
-            cmd.ExecuteReader();
+            SQLConnection.insert(myStu);
+            //conn.Open();
+            //MySqlCommand cmd = new MySqlCommand("insert into StudentLink.Students (StudentID, FullName, CourseIDs, Attributes, Classification, Major, UserType) values (" + myStu.StudentID + ", '" + myStu.FullName + "', '" + myStu.CourseIDs + "', '" + myStu.Attributes + "', '" + myStu.Classification + "', '" + myStu.Major + "', '" + myStu.UserType + "')", conn);
+            //cmd.ExecuteReader();
             return myStu;
         }
 
