@@ -17,18 +17,22 @@
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.801" />
 
     <Button
         android:id="@+id/RequestButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Get Username"
+        android:text="Get User Data"
         app:layout_constraintBottom_toTopOf="@+id/ProfileText"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.332" />
 
     <TextView
         android:id="@+id/requestData"
@@ -37,7 +41,9 @@
         android:text="Request-Data"
         app:layout_constraintBottom_toTopOf="@+id/ProfileText"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/RequestButton" />
+        app:layout_constraintTop_toBottomOf="@+id/RequestButton"
+        app:layout_constraintVertical_bias="0.525" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

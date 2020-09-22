@@ -57,6 +57,7 @@ public class ConnectionClass extends AppCompatActivity {
 
             @Override
             public void onResponse(JSONObject response) {
+
                 serverResponse = response.toString();
             }
         }, new Response.ErrorListener() {
