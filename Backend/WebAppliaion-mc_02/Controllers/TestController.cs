@@ -8,6 +8,8 @@ using System.Text.Json.Serialization;
 using System.Collections;
 using WebApplication_mc_02.Models;
 using Nancy;
+using Nancy.Json;
+using Newtonsoft.Json;
 
 namespace WebApplication_mc_02.Controllers
 {
@@ -35,10 +37,16 @@ namespace WebApplication_mc_02.Controllers
 
         // GET test/5
         [HttpGet("{id}")]
-        public ActionResult<string> Get(int id)
+        public string Get(int id)
         {
-            string responceboi = "singular boi";
-            return responceboi;
+            var std = new Chats
+            {
+                ChatID = 420,
+                Data = "yeet",
+                Sender = 69
+            };
+            return JsonConvert.SerializeObject(std);
+
         }
 
         // POST test
