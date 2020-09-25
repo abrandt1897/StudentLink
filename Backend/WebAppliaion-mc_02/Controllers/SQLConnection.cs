@@ -33,27 +33,27 @@ namespace WebApplication_mc_02.Controllers
             catch (Exception e) { Debug.WriteLine(e.Message.ToString()); }
             conn.Close();
         }
-        public static void insert(dynamic data)
+        public static void insert(object data)
         {
             MySqlConnection conn = new MySqlConnection("server=coms-309-mc-02.cs.iastate.edu;port=3306;database=StudentLink;user=root;password=46988c18374d9b7d;");
             conn.Open();
             MySqlCommand cmd = null;
-            switch (data.GetType().Name)
+            switch (data)
             {
-                case "Students":
-                    cmd = new MySqlCommand("insert into StudentLink.Students (StudentID, FullName, CourseIDs, Attributes, Classification, Major, UserType, Friends) values (" + data.StudentID + ", '" + data.FullName + "', '" + data.CourseIDs + "', '" + data.Attributes + "', '" + data.Classification + "', '" + data.Major + "', '" + data.UserType + "', '"+ data.Friends +"')", conn);
+                case Students s:
+                    cmd = new MySqlCommand("insert into StudentLink.Students (StudentID, FullName, CourseIDs, Attributes, Classification, Major, UserType, Friends) values (" + s.StudentID + ", '" + s.FullName + "', '" + s.CourseIDs + "', '" + s.Attributes + "', '" + s.Classification + "', '" + s.Major + "', '" + s.UserType + "', '"+ s.Friends +"')", conn);
                     break;
-                case "Courses":
-                    cmd = new MySqlCommand("insert into StudentLink.Courses (CourseID, Name, Mentors, TAs, Section, Term, Students, TermID, SectionID) values (" + data.CourseID + ", '" + data.Name + "', " + data.Mentors + ", " + data.TAs + ", '" + data.Section + "', '" + data.Term + "', '" + data.Students + "', " + data.TermID + ", " + data.SectionID + ")", conn);
+                case Courses c:
+                    cmd = new MySqlCommand("insert into StudentLink.Courses (CourseID, Name, Mentors, TAs, Section, Term, Students, TermID, SectionID) values (" + c.CourseID + ", '" + c.Name + "', " + c.Mentors + ", " + c.TAs + ", '" + c.Section + "', '" + c.Term + "', '" + c.Students + "', " + c.TermID + ", " + c.SectionID + ")", conn);
                     break;
-                case "Groups":
-                    cmd = new MySqlCommand("insert into StudentLink.Groups (GroupID, Students, TAs, Mentors) values (" + data.GroupID + ", '" + data.Students + "', " + data.TAs + ", " + data.Mentors + ")", conn);
+                case Groups g:
+                    cmd = new MySqlCommand("insert into StudentLink.Groups (GroupID, Students, TAs, Mentors) values (" + g.GroupID + ", '" + g.Students + "', " + g.TAs + ", " + g.Mentors + ")", conn);
                     break;
-                case "Chats":
-                    cmd = new MySqlCommand("insert into StudentLink.Chats (ChatID, Sender, Data) values (" + data.ChatID + ", '" + data.Sender + "', '" + data.Data + "')", conn);
+                case Chats ch:
+                    cmd = new MySqlCommand("insert into StudentLink.Chats (ChatID, Sender, Data) values (" + ch.ChatID + ", '" + ch.Sender + "', '" + ch + "')", conn);
                     break;
-                case "Login":
-                    cmd = new MySqlCommand("insert into StudentLink.Login (Username, Email, Password) values ('" + data.Username + "', '" + data.Email + "', " + data.Password + "')", conn);
+                case Login l:
+                    cmd = new MySqlCommand("insert into StudentLink.Login (Username, Email, Password) values ('" + l.Username + "', '" + l.Email + "', " + l.Password + "')", conn);
                     break;
                 default:
                     return;
@@ -92,9 +92,7 @@ namespace WebApplication_mc_02.Controllers
                 }
             }
             conn.Close();
-            if (list.Count == 1)
-                return list[0];
-            else if (list.Count > 1)
+            if (list.Count > 1)
                 return new Students();
             else return list;
         }
