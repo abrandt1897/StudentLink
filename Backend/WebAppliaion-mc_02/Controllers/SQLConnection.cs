@@ -53,7 +53,7 @@ namespace WebApplication_mc_02.Controllers
                     cmd = new MySqlCommand("insert into StudentLink.Chats (ChatID, Sender, Data) values (" + ch.ChatID + ", '" + ch.Sender + "', '" + ch + "')", conn);
                     break;
                 case Login l:
-                    cmd = new MySqlCommand("insert into StudentLink.Login (Username, Email, Password) values ('" + l.Username + "', '" + l.Email + "', " + l.Password + "')", conn);
+                    cmd = new MySqlCommand("insert into StudentLink.Login (Username, Email, Password) values ('" + l.Username + "', '" + "', " + l.Password + "')", conn);
                     break;
                 default:
                     return;

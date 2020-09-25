@@ -9,8 +9,7 @@ namespace WebApplication_mc_02.Models
     public class Login
     {
         [Key]
-        public int Username { get; set; }
-        public int Email { get; set; }
+        public string UserID { get; set; }
         public string Password { get; set; }
     }
 }

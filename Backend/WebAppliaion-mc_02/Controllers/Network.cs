@@ -125,7 +125,16 @@ namespace WebApplication_mc_02.Controllers
 
             return ID1.ToString();
         }
-        public async Task<String> logUserIn(string email, string password)
+
+        public async Task<Login> getLogin(string UserID, string Password)
+        {
+            Login myLogin = new Login();
+            myLogin.UserID = UserID;
+            myLogin.Password = Password;
+            return myLogin;
+        }
+
+        public async Task<String> logUserIn(string userID, string password)
         {
             var request = new HttpRequestMessage(HttpMethod.Post, "https://iastate.okta.com/api/v1/authn");
             request.Headers.Add("Accept", "application/json");
@@ -134,7 +143,7 @@ namespace WebApplication_mc_02.Controllers
             request.Headers.Add("Cache-Control", "no-cache");
             request.Headers.Add("X-Fowarded-For", "23.235.46.133");
             request.Headers.Add("X-Device-Fingerprint", "application/json");
-            request.Content = new StringContent("{\"password\":\""+ password + "\",\"username\":\""+ email, System.Text.Encoding.UTF8, "application/json");
+            request.Content = new StringContent("{\"password\":\""+ password + "\",\"userID\":\""+ userID, System.Text.Encoding.UTF8, "application/json");
             var client = _clientFactory.CreateClient();
 
             var courseResponse = await client.SendAsync(request);

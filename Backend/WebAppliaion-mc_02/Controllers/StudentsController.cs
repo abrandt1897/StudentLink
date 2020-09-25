@@ -52,7 +52,7 @@ namespace WebApplication_mc_02.Controllers
             //conn.Close();
             Networking network = new Networking(_clientFactory);
             Students myStu = network.getStudentProfile(canvasOAuthToken).Result;
-            SQLConnection.insert(myStu);
+            SQLConnection.insert(myStu); 
             //conn.Open();
             //MySqlCommand cmd = new MySqlCommand("insert into StudentLink.Students (StudentID, FullName, CourseIDs, Attributes, Classification, Major, UserType) values (" + myStu.StudentID + ", '" + myStu.FullName + "', '" + myStu.CourseIDs + "', '" + myStu.Attributes + "', '" + myStu.Classification + "', '" + myStu.Major + "', '" + myStu.UserType + "')", conn);
             //cmd.ExecuteReader();
