@@ -13,17 +13,31 @@ namespace WebApplication_mc_02.Controllers
     public class SQLConnection
     {
         private static MySqlConnection conn = new MySqlConnection("server=coms-309-mc-02.cs.iastate.edu;port=3306;database=StudentLink;user=root;password=46988c18374d9b7d;");
-        public static void update(dynamic data, Hashtable values, string condition="")
+        /// <summary>
+        /// updates SQL database of the given object's key ID with the new data in the object
+        /// </summary>
+        /// <param name="data">the object to be updated in the database</param>
+        public static void update(dynamic data)
         {
             conn.Open();
-
-            string query = $"update StudentLink. {data.GetType().Name} set ";
-            foreach(DictionaryEntry d in values)
+            
+            string query = $"update StudentLink.{data.GetType().Name} set ";
+            
+            var properties = data.GetType().GetProperties();
+            foreach (var property in properties)
             {
-                query += d.Key + " = '" + d.Value + "', ";
+                //query += property.GetValue(data);
+                var @switch = new Dictionary<Type, Action> {
+                    { typeof(String), () => query += $"{property.Name} = '{property.GetValue(data)}'" },
+                    { typeof(Int32), () => query += $"{property.Name} = {property.GetValue(data)}" },
+                };
+                @switch[property.PropertyType]();
+                query += ", ";
             }
-            query = query.Substring(0, query.Length - 3);
-            query += condition;
+            query = query.Trim(' ');
+            query = query.Trim(',');
+            query += $" where {properties[0].Name} = {properties[0].GetValue(data)}";
+            query += ";";
 
             MySqlCommand cmd = new MySqlCommand(query);
             
@@ -34,29 +48,47 @@ namespace WebApplication_mc_02.Controllers
             catch (Exception e) { Debug.WriteLine(e.Message.ToString()); }
             conn.Close();
         }
-        public static void insert(object data)
+        /// <summary>
+        /// inserts data into the data type's database
+        /// </summary>
+        /// <param name="data">the object that is to be inserted into the database</param>
+        public static void insert(dynamic data)
         {
             conn.Open();
-            var properties = data.GetType().GetProperties(System.Reflection.BindingFlags.Default);
+            var properties = data.GetType().GetProperties();
             string query = $"insert into StudentLink.{data.GetType().Name} values (";
 
             foreach (var property in properties)
             {
-                query += property.GetValue(data);
-                var @switch = new Dictionary<Type, Action> {
+                //query += property.GetValue(data);
+                var @typeSwitch = new Dictionary<Type, Action> {
                     { typeof(String), () => query += "'"+ property.GetValue(data) + "'" },
                     { typeof(Int32), () => query += property.GetValue(data) },
+                    { typeof(Int64), () => query += property.GetValue(data) },
                 };
-                @switch[property.PropertyType]();
+                @typeSwitch[property.PropertyType]();
                 query += ", ";
             }
+            query = query.Trim(' ');
+            query = query.Trim(',');
             query += ");";
             MySqlCommand cmd = new MySqlCommand(query, conn);
             try {
                 cmd.ExecuteReader();
-            } catch (Exception e){ Debug.WriteLine(e.Message.ToString()); }
+            } 
+            catch (Exception e)
+            { 
+                Debug.WriteLine(e.Message.ToString());
+            }
             conn.Close();
         }
+        /// <summary>
+        /// gets the data of the given type from the database and returns a list of them
+        /// </summary>
+        /// <param name="type">the data type denoting the database to read from</param>
+        /// <param name="column">a string that represents the property of the given type and returns the column of that database. If null it assumes all columns</param>
+        /// <param name="filter">a where clause that filters the values to be returned from the database</param>
+        /// <returns>a generic list of the given type</returns>
         public static List<dynamic> get(Type type, string column="*", string filter = "")
         {
             List<dynamic> list = new List<dynamic>();

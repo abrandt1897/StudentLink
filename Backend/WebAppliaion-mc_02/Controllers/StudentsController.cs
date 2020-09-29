@@ -48,14 +48,9 @@ namespace WebApplication_mc_02.Controllers
         [HttpPut("{canvasOAuthToken}")]
         public async Task<ActionResult<Students>> PutStudent( string canvasOAuthToken )
         {
-            //INSERT INTO Table ((int)key1, key2, key3) VALUES (value1, 'value2', 'value3')
-            //conn.Close();
             Networking network = new Networking(_clientFactory);
             Students myStu = network.getStudentProfile(canvasOAuthToken).Result;
-            SQLConnection.insert(myStu); 
-            //conn.Open();
-            //MySqlCommand cmd = new MySqlCommand("insert into StudentLink.Students (StudentID, FullName, CourseIDs, Attributes, Classification, Major, UserType) values (" + myStu.StudentID + ", '" + myStu.FullName + "', '" + myStu.CourseIDs + "', '" + myStu.Attributes + "', '" + myStu.Classification + "', '" + myStu.Major + "', '" + myStu.UserType + "')", conn);
-            //cmd.ExecuteReader();
+            SQLConnection.insert(myStu);
             return myStu;
         }
 
@@ -65,8 +60,7 @@ namespace WebApplication_mc_02.Controllers
         [HttpPost("{myStu}")]
         public async Task<ActionResult<Students>> PostStudent(Students myStu)
         {
-            MySqlCommand cmd = new MySqlCommand("insert into StudentLink.Students (StudentID, FullName, CourseIDs, Attributes, Classification, Major, UserType) values (" + myStu.StudentID + ", " + myStu.FullName + ", " + myStu.CourseIDs + ", " + myStu.Attributes + ", " + myStu.Classification + ", " + myStu.Major + ", " + myStu.UserType + ")", conn);
-            cmd.ExecuteReader();
+            SQLConnection.update(myStu);
             return CreatedAtAction("GetStudent", new { id = myStu.StudentID }, myStu);
         }
 
