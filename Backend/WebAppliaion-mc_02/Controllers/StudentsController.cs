@@ -27,19 +27,19 @@ namespace WebApplication_mc_02.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Students>>> GetStudents()
         {
-            List<Students> list = new List<Students>();
+            List<dynamic> list = new List<dynamic>();
             //MySqlCommand cmd = new MySqlCommand("select * from StudentLink.Students", conn);
-            list = SQLConnection.get(new Students().GetType());
-            
-            return list;
+            list = SQLConnection.get(typeof(Students));
+            var ret = list.Cast<Students>();
+            return Ok(ret);
         }
 
         // GET: api/Students/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Students>> GetStudent(int id)
+        public async Task<ActionResult<IEnumerable<object>>> GetStudent(int id)
         {
-            Students student = new Students();
-            student = SQLConnection.get(new Students().GetType(), "*", "WHERE StudentID = " + id);
+            List<dynamic> student = new List<dynamic>();
+            student = SQLConnection.get(typeof(Students), "*", "WHERE StudentID = " + id);
             return student;
         }
         // PUT: api/Students/5
@@ -72,9 +72,9 @@ namespace WebApplication_mc_02.Controllers
 
         // DELETE: api/Students/5
         [HttpDelete("{id}")]
-        public async Task<ActionResult<Students>> DeleteStudent(int id)
+        public async Task<ActionResult<object>> DeleteStudent(int id)
         {
-            Students student = GetStudent(id).Result.Value;
+            var student = GetStudent(id).Result.Value.ToList()[0];
             MySqlCommand cmd = new MySqlCommand("delete from StudentLink.Students where StudentID = " + id, conn);
             using (var reader = cmd.ExecuteReader())
             {
