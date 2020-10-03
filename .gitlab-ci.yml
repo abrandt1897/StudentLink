@@ -1,0 +1,10 @@
+stages:
+  - apibuild
+  
+api-build:
+    stage: apibuild
+    tags:
+      - Backend
+    script:
+      - cd Backend/WebAppliaion-mc_02
+      - sudo docker build --network="host" -t mybuild -f DockerfileBuild .
