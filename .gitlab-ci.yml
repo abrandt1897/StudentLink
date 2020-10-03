@@ -6,5 +6,5 @@ api-build:
     tags:
       - shell
     script:
-      - cd Backend/WebAppliaion-mc_02/
-      - sudo dotnet build --server.urls=http://0.0.0.0:5001
+      - sudo systemctl stop webapplication
+      - sudo systemctl start webapplication
