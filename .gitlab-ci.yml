@@ -4,7 +4,7 @@ stages:
 api-build:
     stage: apibuild
     tags:
-      - shell
+      - Backend
     script:
-      - sudo systemctl stop webapplication
-      - sudo systemctl start webapplication
+      - cd Backend/WebAppliaion-mc_02
+      - sudo docker build --network="host" -t mybuild -f DockerfileBuild .
