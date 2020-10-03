@@ -1,0 +1,12 @@
+FROM mcr.microsoft.com/dotnet/core/aspnet:3.0-buster-slim AS base
+WORKDIR /app
+EXPOSE 80
+EXPOSE 443
+
+FROM mcr.microsoft.com/dotnet/core/sdk:3.0-buster AS build
+WORKDIR /src
+COPY ["WebApplication-mc_02.csproj", ""]
+RUN dotnet restore "./WebApplication-mc_02.csproj"
+COPY . .
+WORKDIR "/src/."
+RUN dotnet build "WebApplication-mc_02.csproj" -c Release -o /app/build
