@@ -1,5 +1,6 @@
 stages:
   - apibuild
+  - androidbuild
   
 api-build:
     stage: apibuild
@@ -8,3 +9,16 @@ api-build:
     script:
       - cd Backend/WebAppliaion-mc_02
       - sudo docker build --network="host" -t mybuild -f DockerfileBuild .
+      
+android-build:
+    stage: androidbuild
+    tags:
+        - FRONTEND
+    script:
+        - cd Frontend/FinalApp/
+        - ./gradlew assemble
+    only:
+	 refs:
+		 - master 
+	 changes:
+		 - Frontend/**/*
