@@ -11,6 +11,7 @@ api-build:
       - sudo docker build --network="host" -t mybuild -f DockerfileBuild .
       
 android-build:
+    image: javiersantos/android-ci:latest
     stage: androidbuild
     tags:
         - FRONTEND
