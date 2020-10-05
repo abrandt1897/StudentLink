@@ -15,5 +15,5 @@ android-build:
     tags:
         - FRONTEND
     script:
-        - cd Frontend/FinalApp/
+        - cd Frontend/FinalApp
         - ./gradlew assemble
