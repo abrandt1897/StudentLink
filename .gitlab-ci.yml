@@ -17,8 +17,3 @@ android-build:
     script:
         - cd Frontend/FinalApp/
         - ./gradlew assemble
-    only:
-      refs:
-      - master 
-      changes:
-      - Frontend/**/*
