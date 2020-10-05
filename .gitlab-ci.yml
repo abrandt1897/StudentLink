@@ -13,8 +13,14 @@ api-build:
 android-build:
     image: javiersantos/android-ci:latest
     stage: androidbuild
+    before_script:
+        - export GRADLE_USER_HOME='pwd'/.gradle
+        - chmod +x ./Frontend/ExercyzeFrontend/gradlew
     tags:
         - FRONTEND
     script:
         - cd Frontend/FinalApp
         - ./gradlew assemble
+    artifacts:
+        paths:
+            - Frontend/ExercyzeFrontend/app/build/outputs/
