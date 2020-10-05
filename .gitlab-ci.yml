@@ -18,7 +18,7 @@ android-build:
         - cd Frontend/FinalApp/
         - ./gradlew assemble
     only:
-	 refs:
-		 - master 
-	 changes:
-		 - Frontend/**/*
+      refs:
+      - master 
+      changes:
+      - Frontend/**/*
