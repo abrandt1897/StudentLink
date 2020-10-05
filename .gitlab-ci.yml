@@ -15,12 +15,12 @@ android-build:
     stage: androidbuild
     before_script:
         - export GRADLE_USER_HOME='pwd'/.gradle
-        - chmod +x ./Frontend/ExercyzeFrontend/gradlew
+        - chmod +x ./Frontend/FinalApp/gradlew
     tags:
         - FRONTEND
     script:
-        - cd Frontend/FinalApp
+        - cd Frontend/FinalApp/
         - ./gradlew assemble
     artifacts:
         paths:
-            - Frontend/ExercyzeFrontend/app/build/outputs/
+            - Frontend/FinalApp/app/build/outputs/
