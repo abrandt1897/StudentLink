@@ -33,6 +33,7 @@ public class LoginActivity extends AppCompatActivity {
         EditText username = findViewById(R.id.LoginUsername);
         EditText password = findViewById(R.id.LoginPassword);
 
+        // use to change to Home page?
         ConnectionClass cc = new ConnectionClass(this.getApplicationContext());
         PageController pc = new PageController();
         Intent i = pc.getIntent();
