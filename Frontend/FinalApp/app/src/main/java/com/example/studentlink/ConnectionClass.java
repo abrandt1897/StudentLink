@@ -36,7 +36,6 @@ public class ConnectionClass extends AppCompatActivity {
 
     public ConnectionClass(){};
 
-
     public ConnectionClass(Context c){
         context=c;
 
