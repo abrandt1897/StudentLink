@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.example.studentlink.ConnectionClass;
 import com.example.studentlink.PageController;
 import com.example.studentlink.R;
 
@@ -24,10 +25,12 @@ public class CreateALogin extends AppCompatActivity {
         EditText password = findViewById(R.id.textPassword);
         TextView LoginText = findViewById(R.id.LoginText);
         LoginText.setText("Welcome to StudentLink! Please create an account.");
+        TextView ErrorText = findViewById(R.id.CreateAccountErrorText);
 
-        // use to change to home page
-        PageController pc = new PageController();
-        Intent i = pc.getIntent();
+
+        ConnectionClass connection = new ConnectionClass(this.getApplicationContext());
+        Intent nextIntent = new Intent(this, CanvasWebview.class);
+
 
         nextButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -41,8 +44,21 @@ public class CreateALogin extends AppCompatActivity {
                     return;
                 }
                 else{
-                    // check user and password with backend
-                    startActivity(i); // goes to Login page, need to change to Home page
+                    // check account with backend
+                    String databaseName = "table";
+                    String ResponseForAGoodLogin = "";
+//                    Map<String,String> userLoginData = new HashMap<String,String>();
+//                    userLoginData.put("Username",username.getText().toString());
+//                    userLoginData.put("Password",password.getText().toString());
+//                    cc.putRequest(userLoginData,databaseName);
+                    if(!connection.getResponse().equals(ResponseForAGoodLogin)){
+                        ErrorText.setText("This username is taken. Please enter a different username.");
+                        return;
+                    }
+                    else{
+                        startActivity(nextIntent); // TODO: go to WebView
+                    }
+
                 }
 
             }

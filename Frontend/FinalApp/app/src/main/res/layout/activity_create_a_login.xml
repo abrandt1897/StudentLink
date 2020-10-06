@@ -58,5 +58,18 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textPassword" />
 
+    <TextView
+        android:id="@+id/CreateAccountErrorText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="20dp"
+        android:text=""
+        android:textColor="#FB0008"
+        app:layout_constraintBottom_toTopOf="@+id/textUserName"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/LoginText" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

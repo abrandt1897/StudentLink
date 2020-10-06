@@ -8,6 +8,7 @@ import androidx.fragment.app.FragmentTransaction;
 import com.example.studentlink.ConnectionClass;
 import com.example.studentlink.PageController;
 import com.example.studentlink.R;
+import com.example.studentlink.ui.home.HomeFragment;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -16,8 +17,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-
-import java.sql.Connection;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -32,11 +31,13 @@ public class LoginActivity extends AppCompatActivity {
         LoginUserButton.setText("Sign In");
         EditText username = findViewById(R.id.LoginUsername);
         EditText password = findViewById(R.id.LoginPassword);
+        TextView ErrorText = findViewById(R.id.ShowErrorText);
 
         // use to change to Home page?
         ConnectionClass cc = new ConnectionClass(this.getApplicationContext());
         PageController pc = new PageController();
         Intent i = pc.getIntent();
+
 
         LoginUserButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -50,8 +51,21 @@ public class LoginActivity extends AppCompatActivity {
                     return;
                 }
                 else{
-                    // check user and password with backend
-                    startActivity(i); // goes to Login page, need to change to Home page
+                    // TODO: check user and password with backend
+                    String databaseName = "table";
+                    String ResponseForAGoodLogin = "isaUser";
+//                    Map<String,String> userLoginData = new HashMap<String,String>();
+//                    userLoginData.put("Username",username.getText().toString());
+//                    userLoginData.put("Password",password.getText().toString());
+//                    cc.putRequest(userLoginData,databaseName);
+                    if(cc.getResponse().equals(ResponseForAGoodLogin)){
+                        ErrorText.setText("Incorrect username or password");
+                        return;
+                    }
+                    else{
+                        MoveToHome(); // TODO: goes to Login page, need to change to Home page
+                    }
+
                 }
 
             }
@@ -59,15 +73,12 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
-
     private void MoveToHome(){
-//        Fragment fragment = new LoginFragment();
-//        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-//        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-//        fragmentTransaction.replace(R.id.nav_home, fragment);
-//        fragmentTransaction.addToBackStack(null);
-//        fragmentTransaction.commit();
-
-
+        Fragment fragment = new HomeFragment();
+        FragmentManager fragmentManager = this.getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.home, fragment);
+        fragmentTransaction.addToBackStack(null);
+        fragmentTransaction.commit();
     }
 }
