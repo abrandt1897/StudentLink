@@ -285,8 +285,6 @@ E:\Documents\GitHub\mc_02\Backend\WebAppliaion-mc_02\bin\Debug\netcoreapp3.0\run
 E:\Documents\GitHub\mc_02\Backend\WebAppliaion-mc_02\bin\Debug\netcoreapp3.0\runtimes\win\lib\netcoreapp3.0\System.Drawing.Common.dll
 E:\Documents\GitHub\mc_02\Backend\WebAppliaion-mc_02\bin\Debug\netcoreapp3.0\Microsoft.Extensions.Logging.Debug.dll
 E:\Documents\GitHub\mc_02\Backend\WebAppliaion-mc_02\bin\Debug\netcoreapp3.0\dotnet-aspnet-codegenerator-design.exe
-E:\Documents\GitHub\mc_02\Backend\WebAppliaion-mc_02\obj\Debug\netcoreapp3.0\WebApplication-mc_02.csproj.CoreCompileInputs.cache
-E:\Documents\GitHub\mc_02\Backend\WebAppliaion-mc_02\obj\Debug\netcoreapp3.0\WebApplication-mc_02.MvcApplicationPartsAssemblyInfo.cache
 C:\Users\greys\OneDrive\Documents\Github\mc_02\Backend\WebAppliaion-mc_02\bin\Debug\netcoreapp3.0\appsettings.Development.json
 C:\Users\greys\OneDrive\Documents\Github\mc_02\Backend\WebAppliaion-mc_02\bin\Debug\netcoreapp3.0\appsettings.json
 C:\Users\greys\OneDrive\Documents\Github\mc_02\Backend\WebAppliaion-mc_02\bin\Debug\netcoreapp3.0\Properties\launchSettings.json
@@ -398,3 +396,15 @@ E:\Documents\GitHub\mc_02\Backend\WebAppliaion-mc_02\bin\Debug\netcoreapp3.0\Pro
 E:\Documents\GitHub\mc_02\Backend\WebAppliaion-mc_02\obj\Debug\netcoreapp3.0\WebApplication-mc_02.csprojAssemblyReference.cache
 C:\Users\Adam Brandt\OneDrive\Documents\CS309\mc_02\Backend\WebAppliaion-mc_02\bin\Debug\netcoreapp3.0\Properties\ServiceDependencies\309mc02 - Web Deploy\profile.arm.json
 C:\Users\Adam Brandt\OneDrive\Documents\CS309\mc_02\Backend\WebAppliaion-mc_02\obj\Debug\netcoreapp3.0\WebApplication-mc_02.csprojAssemblyReference.cache
+E:\Documents\GitHub\mc_02\Backend\WebAppliaion-mc_02\bin\Debug\netcoreapp3.0\EntityFramework.SqlServer.dll
+E:\Documents\GitHub\mc_02\Backend\WebAppliaion-mc_02\bin\Debug\netcoreapp3.0\EntityFramework.dll
+E:\Documents\GitHub\mc_02\Backend\WebAppliaion-mc_02\bin\Debug\netcoreapp3.0\Microsoft.AspNet.Identity.Core.dll
+E:\Documents\GitHub\mc_02\Backend\WebAppliaion-mc_02\bin\Debug\netcoreapp3.0\Microsoft.AspNet.Identity.EntityFramework.dll
+E:\Documents\GitHub\mc_02\Backend\WebAppliaion-mc_02\bin\Debug\netcoreapp3.0\Microsoft.AspNet.Identity.Owin.dll
+E:\Documents\GitHub\mc_02\Backend\WebAppliaion-mc_02\bin\Debug\netcoreapp3.0\Microsoft.Owin.dll
+E:\Documents\GitHub\mc_02\Backend\WebAppliaion-mc_02\bin\Debug\netcoreapp3.0\Microsoft.Owin.Security.dll
+E:\Documents\GitHub\mc_02\Backend\WebAppliaion-mc_02\bin\Debug\netcoreapp3.0\Microsoft.Owin.Security.Cookies.dll
+E:\Documents\GitHub\mc_02\Backend\WebAppliaion-mc_02\bin\Debug\netcoreapp3.0\Microsoft.Owin.Security.OAuth.dll
+E:\Documents\GitHub\mc_02\Backend\WebAppliaion-mc_02\bin\Debug\netcoreapp3.0\Owin.dll
+E:\Documents\GitHub\mc_02\Backend\WebAppliaion-mc_02\obj\Debug\netcoreapp3.0\WebApplication-mc_02.csproj.CoreCompileInputs.cache
+E:\Documents\GitHub\mc_02\Backend\WebAppliaion-mc_02\obj\Debug\netcoreapp3.0\WebApplication-mc_02.MvcApplicationPartsAssemblyInfo.cache

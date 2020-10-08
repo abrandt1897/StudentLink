@@ -51,11 +51,9 @@ namespace WebApplication_mc_02.Controllers
 
         // PUT api/<LoginController>/5
         [HttpPut("{UserID, Password}")]
-        public void PutLogin(string UserID, string Password)
+        public ActionResult<string> PutLogin(string UserID, string Password)
         {
-            Networking network = new Networking(_clientFactory);
-            Login myLogin = network.getLogin(UserID, Password).Result;
-            SQLConnection.insert(myLogin);
+            return Ok("Ok");
         }
 
         // DELETE api/<LoginController>/5

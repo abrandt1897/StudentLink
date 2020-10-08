@@ -12,75 +12,85 @@ namespace WebApplication_mc_02.Controllers
 {
     public class SQLConnection
     {
-        private static MySqlConnection conn = new MySqlConnection("server=coms-309-mc-02.cs.iastate.edu;port=3306;database=StudentLink;user=root;password=46988c18374d9b7d;");
+        //private static MySqlConnection conn = new MySqlConnection("server=coms-309-mc-02.cs.iastate.edu;port=3306;database=StudentLink;user=root;password=46988c18374d9b7d;");
         /// <summary>
         /// updates SQL database of the given object's key ID with the new data in the object
         /// </summary>
         /// <param name="data">the object to be updated in the database</param>
-        public static void update(dynamic data)
+        public static bool update(dynamic data)
         {
-            conn.Open();
-            
-            string query = $"update StudentLink.{data.GetType().Name} set ";
-            
-            var properties = data.GetType().GetProperties();
-            foreach (var property in properties)
+            using (MySqlConnection conn = new MySqlConnection("server=coms-309-mc-02.cs.iastate.edu;port=3306;database=StudentLink;user=root;password=46988c18374d9b7d;"))
             {
-                //query += property.GetValue(data);
-                var @switch = new Dictionary<Type, Action> {
+                conn.Open();
+
+                string query = $"update StudentLink.{data.GetType().Name} set ";
+
+                var properties = data.GetType().GetProperties();
+                foreach (var property in properties)
+                {
+                    //query += property.GetValue(data);
+                    var @switch = new Dictionary<Type, Action> {
                     { typeof(String), () => query += $"{property.Name} = '{property.GetValue(data)}'" },
                     { typeof(Int32), () => query += $"{property.Name} = {property.GetValue(data)}" },
                 };
-                @switch[property.PropertyType]();
-                query += ", ";
-            }
-            query = query.Trim(' ');
-            query = query.Trim(',');
-            query += $" where {properties[0].Name} = {properties[0].GetValue(data)}";
-            query += ";";
+                    @switch[property.PropertyType]();
+                    query += ", ";
+                }
+                query = query.Trim(' ');
+                query = query.Trim(',');
+                query += $" where {properties[0].Name} = {properties[0].GetValue(data)}";
+                query += ";";
 
-            MySqlCommand cmd = new MySqlCommand(query);
-            
-            try
-            {
-                cmd.ExecuteReader();
+                MySqlCommand cmd = new MySqlCommand(query);
+
+                try
+                {
+                    cmd.ExecuteReader();
+                }
+                catch (Exception e) { Debug.WriteLine(e.Message.ToString()); }
+                //conn.Close();
+                return true;
             }
-            catch (Exception e) { Debug.WriteLine(e.Message.ToString()); }
-            conn.Close();
         }
         /// <summary>
         /// inserts data into the data type's database
         /// </summary>
         /// <param name="data">the object that is to be inserted into the database</param>
-        public static void insert(dynamic data)
+        public static bool insert(dynamic data)
         {
-            conn.Open();
-            var properties = data.GetType().GetProperties();
-            string query = $"insert into StudentLink.{data.GetType().Name} values (";
-
-            foreach (var property in properties)
+            using (MySqlConnection conn = new MySqlConnection("server=coms-309-mc-02.cs.iastate.edu;port=3306;database=StudentLink;user=root;password=46988c18374d9b7d;"))
             {
-                //query += property.GetValue(data);
-                var @typeSwitch = new Dictionary<Type, Action> {
+                conn.Open();
+                var properties = data.GetType().GetProperties();
+                string query = $"insert into StudentLink.{data.GetType().Name} values (";
+
+                foreach (var property in properties)
+                {
+                    //query += property.GetValue(data);
+                    var @typeSwitch = new Dictionary<Type, Action> {
                     { typeof(String), () => query += "'"+ property.GetValue(data) + "'" },
                     { typeof(Int32), () => query += property.GetValue(data) },
                     { typeof(Int64), () => query += property.GetValue(data) },
                 };
-                @typeSwitch[property.PropertyType]();
-                query += ", ";
+                    @typeSwitch[property.PropertyType]();
+                    query += ", ";
+                }
+                query = query.Trim(' ');
+                query = query.Trim(',');
+                query += ");";
+                MySqlCommand cmd = new MySqlCommand(query, conn);
+                try
+                {
+                    cmd.ExecuteReader();
+                }
+                catch (Exception e)
+                {
+                    Debug.WriteLine(e.Message.ToString());
+                    return false;
+                }
+                //conn.Close();
+                return true;
             }
-            query = query.Trim(' ');
-            query = query.Trim(',');
-            query += ");";
-            MySqlCommand cmd = new MySqlCommand(query, conn);
-            try {
-                cmd.ExecuteReader();
-            } 
-            catch (Exception e)
-            { 
-                Debug.WriteLine(e.Message.ToString());
-            }
-            conn.Close();
         }
         /// <summary>
         /// gets the data of the given type from the database and returns a list of them
@@ -91,32 +101,35 @@ namespace WebApplication_mc_02.Controllers
         /// <returns>a generic list of the given type</returns>
         public static List<dynamic> get(Type type, string column="*", string filter = "")
         {
-            List<dynamic> list = new List<dynamic>();
-
-            string query = "SELECT " + ( column == null ? "*" : column ) + " FROM StudentLink."+ type.Name + " "+ filter;
-
-            conn.Open();
-            MySqlCommand cmd = new MySqlCommand(query, conn);
-            
-            using (var reader = cmd.ExecuteReader())
+            using (MySqlConnection conn = new MySqlConnection("server=coms-309-mc-02.cs.iastate.edu;port=3306;database=StudentLink;user=root;password=46988c18374d9b7d;"))
             {
-                while (reader.Read())
+                conn.Open();
+                List<dynamic> list = new List<dynamic>();
+
+                string query = "SELECT " + (column == null ? "*" : column) + " FROM StudentLink." + type.Name + " " + filter;
+
+                MySqlCommand cmd = new MySqlCommand(query, conn);
+
+                using (var reader = cmd.ExecuteReader())
                 {
-                    var data = Activator.CreateInstance(type);
-                    foreach (var property in type.GetProperties())
+                    while (reader.Read())
                     {
-                        var @switch = new Dictionary<Type, Action> {
+                        var data = Activator.CreateInstance(type);
+                        foreach (var property in type.GetProperties())
+                        {
+                            var @switch = new Dictionary<Type, Action> {
                             { typeof(String), () => property.SetValue(data, reader[property.Name].ToString()) },
                             { typeof(Int32), () => property.SetValue(data, Convert.ToInt32(reader[property.Name])) },
                             { typeof(bool), () => property.SetValue(data, Convert.ToBoolean(reader[property.Name])) },
                         };
-                        @switch[property.PropertyType]();
+                            @switch[property.PropertyType]();
+                        }
+                        list.Add(data);
                     }
-                    list.Add(data);
                 }
+                //conn.Close();
+                return list;
             }
-            conn.Close();
-            return list;
         }
     }
 }

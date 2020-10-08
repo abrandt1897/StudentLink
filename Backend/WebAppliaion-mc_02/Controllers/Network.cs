@@ -126,14 +126,6 @@ namespace WebApplication_mc_02.Controllers
             return ID1.ToString();
         }
 
-        public async Task<Login> getLogin(string UserID, string Password)
-        {
-            Login myLogin = new Login();
-            myLogin.UserID = UserID;
-            myLogin.Password = Password;
-            return myLogin;
-        }
-
         public async Task<String> logUserIn(string userID, string password)
         {
             var request = new HttpRequestMessage(HttpMethod.Post, "https://iastate.okta.com/api/v1/authn");

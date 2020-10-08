@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using WebApplication_mc_02.Models;
 using System.Net.Http;
 using MySql.Data.MySqlClient;
+using Microsoft.AspNetCore.Authorization;
 
 namespace WebApplication_mc_02.Controllers
 {
@@ -15,7 +16,6 @@ namespace WebApplication_mc_02.Controllers
     {
         private readonly StudentContext DB;
         private readonly IHttpClientFactory _clientFactory;
-        private MySqlConnection conn;
         public StudentsController(IHttpClientFactory clientFactory)
         {
             //conn = new MySqlConnection("server=coms-309-mc-02.cs.iastate.edu;port=3306;database=StudentLink;user=root;password=46988c18374d9b7d;");
@@ -42,15 +42,19 @@ namespace WebApplication_mc_02.Controllers
             student = SQLConnection.get(typeof(Students), "*", "WHERE StudentID = " + id);
             return student;
         }
-        // PUT: api/Students/5
+        // PUT: api/Students/918237498123740918237
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see https://aka.ms/RazorPagesCRUD.
         [HttpPut("{canvasOAuthToken}")]
-        public async Task<ActionResult<Students>> PutStudent( string canvasOAuthToken )
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult<Students>> PutStudent( string canvasOAuthToken, [FromBody] Login user )
         {
-            Networking network = new Networking(_clientFactory);
+           Networking network = new Networking(_clientFactory);
             Students myStu = network.getStudentProfile(canvasOAuthToken).Result;
             SQLConnection.insert(myStu);
+            user.UserID = myStu.StudentID;
+            SQLConnection.insert(user);
             return myStu;
         }
 
@@ -68,8 +72,11 @@ namespace WebApplication_mc_02.Controllers
         [HttpDelete("{id}")]
         public async Task<ActionResult<object>> DeleteStudent(int id)
         {
+            AuthenticationManager.SignOut();
+
             var student = GetStudent(id).Result.Value.ToList()[0];
-            MySqlCommand cmd = new MySqlCommand("delete from StudentLink.Students where StudentID = " + id, conn);
+            /*
+             * MySqlCommand cmd = new MySqlCommand("delete from StudentLink.Students where StudentID = " + id, conn);
             using (var reader = cmd.ExecuteReader())
             {
                 while (reader.Read())
@@ -86,6 +93,7 @@ namespace WebApplication_mc_02.Controllers
                     };
                 }
             }
+            */
             return student;
         }
     }
