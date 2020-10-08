@@ -55,13 +55,13 @@ public class LoginActivity extends AppCompatActivity {
                     Map<String,String> userLoginData = new HashMap<String,String>();
                     userLoginData.put("Username",username.getText().toString());
                     userLoginData.put("Password",password.getText().toString());
-                    connectionClass.putRequest(userLoginData,databaseName);
-                    if(!connectionClass.getResponse().equals(ResponseForAGoodLogin)){
+//                    connectionClass.putRequest(userLoginData,databaseName);
+                    if(connectionClass.getResponse().equals(ResponseForAGoodLogin)){ //TODO: Add ! for real functionality
                         ErrorText.setText("Incorrect username or password");
                         return;
                     }
                     else{
-                        MoveToHome(); // TODO: goes to Login page, need to change to Home page
+                        MoveToHome(); // TODO: Broken: goes to Login page, needs to go to Home page
                     }
                 }
             }
@@ -72,10 +72,11 @@ public class LoginActivity extends AppCompatActivity {
      * Method to navigate to the Home Fragment
      */
     private void MoveToHome(){
+        // Tenson, thanks for looking at this code!
         Fragment fragment = new HomeFragment();
         FragmentManager fragmentManager = this.getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.home, fragment);
+        fragmentTransaction.replace(R.id.nav_home, fragment);
         fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
     }

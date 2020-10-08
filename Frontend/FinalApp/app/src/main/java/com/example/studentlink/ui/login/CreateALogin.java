@@ -50,16 +50,16 @@ public class CreateALogin extends AppCompatActivity {
                     String ResponseForAGoodLogin = "Ok";
                     Map<String,String> userLoginData = new HashMap<String,String>();
                     userLoginData.put("Username", username.getText().toString());
-//                    userLoginData.put("Password",password.getText().toString());
+//                    userLoginData.put("Password",password.getText().toString()); // TODO: Uncomment for real functionality
                     connection.putRequest(userLoginData,databaseName);
 
-                    if(!connection.getResponse().equals(ResponseForAGoodLogin)){
+                    if(connection.getResponse().equals(ResponseForAGoodLogin)){ //TODO: add !
                         ErrorText.setText("This username is taken. Please enter a different username.");
                         return;
                     }
                     else{
                         // TODO: Send username and password to next activity to send at the same time as token
-                        Intent intent = new Intent(c, CanvasWebviewClient.class);
+                        Intent intent = new Intent(c, CanvasWebview.class);
                         intent.putExtra("Username", username.getText().toString());
                         intent.putExtra("Password", password.getText().toString());
                         startActivity(intent);
