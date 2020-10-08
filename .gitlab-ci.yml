@@ -1,5 +1,6 @@
 stages:
   - apibuild
+  - androidbuild
   
 api-build:
     stage: apibuild
@@ -8,3 +9,18 @@ api-build:
     script:
       - cd Backend/WebAppliaion-mc_02
       - sudo docker build --network="host" -t mybuild -f DockerfileBuild .
+      
+android-build:
+    image: javiersantos/android-ci:latest
+    stage: androidbuild
+    before_script:
+        - export GRADLE_USER_HOME='pwd'/.gradle
+        - chmod +x ./Frontend/FinalApp/gradlew
+    tags:
+        - FRONTEND
+    script:
+        - cd Frontend/FinalApp/
+        - ./gradlew assemble
+    artifacts:
+        paths:
+            - Frontend/FinalApp/app/build/outputs/
