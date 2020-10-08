@@ -5,10 +5,17 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.os.Bundle;
+import android.view.View;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.Button;
+import android.widget.EditText;
 
+import com.example.studentlink.ConnectionClass;
 import com.example.studentlink.R;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class CanvasWebview extends AppCompatActivity {
 
@@ -22,14 +29,22 @@ public class CanvasWebview extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_canvas_webview);
 
+        Button doneButton = findViewById(R.id.doneButton);
+        EditText CanvasToken = findViewById(R.id.CanvasToken);
+        ConnectionClass connectionClass = new ConnectionClass(this.getApplicationContext());
+
+        String username = getIntent().getExtras().getString("Username");
+        String password = getIntent().getExtras().getString("Password");
+
         progDailog = ProgressDialog.show(this, "Loading","Please wait...", true);
         progDailog.setCancelable(false);
 
         webview = (WebView) findViewById(R.id.CanvasPage);
-
+        webview.setWebViewClient(new CanvasWebviewClient());
         webview.getSettings().setJavaScriptEnabled(true);
         webview.getSettings().setLoadWithOverviewMode(true);
         webview.getSettings().setUseWideViewPort(true);
+
         webview.setWebViewClient(new WebViewClient(){
 
             @Override
@@ -46,14 +61,27 @@ public class CanvasWebview extends AppCompatActivity {
         });
         webview.loadUrl("https://canvas.iastate.edu/");
 
+        doneButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // TODO: Need to error check for an incorrect CanvasToken or empty
+                String databaseName = "api/Students/" + CanvasToken.getText().toString();
+                String ResponseForAGoodLogin = "Ok";
+                Map<String,String> userLoginData = new HashMap<String,String>();
+                userLoginData.put("Username",username);
+                userLoginData.put("Password",password);
+                connectionClass.putRequest(userLoginData,databaseName);
+                if(!connectionClass.getResponse().equals(ResponseForAGoodLogin)){
+                    // Toast - congrats you made an account!
+                    // MoveToHome();
+                    return;
+                }
+                else{
+                    CanvasToken.setError("Your Canvas Token is incorrect.");
+                }
+            }
+        });
+
     }
 
-    
-//    @Override
-//    protected void onCreate(Bundle savedInstanceState) {
-//        super.onCreate(savedInstanceState);
-//        setContentView(R.layout.activity_canvas_webview);
-//        webview = findViewById(R.id.CanvasPage);
-//        webview.loadUrl("www.google.com");//"https://canvas.iastate.edu/");
-//    }
 }
