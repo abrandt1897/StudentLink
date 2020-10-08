@@ -4,12 +4,14 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.example.studentlink.ConnectionClass;
 import com.example.studentlink.R;
@@ -32,7 +34,7 @@ public class CanvasWebview extends AppCompatActivity {
         Button doneButton = findViewById(R.id.doneButton);
         EditText CanvasToken = findViewById(R.id.CanvasToken);
         ConnectionClass connectionClass = new ConnectionClass(this.getApplicationContext());
-
+        Context context = this;
         String username = getIntent().getExtras().getString("Username");
         String password = getIntent().getExtras().getString("Password");
 
@@ -72,12 +74,12 @@ public class CanvasWebview extends AppCompatActivity {
                 userLoginData.put("Password",password);
                 connectionClass.putRequest(userLoginData,databaseName);
                 if(!connectionClass.getResponse().equals(ResponseForAGoodLogin)){
-                    // Toast - congrats you made an account!
-                    // MoveToHome();
+                    CanvasToken.setError("Your Canvas Token is incorrect.");
                     return;
                 }
                 else{
-                    CanvasToken.setError("Your Canvas Token is incorrect.");
+                    Toast.makeText(context,"Congrats you made your account!", Toast.LENGTH_LONG).show();
+                    // MoveToHome();
                 }
             }
         });

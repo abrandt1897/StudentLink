@@ -53,7 +53,7 @@ public class CreateALogin extends AppCompatActivity {
 //                    userLoginData.put("Password",password.getText().toString());
                     connection.putRequest(userLoginData,databaseName);
 
-                    if(connection.getResponse().equals(ResponseForAGoodLogin)){ // TODO: add !
+                    if(!connection.getResponse().equals(ResponseForAGoodLogin)){
                         ErrorText.setText("This username is taken. Please enter a different username.");
                         return;
                     }
