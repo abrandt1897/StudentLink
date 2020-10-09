@@ -408,3 +408,13 @@ E:\Documents\GitHub\mc_02\Backend\WebAppliaion-mc_02\bin\Debug\netcoreapp3.0\Mic
 E:\Documents\GitHub\mc_02\Backend\WebAppliaion-mc_02\bin\Debug\netcoreapp3.0\Owin.dll
 E:\Documents\GitHub\mc_02\Backend\WebAppliaion-mc_02\obj\Debug\netcoreapp3.0\WebApplication-mc_02.csproj.CoreCompileInputs.cache
 E:\Documents\GitHub\mc_02\Backend\WebAppliaion-mc_02\obj\Debug\netcoreapp3.0\WebApplication-mc_02.MvcApplicationPartsAssemblyInfo.cache
+C:\Users\Adam Brandt\OneDrive\Documents\CS309\mc_02\Backend\WebAppliaion-mc_02\bin\Debug\netcoreapp3.0\EntityFramework.SqlServer.dll
+C:\Users\Adam Brandt\OneDrive\Documents\CS309\mc_02\Backend\WebAppliaion-mc_02\bin\Debug\netcoreapp3.0\EntityFramework.dll
+C:\Users\Adam Brandt\OneDrive\Documents\CS309\mc_02\Backend\WebAppliaion-mc_02\bin\Debug\netcoreapp3.0\Microsoft.AspNet.Identity.Core.dll
+C:\Users\Adam Brandt\OneDrive\Documents\CS309\mc_02\Backend\WebAppliaion-mc_02\bin\Debug\netcoreapp3.0\Microsoft.AspNet.Identity.EntityFramework.dll
+C:\Users\Adam Brandt\OneDrive\Documents\CS309\mc_02\Backend\WebAppliaion-mc_02\bin\Debug\netcoreapp3.0\Microsoft.AspNet.Identity.Owin.dll
+C:\Users\Adam Brandt\OneDrive\Documents\CS309\mc_02\Backend\WebAppliaion-mc_02\bin\Debug\netcoreapp3.0\Microsoft.Owin.dll
+C:\Users\Adam Brandt\OneDrive\Documents\CS309\mc_02\Backend\WebAppliaion-mc_02\bin\Debug\netcoreapp3.0\Microsoft.Owin.Security.dll
+C:\Users\Adam Brandt\OneDrive\Documents\CS309\mc_02\Backend\WebAppliaion-mc_02\bin\Debug\netcoreapp3.0\Microsoft.Owin.Security.Cookies.dll
+C:\Users\Adam Brandt\OneDrive\Documents\CS309\mc_02\Backend\WebAppliaion-mc_02\bin\Debug\netcoreapp3.0\Microsoft.Owin.Security.OAuth.dll
+C:\Users\Adam Brandt\OneDrive\Documents\CS309\mc_02\Backend\WebAppliaion-mc_02\bin\Debug\netcoreapp3.0\Owin.dll

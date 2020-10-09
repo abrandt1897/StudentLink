@@ -8,6 +8,7 @@ using System.Collections;
 using WebApplication_mc_02.Models;
 using MySql.Data.MySqlClient;
 using Microsoft.AspNetCore.Mvc;
+using WebApplication_mc_02.Models.DTO;
 //Future Greyson
 //allow students to be added to a course
 //to do that you need to check if the course already exists
@@ -28,7 +29,7 @@ namespace WebApplication_mc_02.Controllers
         public async Task<Students> getStudentProfile(string token)
         {
             //get student string data
-            
+
             var courseResponse = await makeRequest("https://canvas.instructure.com/api/v1/courses?include[]=sections&include[]=term&per_page=100", token);
             var profileResponse = await makeRequest("https://canvas.iastate.edu/api/v1/users/self/", token);
             //parse student data to json
@@ -36,9 +37,6 @@ namespace WebApplication_mc_02.Controllers
             Nancy.Json.Simple.JsonObject profileJsonResponse = new JavaScriptSerializer().Deserialize<Nancy.Json.Simple.JsonObject>(profileResponse);
             //initilize student object
             Students myStu = new Students();
-            //retreive course data from json object
-            string CourseIDs = "";
-            CourseIDs = CourseIDs.Trim();
             //get name data from json object
             string studentName = getJsonValue(profileJsonResponse, "name");
             //get canvas Id data from json obj which will replace student ID
@@ -48,7 +46,7 @@ namespace WebApplication_mc_02.Controllers
             var iastateResponse = client.SendAsync(request).Result;
             string data = iastateResponse.Content.ReadAsStringAsync().Result;
             //parse major
-            int majorStartIndex = data.IndexOf("Major:</span> ")+ "Major:</span> ".Length;
+            int majorStartIndex = data.IndexOf("Major:</span> ") + "Major:</span> ".Length;
             int majorEndIndex = data.Substring(majorStartIndex).IndexOf("</div>");
             string major = data.Substring(majorStartIndex, majorEndIndex);
             //parse classification
@@ -60,14 +58,12 @@ namespace WebApplication_mc_02.Controllers
             myStu.Classification = classification;
             myStu.Major = major;
             myStu.StudentID = Int32.Parse(studentID);
-            myStu.UserType = "Student";
-            
-            myStu.Friends = " ";
 
+            myStu.Friends = " ";
+            Student2CourseMap s2cm;
             List<Courses> courses = new List<Courses>();
             foreach (Nancy.Json.Simple.JsonObject jsonObject in courseJsonResponse)
             {
-                CourseIDs += getJsonValue(jsonObject, "id") + " ";
                 //Build course object
                 Courses c = new Courses();
                 if (getJsonValue(jsonObject, "name") == "Error")
@@ -87,9 +83,22 @@ namespace WebApplication_mc_02.Controllers
                 string IdData = getJsonValue(data69, "id");
                 c.SectionID = Int64.Parse(IdData);
                 c.Section = getJsonValue(data69, "name");
+                s2cm = new Student2CourseMap();
+                s2cm.CourseID = Int64.Parse(getJsonValue(jsonObject, "id"));
+                s2cm.StudentID = myStu.StudentID;
+                Nancy.Json.Simple.JsonArray enrollments = new JavaScriptSerializer().Deserialize<Nancy.Json.Simple.JsonArray>(getJsonValue(jsonObject, "enrollments"));
+                Nancy.Json.Simple.JsonObject enrollObj = null;
+                foreach (Nancy.Json.Simple.JsonObject obj in enrollments)
+                {
+                    enrollObj = obj;
+                    break;
+                }
+                s2cm.CurrentlyEnrolled = (getJsonValue(enrollObj, "enrollment_state")) == "active" ? true : false;
+                s2cm.UserType = getJsonValue(enrollObj, "type");
+                
+                SQLConnection.insert(s2cm);
                 courses.Add(c);
             }
-            myStu.CourseIDs = CourseIDs;
             //Insert into table
             for (int i = 0; i < courses.Count; i++)
             {

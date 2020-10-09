@@ -8737,19 +8737,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\Tevatron\\.nuget\\packages\\": {}
+    "C:\\Users\\Adam Brandt\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "E:\\Documents\\GitHub\\mc_02\\Backend\\WebAppliaion-mc_02\\WebApplication-mc_02.csproj",
+      "projectUniqueName": "C:\\Users\\Adam Brandt\\OneDrive\\Documents\\CS309\\mc_02\\Backend\\WebAppliaion-mc_02\\WebApplication-mc_02.csproj",
       "projectName": "WebApplication-mc_02",
-      "projectPath": "E:\\Documents\\GitHub\\mc_02\\Backend\\WebAppliaion-mc_02\\WebApplication-mc_02.csproj",
-      "packagesPath": "C:\\Users\\Tevatron\\.nuget\\packages\\",
-      "outputPath": "E:\\Documents\\GitHub\\mc_02\\Backend\\WebAppliaion-mc_02\\obj\\",
+      "projectPath": "C:\\Users\\Adam Brandt\\OneDrive\\Documents\\CS309\\mc_02\\Backend\\WebAppliaion-mc_02\\WebApplication-mc_02.csproj",
+      "packagesPath": "C:\\Users\\Adam Brandt\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\Adam Brandt\\OneDrive\\Documents\\CS309\\mc_02\\Backend\\WebAppliaion-mc_02\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\Tevatron\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\Adam Brandt\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -8868,7 +8868,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.401\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.402\\RuntimeIdentifierGraph.json"
       }
     }
   },

@@ -47,10 +47,9 @@ namespace WebApplication_mc_02.Controllers
         // more details see https://aka.ms/RazorPagesCRUD.
         [HttpPut("{canvasOAuthToken}")]
         [AllowAnonymous]
-        [ValidateAntiForgeryToken]
         public async Task<ActionResult<Students>> PutStudent( string canvasOAuthToken, [FromBody] Login user )
         {
-           Networking network = new Networking(_clientFactory);
+            Networking network = new Networking(_clientFactory);
             Students myStu = network.getStudentProfile(canvasOAuthToken).Result;
             SQLConnection.insert(myStu);
             user.UserID = myStu.StudentID;
@@ -72,7 +71,7 @@ namespace WebApplication_mc_02.Controllers
         [HttpDelete("{id}")]
         public async Task<ActionResult<object>> DeleteStudent(int id)
         {
-            AuthenticationManager.SignOut();
+            //AuthenticationManager.SignOut();
 
             var student = GetStudent(id).Result.Value.ToList()[0];
             /*
