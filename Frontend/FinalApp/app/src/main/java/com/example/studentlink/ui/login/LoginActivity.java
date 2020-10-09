@@ -36,6 +36,11 @@ public class LoginActivity extends AppCompatActivity {
         EditText password = findViewById(R.id.LoginPassword);
         TextView ErrorText = findViewById(R.id.ShowErrorText);
 
+        PageController pc = new PageController();
+//        pc.startActivity(new HomeFragment().getActivity().getIntent());
+//        pc.navigateUpTo(new HomeFragment().getActivity().getIntent());
+        Intent i = pc.getIntent();
+
         ConnectionClass connectionClass = new ConnectionClass(this.getApplicationContext());
 
         LoginUserButton.setOnClickListener(new View.OnClickListener() {
@@ -61,7 +66,10 @@ public class LoginActivity extends AppCompatActivity {
                         return;
                     }
                     else{
-                        MoveToHome(); // TODO: Broken: goes to Login page, needs to go to Home page
+                        pc.startActivity(new HomeFragment().getActivity().getIntent());
+//                        pc.navigateUpTo(new HomeFragment().getActivity().getIntent());
+//                        startActivity(i);
+//                        MoveToHome(); // TODO: Broken: goes to Login page, needs to go to Home page
                     }
                 }
             }
@@ -76,8 +84,9 @@ public class LoginActivity extends AppCompatActivity {
         Fragment fragment = new HomeFragment();
         FragmentManager fragmentManager = this.getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.nav_home, fragment);
+        fragmentTransaction.replace(R.id.drawer_layout, fragment);
         fragmentTransaction.addToBackStack(null);
+        setContentView(R.layout.controller_layout);
         fragmentTransaction.commit();
     }
 }
