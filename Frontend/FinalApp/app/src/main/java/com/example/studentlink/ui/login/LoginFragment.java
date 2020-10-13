@@ -12,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import com.example.studentlink.R;
+import com.example.studentlink.ui.login.SignIn.LoginActivity;
 
 public class LoginFragment extends Fragment {
 
