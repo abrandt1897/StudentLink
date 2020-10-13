@@ -5,16 +5,12 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 
-import com.example.studentlink.ConnectionClass;
 import com.example.studentlink.R;
 
 public class LoginFragment extends Fragment {
@@ -26,8 +22,9 @@ public class LoginFragment extends Fragment {
         View root = inflater.inflate(R.layout.login_layout, container, false);
 
         TextView LoginText = root.findViewById(R.id.LoginText);
-        LoginText.setText("Welcome to StudentLink!");
+        LoginText.setText("Welcome to StudentLink! Are you an existing or new user?");
 
+        // For the create account button, go to CreateALogin page when clicked
         theCreateAccountButton = (Button) root.findViewById(R.id.CreateButton);
         Intent createIntent = new Intent(this.getContext(), CreateALogin.class);
          theCreateAccountButton.setOnClickListener(new View.OnClickListener() {
@@ -37,6 +34,7 @@ public class LoginFragment extends Fragment {
              }
          });
 
+         // For the login button, go to LoginActivity page when clicked
         theLoginButton = (Button) root.findViewById(R.id.LoginButton);
         Intent loginIntent = new Intent(this.getContext(), LoginActivity.class);
         theLoginButton.setOnClickListener(new View.OnClickListener() {

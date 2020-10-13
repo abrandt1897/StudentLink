@@ -9,6 +9,7 @@ import com.example.studentlink.ConnectionClass;
 import com.example.studentlink.PageController;
 import com.example.studentlink.R;
 import com.example.studentlink.ui.home.HomeFragment;
+import com.example.studentlink.ui.splash.SplashFragment;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -80,13 +81,12 @@ public class LoginActivity extends AppCompatActivity {
      * Method to navigate to the Home Fragment
      */
     private void MoveToHome(){
-        // Tenson, thanks for looking at this code!
-        Fragment fragment = new HomeFragment();
+        Fragment fragment = new SplashFragment();
         FragmentManager fragmentManager = this.getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.drawer_layout, fragment);
+        fragmentTransaction.replace(R.id.nav_view, fragment); // drawer_layout
         fragmentTransaction.addToBackStack(null);
-        setContentView(R.layout.controller_layout);
+//        setContentView(R.layout.controller_layout);
         fragmentTransaction.commit();
     }
 }
