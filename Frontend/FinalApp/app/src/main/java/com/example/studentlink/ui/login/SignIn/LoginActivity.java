@@ -2,23 +2,16 @@ package com.example.studentlink.ui.login.SignIn;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.studentlink.ConnectionClass;
-import com.example.studentlink.PageController;
 import com.example.studentlink.R;
-import com.example.studentlink.ui.home.HomeFragment;
 import com.example.studentlink.ui.login.ILogic;
 import com.example.studentlink.ui.login.SignIn.Logic.LoginLogic;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-
-import java.util.HashMap;
-import java.util.Map;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -54,7 +47,7 @@ public class LoginActivity extends AppCompatActivity {
                     password.setError("Please enter a password.");
                 }
                 else{
-                    String message = logic.logInUser(username.getText().toString(),password.getText().toString());
+                    String message = logic.checkCredentials(username.getText().toString(),password.getText().toString());
                     if(!message.equals("Ok")){
                         ErrorText.setText("Incorrect username or password");
                     }

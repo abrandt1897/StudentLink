@@ -1,4 +1,4 @@
-package com.example.studentlink.ui.login;
+package com.example.studentlink.ui.login.NewAccount.CanvasKey;
 
 import android.content.Intent;
 import android.net.Uri;

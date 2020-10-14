@@ -1,4 +1,4 @@
-package com.example.studentlink.ui.login;
+package com.example.studentlink.ui.login.NewAccount.CanvasKey;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -7,6 +7,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
+import android.webkit.CookieManager;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Button;
@@ -46,6 +47,10 @@ public class CanvasWebview extends AppCompatActivity {
         webview.getSettings().setJavaScriptEnabled(true);
         webview.getSettings().setLoadWithOverviewMode(true);
         webview.getSettings().setUseWideViewPort(true);
+
+
+        // TODO: look into Jsoup and CookieManager.getInstance().setAcceptCookie(true); and WebViewClient
+
 
         webview.setWebViewClient(new WebViewClient(){
 
