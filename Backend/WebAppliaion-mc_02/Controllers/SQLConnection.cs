@@ -32,6 +32,7 @@ namespace WebApplication_mc_02.Controllers
                     var @switch = new Dictionary<Type, Action> {
                     { typeof(String), () => query += $"{property.Name} = '{property.GetValue(data)}'" },
                     { typeof(Int32), () => query += $"{property.Name} = {property.GetValue(data)}" },
+                    { typeof(Boolean), () => query += $"{property.Name} = {property.GetValue(data)}" },
                 };
                     @switch[property.PropertyType]();
                     query += ", ";
@@ -71,6 +72,7 @@ namespace WebApplication_mc_02.Controllers
                     { typeof(String), () => query += "'"+ property.GetValue(data) + "'" },
                     { typeof(Int32), () => query += property.GetValue(data) },
                     { typeof(Int64), () => query += property.GetValue(data) },
+                    { typeof(Boolean), () => query +=  Convert.ToBoolean(property.GetValue(data)) },
                 };
                     @typeSwitch[property.PropertyType]();
                     query += ", ";

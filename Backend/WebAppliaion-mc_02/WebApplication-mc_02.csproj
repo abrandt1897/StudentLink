@@ -9,6 +9,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Models\NewFolder\**" />
+    <Content Remove="Models\NewFolder\**" />
+    <EmbeddedResource Remove="Models\NewFolder\**" />
+    <None Remove="Models\NewFolder\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Remove="Models\Chats.cs~RF14f3941c.TMP" />
     <None Remove="Models\Courses.cs~RF14f15e60.TMP" />
     <None Remove="Models\Courses.cs~RF14f7302e.TMP" />
