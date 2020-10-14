@@ -60,7 +60,6 @@ namespace WebApplication_mc_02.Controllers
             myStu.Classification = classification;
             myStu.Major = major;
             myStu.StudentID = Int32.Parse(studentID);
-            myStu.UserType = "Student";
             
             myStu.Friends = " ";
 
@@ -89,7 +88,6 @@ namespace WebApplication_mc_02.Controllers
                 c.Section = getJsonValue(data69, "name");
                 courses.Add(c);
             }
-            myStu.CourseIDs = CourseIDs;
             //Insert into table
             for (int i = 0; i < courses.Count; i++)
             {

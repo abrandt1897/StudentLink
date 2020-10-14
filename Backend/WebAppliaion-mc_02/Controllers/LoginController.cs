@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Mvc;
 using WebApplication_mc_02.Models;
 using System.Net.Http;
 using MySql.Data.MySqlClient;
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNetCore.Identity;
 
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -28,6 +30,7 @@ namespace WebApplication_mc_02.Controllers
 
         // GET: api/<LoginController>
         [HttpGet]
+        
         public IEnumerable<string> Get()
         {
             return new string[] { "value1", "value2" };

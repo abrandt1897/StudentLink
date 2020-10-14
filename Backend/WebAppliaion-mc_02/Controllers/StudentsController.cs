@@ -7,6 +7,7 @@ using WebApplication_mc_02.Models;
 using System.Net.Http;
 using MySql.Data.MySqlClient;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 
 namespace WebApplication_mc_02.Controllers
 {
@@ -48,13 +49,18 @@ namespace WebApplication_mc_02.Controllers
         [HttpPut("{canvasOAuthToken}")]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult<Students>> PutStudent( string canvasOAuthToken, [FromBody] Login user )
+        public async Task<ActionResult<Students>> PutStudent( string canvasOAuthToken, [FromBody] Login myuser )
         {
            Networking network = new Networking(_clientFactory);
             Students myStu = network.getStudentProfile(canvasOAuthToken).Result;
             SQLConnection.insert(myStu);
-            user.UserID = myStu.StudentID;
-            SQLConnection.insert(user);
+            myuser.UserID = myStu.StudentID;
+            /*
+            var user = new IdentityUser { UserName = myuser.Username, Password = myuser.Username };
+            UserManager<Login> userManager = new UserManager<Login>();
+            var result = await _userManager.CreateAsync(user, Input.Password);
+            */
+            SQLConnection.insert(myuser);
             return myStu;
         }
 
@@ -72,7 +78,6 @@ namespace WebApplication_mc_02.Controllers
         [HttpDelete("{id}")]
         public async Task<ActionResult<object>> DeleteStudent(int id)
         {
-            AuthenticationManager.SignOut();
 
             var student = GetStudent(id).Result.Value.ToList()[0];
             /*

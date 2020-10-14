@@ -76,8 +76,6 @@ namespace WebApplication_mc_02.Controllers
             //INSERT INTO Table ((int)key1, key2, key3) VALUES (value1, 'value2', 'value3')
             Groups group = new Groups();
             //the list of students will be a mix of all user types determine where each "student" should go
-            MySqlCommand cmd = new MySqlCommand("insert into StudentLink.Groups (GroupID, Students, TAs, Mentors) values (" + id + ", '" + studs[0].Major + "', '" + studs[0].Major + "', '" + studs[0].UserType + "')", conn);
-            cmd.ExecuteReader();
             return group;
         }
 
@@ -88,7 +86,6 @@ namespace WebApplication_mc_02.Controllers
         public async Task<ActionResult<Groups>> PostGroup(Students student, int groupID)
         {
             //adds a student to the given group id
-            MySqlCommand cmd = new MySqlCommand("insert into StudentLink.Groups (GroupID, Students, TAs, Mentors) values (" + groupID + ", '" + student.Major + "', '" + student.Major + "', '" + student.UserType + "')", conn); cmd.ExecuteReader();
             return NoContent();
         }
 
