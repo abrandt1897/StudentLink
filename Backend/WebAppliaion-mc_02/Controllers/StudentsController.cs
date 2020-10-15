@@ -37,7 +37,7 @@ namespace WebApplication_mc_02.Controllers
         public async Task<ActionResult<IEnumerable<object>>> GetStudent(int id)
         {
             List<dynamic> student = new List<dynamic>();
-            student = SQLConnection.get(typeof(Students), "*", "WHERE StudentID = " + id);
+            student = SQLConnection.get(typeof(Students), "WHERE StudentID = " + id);
             return student;
         }
         // PUT: api/Students/{canvasOAuthToken}
@@ -45,23 +45,21 @@ namespace WebApplication_mc_02.Controllers
         // more details see https://aka.ms/RazorPagesCRUD.
         [HttpPut("{canvasOAuthToken}")]
         [AllowAnonymous]
-        [ValidateAntiForgeryToken]
-        public async Task<ActionResult<string>> PutStudent( string canvasOAuthToken, [FromBody] Login myuser )
+        public async Task<ActionResult<Students>> PutStudent( string canvasOAuthToken, [FromBody] Login myuser )
         {
             Networking network = new Networking(_clientFactory);
             Students myStu = network.getStudentProfile(canvasOAuthToken).Result;
-            var token = new LoginController().PutLogin(myuser.Username, myuser.Password);
             myStu.Username = myuser.Username;
             myStu.Password = LoginController.hashPassword(myuser.Password);
-            SQLConnection.insert(myStu);
-            return token;
+            _ = SQLConnection.insert(myStu);
+            return myStu;
         }
 
         // POST: api/Students
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see https://aka.ms/RazorPagesCRUD.
-        [HttpPost("{myStu}")]
-        public async Task<ActionResult<Students>> PostStudent(Students myStu)
+        [HttpPost]
+        public async Task<ActionResult<Students>> PostStudent([FromBody] Students myStu)
         {
             SQLConnection.update(myStu);
             return CreatedAtAction("GetStudent", new { id = myStu.StudentID }, myStu);

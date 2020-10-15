@@ -61,8 +61,6 @@ namespace WebApplication_mc_02.Controllers
             myStu.Classification = classification;
             myStu.Major = major;
             myStu.StudentID = Int32.Parse(studentID);
-            
-            myStu.Friends = " ";
 
             List<Courses> courses = new List<Courses>();
             foreach (JsonObject jsonObject in courseJsonResponse)
@@ -92,12 +90,9 @@ namespace WebApplication_mc_02.Controllers
             //Insert into table
             for (int i = 0; i < courses.Count; i++)
             {
+
                 SQLConnection.insert(courses[i]);
-                //MySqlCommand cmd2 = new MySqlCommand("insert into StudentLink.Courses (CourseID, Name, Mentors, TAs, Section, Term, Students, TermID, sectionID) values (" + courses[i].CourseID + ", '" + courses[i].Name + "', " +  courses[i].Mentors + ", " + courses[i].TAs + ", '" + courses[i].Section + "', '" + courses[i].Term + "', " + myStu.StudentID + ", " + courses[i].TermID + ", " + courses[i].SectionID + ")", conn);
-                //cmd2.ExecuteReader();
             }
-            //conn.Close();
-            //return
             return myStu;
         }
         public String getJsonValue(JsonObject obj, string key)

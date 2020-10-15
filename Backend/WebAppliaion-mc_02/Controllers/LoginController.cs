@@ -25,40 +25,25 @@ namespace WebApplication_mc_02.Controllers
     [ApiController]
     public class LoginController : ControllerBase
     {
-        private readonly StudentContext DB;
-        private readonly IHttpClientFactory _clientFactory;
-        private MySqlConnection conn;
-        public LoginController(IHttpClientFactory clientFactory)
-        {
-            //conn = new MySqlConnection("server=coms-309-mc-02.cs.iastate.edu;port=3306;database=StudentLink;user=root;password=46988c18374d9b7d;");
-            //conn.Open();
-            _clientFactory = clientFactory;
-        }
-
-        public LoginController()
-        {
-        }
-
         // GET: api/<LoginController>
         [HttpGet]
-        
         public IEnumerable<string> Get()
         {
-            return new string[] { "value1", "value2" };
+            return new string[] { "no" };
         }
 
         // GET api/<LoginController>/5
         [HttpGet("{id}")]
         public string Get(int id)
         {
-            return "value";
+            return "maybe";
         }
 
         // POST api/<LoginController>
         [HttpPost("{myLogin}")]
         public ActionResult<string> PostLogin(Login user)
         {
-            return PutLogin(user.Username, user.Password);
+            return PutLogin(user);
         }
 
         // PUT api/<LoginController>/5
@@ -68,18 +53,15 @@ namespace WebApplication_mc_02.Controllers
         /// <param name="UserID"></param>
         /// <param name="Password"></param>
         /// <returns>token for users access</returns>
-        [HttpPut("{UserID, Password}")]
-        public ActionResult<string> PutLogin(string Username, string Password)
+        [HttpPut]
+        public ActionResult<string> PutLogin([FromBody] Login user)
         {
-            var user = (Students)SQLConnection.get(typeof(Students), null, $"Username = {Username}")[0];
+            Students student = SQLConnection.get(typeof(Students), $"Username={user.Username}")[0];
 
             //Authenticate User, Check if it’s a registered user in Database
             if (user == null)
-            {
                 return null;
-            }
-            string hashedPW = hashPassword(Password);
-            if (hashedPW == user.Password)
+            if (hashPassword(user.Password) == student.Password)
             {
                 //Authentication successful, Issue Token with user credentials
                 //Provide the security key which was given in the JWToken configuration in Startup.cs
@@ -88,7 +70,7 @@ namespace WebApplication_mc_02.Controllers
                 var JWToken = new JwtSecurityToken(
                     issuer: "http://localhost:5001/",
                     audience: "http://localhost:5001/",
-                    claims: user.GetUserClaims(),
+                    claims: student.GetUserClaims(),
                     notBefore: new DateTimeOffset(DateTime.Now).DateTime,
                     expires: new DateTimeOffset(DateTime.Now.AddDays(1)).DateTime,
                     //Using HS256 Algorithm to encrypt Token
