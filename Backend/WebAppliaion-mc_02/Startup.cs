@@ -4,8 +4,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -13,6 +11,11 @@ using Microsoft.Extensions.Logging;
 using Microsoft.EntityFrameworkCore;
 using WebApplication_mc_02.Models;
 using Microsoft.AspNetCore.Identity;
+using System.Text;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.AspNetCore.Http;
+using Microsoft.Owin;
 
 namespace WebApplication_mc_02
 {
@@ -31,6 +34,36 @@ namespace WebApplication_mc_02
             services.AddControllers();
             services.AddHttpClient();
             services.AddDbContext<StudentContext>(options => options.UseSqlServer(Configuration.GetConnectionString("StudentContext")));
+            //Provide a secret key to Encrypt and Decrypt the Token
+            var SecretKey = Encoding.ASCII.GetBytes("YuurKey-2374-OFFKDI94LMAO:56753253-yeet-6969-0420-kfirox29zoxv");
+
+            services.AddAuthentication(auth =>
+            {
+                auth.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                auth.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            }).AddJwtBearer(token =>
+            {
+                token.RequireHttpsMetadata = false;
+                token.SaveToken = true;
+                token.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuerSigningKey = true,
+                    //Same Secret key will be used while creating the token
+                    IssuerSigningKey = new SymmetricSecurityKey(SecretKey),
+                    ValidateIssuer = true,
+                    //Usually, this is your application base URL
+                    ValidIssuer = "http://localhost:5001/",
+                    ValidateAudience = true,
+                    //Here, we are creating and using JWT within the same application.
+                    //In this case, base URL is fine.
+                    //If the JWT is created using a web service, then this would be the consumer URL.
+                    ValidAudience = "http://localhost:5001/",
+                    RequireExpirationTime = true,
+                    ValidateLifetime = true,
+                    ClockSkew = TimeSpan.Zero
+                };
+            });
+
             services.Configure<IdentityOptions>(options =>
             {
                 // Password settings.
@@ -51,28 +84,32 @@ namespace WebApplication_mc_02
                 "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+";
                 options.User.RequireUniqueEmail = false;
             });
-
-            services.ConfigureApplicationCookie(options =>
-            {
-                // Cookie settings
-                options.Cookie.HttpOnly = true;
-                options.ExpireTimeSpan = TimeSpan.FromMinutes(5);
-
-                options.LoginPath = "/Identity/Account/Login";
-                options.AccessDeniedPath = "/Identity/Account/AccessDenied";
-                options.SlidingExpiration = true;
-            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
             }
+            //Add JWToken to all incoming HTTP Request Header
+            /*
+            app.Use(async (context, next) =>
+            {
+                var JWToken = context.Session.GetString("JWToken");
+                if (!string.IsNullOrEmpty(JWToken))
+                {
+                    context.Request.Headers.Add("Authorization", "Bearer " + JWToken);
+                }
+                await next();
+            });
+            */
+            //Add JWToken Authentication service
+            app.UseAuthentication();
 
-            //app.UseHttpsRedirection();
+            //app.UseHttpsRedirection();//////////////////////////////////////redirection 
 
             app.UseRouting();
 

@@ -13,6 +13,4 @@ namespace WebApplication_mc_02.Models
         public string UserType { get; set; }
 
     }
-
-
 }

@@ -8,6 +8,13 @@ using System.Net.Http;
 using MySql.Data.MySqlClient;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNetCore.Identity;
+using System.IdentityModel.Tokens.Jwt;
+using System.Text;
+using System.Security.Cryptography;
+using Microsoft.AspNetCore.Cryptography.KeyDerivation;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.AspNetCore.Http;
+using WebApplication_mc_02.Models.DTO;
 
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -28,6 +35,10 @@ namespace WebApplication_mc_02.Controllers
             _clientFactory = clientFactory;
         }
 
+        public LoginController()
+        {
+        }
+
         // GET: api/<LoginController>
         [HttpGet]
         
@@ -45,24 +56,70 @@ namespace WebApplication_mc_02.Controllers
 
         // POST api/<LoginController>
         [HttpPost("{myLogin}")]
-        public async Task<ActionResult<Login>> PostLogin(Login myLogin)
+        public ActionResult<string> PostLogin(Login user)
         {
-            MySqlCommand cmd = new MySqlCommand("insert into StudentLink.Login (UserID, Password) values (" + myLogin.UserID + ", " + myLogin.Password + ")", conn);
-            cmd.ExecuteReader();
-            return CreatedAtAction("GetLogin", new { id = myLogin.UserID }, myLogin);
+            return PutLogin(user.Username, user.Password);
         }
 
         // PUT api/<LoginController>/5
+        /// <summary>
+        /// saves a token for the user
+        /// </summary>
+        /// <param name="UserID"></param>
+        /// <param name="Password"></param>
+        /// <returns>token for users access</returns>
         [HttpPut("{UserID, Password}")]
-        public ActionResult<string> PutLogin(string UserID, string Password)
+        public ActionResult<string> PutLogin(string Username, string Password)
         {
-            return Ok("Ok");
-        }
+            var user = (Students)SQLConnection.get(typeof(Students), null, $"Username = {Username}")[0];
 
+            //Authenticate User, Check if it’s a registered user in Database
+            if (user == null)
+            {
+                return null;
+            }
+            string hashedPW = hashPassword(Password);
+            if (hashedPW == user.Password)
+            {
+                //Authentication successful, Issue Token with user credentials
+                //Provide the security key which was given in the JWToken configuration in Startup.cs
+                var key = Encoding.ASCII.GetBytes("YuurKey-2374-OFFKDI94LMAO:56753253-yeet-6969-0420-kfirox29zoxv");
+                //Generate Token for user 
+                var JWToken = new JwtSecurityToken(
+                    issuer: "http://localhost:5001/",
+                    audience: "http://localhost:5001/",
+                    claims: user.GetUserClaims(),
+                    notBefore: new DateTimeOffset(DateTime.Now).DateTime,
+                    expires: new DateTimeOffset(DateTime.Now.AddDays(1)).DateTime,
+                    //Using HS256 Algorithm to encrypt Token
+                    signingCredentials: new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
+                );
+                var token = new JwtSecurityTokenHandler().WriteToken(JWToken);
+                HttpContext.Session.SetString("JWToken", token);
+                return token;
+            }
+            return null;
+        }
+        public static string hashPassword(string Password)
+        {
+            byte[] salt = new byte[128 / 8];
+            using (var rng = RandomNumberGenerator.Create())
+            {
+                rng.GetBytes(salt);
+            }
+            string hashedPW = Convert.ToBase64String(KeyDerivation.Pbkdf2(
+                password: Password,
+                salt: salt,
+                prf: KeyDerivationPrf.HMACSHA1,
+                iterationCount: 10000,
+                numBytesRequested: 256 / 8));
+            return hashedPW;
+        }
         // DELETE api/<LoginController>/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public void Delete(string id)
         {
+            HttpContext.Session.Remove(id);
         }
     }
 }

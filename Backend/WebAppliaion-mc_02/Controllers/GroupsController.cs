@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Mvc;
 using WebApplication_mc_02.Models;
 using System.Net.Http;
 using MySql.Data.MySqlClient;
+using Microsoft.AspNetCore.Authorization;
+using WebApplication_mc_02.Models.DTO;
 
 namespace WebApplication_mc_02.Controllers
 {
@@ -13,13 +15,9 @@ namespace WebApplication_mc_02.Controllers
     [ApiController]
     public class GroupsController : ControllerBase
     {
-        private readonly StudentContext DB;
         private readonly IHttpClientFactory _clientFactory;
-        private MySqlConnection conn;
         public GroupsController(IHttpClientFactory clientFactory)
         {
-            conn = new MySqlConnection("server=coms-309-mc-02.cs.iastate.edu;port=3306;database=StudentLink;user=root;password=46988c18374d9b7d;");
-            conn.Open();
             _clientFactory = clientFactory;
         }
 
@@ -27,44 +25,14 @@ namespace WebApplication_mc_02.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Groups>>> GetGroup()
         {
-            List<Groups> list = new List<Groups>();
-            MySqlCommand cmd = new MySqlCommand("select * from StudentLink.Groups", conn);
-            using (var reader = cmd.ExecuteReader())
-            {
-                while (reader.Read())
-                {
-                    list.Add(new Groups()
-                    {
-                        Students = Convert.ToInt32(reader["Students"]),
-                        GroupID = Convert.ToInt32(reader["GroupID"]),
-                        TAs = Convert.ToInt32(reader["TAs"]),
-                        Mentors = Convert.ToInt32(reader["Mentors"]),
-                    });
-                }
-            }
-            return list;
+            return null;
         }
 
         // GET: api/Students/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Groups>> GetGroup(int id)
         {
-            Groups group = new Groups();
-            MySqlCommand cmd = new MySqlCommand("select * from StudentLink.Groups where GroupID = " + id, conn);
-            using (var reader = cmd.ExecuteReader())
-            {
-                while (reader.Read())
-                {
-                    group = new Groups()
-                    {
-                        GroupID = Convert.ToInt32(reader["GroupID"]),
-                        Students = Convert.ToInt32(reader["Students"]),
-                        TAs = Convert.ToInt32(reader["TAs"]),
-                        Mentors = Convert.ToInt32(reader["Mentors"]),
-                    };
-                }
-            }
-            return group;
+            return null;
         }
         // PUT: api/Students/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for
@@ -72,11 +40,7 @@ namespace WebApplication_mc_02.Controllers
         [HttpPut]
         public async Task<ActionResult<Groups>> PutGroup(Students[] studs)
         {
-            int id = 23423;
-            //INSERT INTO Table ((int)key1, key2, key3) VALUES (value1, 'value2', 'value3')
-            Groups group = new Groups();
-            //the list of students will be a mix of all user types determine where each "student" should go
-            return group;
+            return null;
         }
 
         // POST: api/Students/
@@ -94,20 +58,6 @@ namespace WebApplication_mc_02.Controllers
         public async Task<ActionResult<Groups>> DeleteGroup(int id)
         {
             Groups group = GetGroup(id).Result.Value;
-            MySqlCommand cmd = new MySqlCommand("delete from StudentLink.Groups where GroupID = " + id, conn);
-            using (var reader = cmd.ExecuteReader())
-            {
-                while (reader.Read()) 
-                {
-                    group = new Groups()
-                    {
-                        GroupID = Convert.ToInt32(reader["GroupID"]),
-                        Students = Convert.ToInt32(reader["Students"]),
-                        TAs = Convert.ToInt32(reader["TAs"]),
-                        Mentors = Convert.ToInt32(reader["Mentors"])
-                    };
-                }
-            }
             return group;
         }
     }

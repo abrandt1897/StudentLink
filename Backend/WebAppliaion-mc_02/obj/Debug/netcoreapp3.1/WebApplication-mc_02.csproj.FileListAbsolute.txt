@@ -141,8 +141,6 @@ E:\Documents\GitHub\mc_02\Backend\WebAppliaion-mc_02\bin\Debug\netcoreapp3.1\run
 E:\Documents\GitHub\mc_02\Backend\WebAppliaion-mc_02\obj\Debug\netcoreapp3.1\WebApplication-mc_02.csprojAssemblyReference.cache
 E:\Documents\GitHub\mc_02\Backend\WebAppliaion-mc_02\obj\Debug\netcoreapp3.1\WebApplication-mc_02.AssemblyInfoInputs.cache
 E:\Documents\GitHub\mc_02\Backend\WebAppliaion-mc_02\obj\Debug\netcoreapp3.1\WebApplication-mc_02.AssemblyInfo.cs
-E:\Documents\GitHub\mc_02\Backend\WebAppliaion-mc_02\obj\Debug\netcoreapp3.1\WebApplication-mc_02.csproj.CoreCompileInputs.cache
-E:\Documents\GitHub\mc_02\Backend\WebAppliaion-mc_02\obj\Debug\netcoreapp3.1\WebApplication-mc_02.MvcApplicationPartsAssemblyInfo.cache
 E:\Documents\GitHub\mc_02\Backend\WebAppliaion-mc_02\obj\Debug\netcoreapp3.1\WebApplication-mc_02.RazorTargetAssemblyInfo.cache
 E:\Documents\GitHub\mc_02\Backend\WebAppliaion-mc_02\obj\Debug\netcoreapp3.1\WebApplication-mc_02.csproj.CopyComplete
 E:\Documents\GitHub\mc_02\Backend\WebAppliaion-mc_02\obj\Debug\netcoreapp3.1\staticwebassets\WebApplication-mc_02.StaticWebAssets.Manifest.cache
@@ -150,3 +148,20 @@ E:\Documents\GitHub\mc_02\Backend\WebAppliaion-mc_02\obj\Debug\netcoreapp3.1\sta
 E:\Documents\GitHub\mc_02\Backend\WebAppliaion-mc_02\obj\Debug\netcoreapp3.1\WebApplication-mc_02.dll
 E:\Documents\GitHub\mc_02\Backend\WebAppliaion-mc_02\obj\Debug\netcoreapp3.1\WebApplication-mc_02.pdb
 E:\Documents\GitHub\mc_02\Backend\WebAppliaion-mc_02\obj\Debug\netcoreapp3.1\WebApplication-mc_02.genruntimeconfig.cache
+E:\Documents\GitHub\mc_02\Backend\WebAppliaion-mc_02\bin\Debug\netcoreapp3.1\Properties\ServiceDependencies\309mc02 - Web Deploy\profile.arm.json
+E:\Documents\GitHub\mc_02\Backend\WebAppliaion-mc_02\bin\Debug\netcoreapp3.1\EntityFramework.SqlServer.dll
+E:\Documents\GitHub\mc_02\Backend\WebAppliaion-mc_02\bin\Debug\netcoreapp3.1\EntityFramework.dll
+E:\Documents\GitHub\mc_02\Backend\WebAppliaion-mc_02\bin\Debug\netcoreapp3.1\System.Web.Cors.dll
+E:\Documents\GitHub\mc_02\Backend\WebAppliaion-mc_02\bin\Debug\netcoreapp3.1\Microsoft.AspNet.Identity.Core.dll
+E:\Documents\GitHub\mc_02\Backend\WebAppliaion-mc_02\bin\Debug\netcoreapp3.1\Microsoft.AspNet.Identity.EntityFramework.dll
+E:\Documents\GitHub\mc_02\Backend\WebAppliaion-mc_02\bin\Debug\netcoreapp3.1\Microsoft.AspNet.Identity.Owin.dll
+E:\Documents\GitHub\mc_02\Backend\WebAppliaion-mc_02\bin\Debug\netcoreapp3.1\Microsoft.Owin.dll
+E:\Documents\GitHub\mc_02\Backend\WebAppliaion-mc_02\bin\Debug\netcoreapp3.1\Microsoft.Owin.Cors.dll
+E:\Documents\GitHub\mc_02\Backend\WebAppliaion-mc_02\bin\Debug\netcoreapp3.1\Microsoft.Owin.Host.SystemWeb.dll
+E:\Documents\GitHub\mc_02\Backend\WebAppliaion-mc_02\bin\Debug\netcoreapp3.1\Microsoft.Owin.Security.dll
+E:\Documents\GitHub\mc_02\Backend\WebAppliaion-mc_02\bin\Debug\netcoreapp3.1\Microsoft.Owin.Security.Cookies.dll
+E:\Documents\GitHub\mc_02\Backend\WebAppliaion-mc_02\bin\Debug\netcoreapp3.1\Microsoft.Owin.Security.OAuth.dll
+E:\Documents\GitHub\mc_02\Backend\WebAppliaion-mc_02\bin\Debug\netcoreapp3.1\Owin.dll
+E:\Documents\GitHub\mc_02\Backend\WebAppliaion-mc_02\bin\Debug\netcoreapp3.1\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+E:\Documents\GitHub\mc_02\Backend\WebAppliaion-mc_02\obj\Debug\netcoreapp3.1\WebApplication-mc_02.csproj.CoreCompileInputs.cache
+E:\Documents\GitHub\mc_02\Backend\WebAppliaion-mc_02\obj\Debug\netcoreapp3.1\WebApplication-mc_02.MvcApplicationPartsAssemblyInfo.cache

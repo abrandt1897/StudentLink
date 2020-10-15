@@ -1,19 +1,12 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp3.0</TargetFramework>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
     <RootNamespace>WebApplication_mc_02</RootNamespace>
     <UserSecretsId>8980fc21-a970-48ba-8ba7-6153e01ed4c5</UserSecretsId>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
     <DockerfileContext>.</DockerfileContext>
   </PropertyGroup>
-
-  <ItemGroup>
-    <Compile Remove="Models\NewFolder\**" />
-    <Content Remove="Models\NewFolder\**" />
-    <EmbeddedResource Remove="Models\NewFolder\**" />
-    <None Remove="Models\NewFolder\**" />
-  </ItemGroup>
 
   <ItemGroup>
     <None Remove="Models\Chats.cs~RF14f3941c.TMP" />
@@ -26,6 +19,7 @@
     <PackageReference Include="Microsoft.AspNet.Identity.Core" Version="2.2.3" />
     <PackageReference Include="Microsoft.AspNet.Identity.EntityFramework" Version="2.2.3" />
     <PackageReference Include="Microsoft.AspNet.Identity.Owin" Version="2.2.3" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.1.9" />
     <PackageReference Include="Microsoft.AspNetCore.Identity" Version="2.2.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.8" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.8" />
@@ -34,6 +28,9 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="3.1.8" />
+    <PackageReference Include="Microsoft.Owin.Cors" Version="4.1.1" />
+    <PackageReference Include="Microsoft.Owin.Host.SystemWeb" Version="4.1.1" />
+    <PackageReference Include="Microsoft.Owin.Security.OAuth" Version="4.1.1" />
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.10.8" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.4" />
     <PackageReference Include="MySql.Data" Version="8.0.21" />

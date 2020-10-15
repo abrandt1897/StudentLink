@@ -8,6 +8,7 @@ using System.Net.Http;
 using MySql.Data.MySqlClient;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
+using WebApplication_mc_02.Models.DTO;
 
 namespace WebApplication_mc_02.Controllers
 {
@@ -15,12 +16,9 @@ namespace WebApplication_mc_02.Controllers
     [ApiController]
     public class StudentsController : ControllerBase
     {
-        private readonly StudentContext DB;
         private readonly IHttpClientFactory _clientFactory;
         public StudentsController(IHttpClientFactory clientFactory)
         {
-            //conn = new MySqlConnection("server=coms-309-mc-02.cs.iastate.edu;port=3306;database=StudentLink;user=root;password=46988c18374d9b7d;");
-            //conn.Open();
             _clientFactory = clientFactory;
         }
 
@@ -29,7 +27,6 @@ namespace WebApplication_mc_02.Controllers
         public async Task<ActionResult<IEnumerable<Students>>> GetStudents()
         {
             List<dynamic> list = new List<dynamic>();
-            //MySqlCommand cmd = new MySqlCommand("select * from StudentLink.Students", conn);
             list = SQLConnection.get(typeof(Students));
             var ret = list.Cast<Students>();
             return Ok(ret);
@@ -43,29 +40,21 @@ namespace WebApplication_mc_02.Controllers
             student = SQLConnection.get(typeof(Students), "*", "WHERE StudentID = " + id);
             return student;
         }
-        // PUT: api/Students/918237498123740918237
+        // PUT: api/Students/{canvasOAuthToken}
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see https://aka.ms/RazorPagesCRUD.
         [HttpPut("{canvasOAuthToken}")]
         [AllowAnonymous]
-<<<<<<< HEAD
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult<Students>> PutStudent( string canvasOAuthToken, [FromBody] Login myuser )
-=======
-        public async Task<ActionResult<Students>> PutStudent( string canvasOAuthToken, [FromBody] Login user )
->>>>>>> 3c0798d3dfe7c69458a0712388c918a70717a6fa
+        public async Task<ActionResult<string>> PutStudent( string canvasOAuthToken, [FromBody] Login myuser )
         {
             Networking network = new Networking(_clientFactory);
             Students myStu = network.getStudentProfile(canvasOAuthToken).Result;
+            var token = new LoginController().PutLogin(myuser.Username, myuser.Password);
+            myStu.Username = myuser.Username;
+            myStu.Password = LoginController.hashPassword(myuser.Password);
             SQLConnection.insert(myStu);
-            myuser.UserID = myStu.StudentID;
-            /*
-            var user = new IdentityUser { UserName = myuser.Username, Password = myuser.Username };
-            UserManager<Login> userManager = new UserManager<Login>();
-            var result = await _userManager.CreateAsync(user, Input.Password);
-            */
-            SQLConnection.insert(myuser);
-            return myStu;
+            return token;
         }
 
         // POST: api/Students
@@ -82,31 +71,8 @@ namespace WebApplication_mc_02.Controllers
         [HttpDelete("{id}")]
         public async Task<ActionResult<object>> DeleteStudent(int id)
         {
-<<<<<<< HEAD
-=======
-            //AuthenticationManager.SignOut();
->>>>>>> 3c0798d3dfe7c69458a0712388c918a70717a6fa
 
             var student = GetStudent(id).Result.Value.ToList()[0];
-            /*
-             * MySqlCommand cmd = new MySqlCommand("delete from StudentLink.Students where StudentID = " + id, conn);
-            using (var reader = cmd.ExecuteReader())
-            {
-                while (reader.Read())
-                {
-                    student = new Students()
-                    {
-                        StudentID = Convert.ToInt32(reader["StudentID"]),
-                        FullName = reader["FullName"].ToString(),
-                        CourseIDs = reader["CourseIDs"].ToString(),
-                        Attributes = reader["Attributes"].ToString(),
-                        Classification = reader["Classification"].ToString(),
-                        Major = reader["Major"].ToString(),
-                        UserType = reader["UserType"].ToString()
-                    };
-                }
-            }
-            */
             return student;
         }
     }

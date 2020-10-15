@@ -32,7 +32,6 @@ namespace WebApplication_mc_02.Controllers
                     var @switch = new Dictionary<Type, Action> {
                     { typeof(String), () => query += $"{property.Name} = '{property.GetValue(data)}'" },
                     { typeof(Int32), () => query += $"{property.Name} = {property.GetValue(data)}" },
-                    { typeof(Boolean), () => query += $"{property.Name} = {property.GetValue(data)}" },
                 };
                     @switch[property.PropertyType]();
                     query += ", ";
@@ -72,7 +71,6 @@ namespace WebApplication_mc_02.Controllers
                     { typeof(String), () => query += "'"+ property.GetValue(data) + "'" },
                     { typeof(Int32), () => query += property.GetValue(data) },
                     { typeof(Int64), () => query += property.GetValue(data) },
-                    { typeof(Boolean), () => query +=  Convert.ToBoolean(property.GetValue(data)) },
                 };
                     @typeSwitch[property.PropertyType]();
                     query += ", ";
@@ -101,7 +99,7 @@ namespace WebApplication_mc_02.Controllers
         /// <param name="column">a string that represents the property of the given type and returns the column of that database. If null it assumes all columns</param>
         /// <param name="filter">a where clause that filters the values to be returned from the database</param>
         /// <returns>a generic list of the given type</returns>
-        public static List<dynamic> get(Type type, string column="*", string filter = "")
+        public static List<dynamic> get(Type type, string filter = "", string column = "*")
         {
             using (MySqlConnection conn = new MySqlConnection("server=coms-309-mc-02.cs.iastate.edu;port=3306;database=StudentLink;user=root;password=46988c18374d9b7d;"))
             {
