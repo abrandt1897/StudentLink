@@ -5,9 +5,9 @@ using System.Threading.Tasks;
 
 namespace WebApplication_mc_02.Models.DTO
 {
-    public class Student2GroupMap
+    public class Student2ChatMap
     {
         public int StudentID { get; set; }
-        public int GroupID { get; set; }
+        public int ChatID { get; set; }
     }
 }

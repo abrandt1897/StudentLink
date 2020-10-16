@@ -37,7 +37,7 @@ namespace WebApplication_mc_02.Controllers
         public async Task<ActionResult<IEnumerable<object>>> GetStudent(int id)
         {
             List<dynamic> student = new List<dynamic>();
-            student = SQLConnection.get(typeof(Students), "WHERE StudentID = " + id);
+            student = SQLConnection.get(typeof(Students), "WHERE StudentID = " + id)[0];
             return student;
         }
         // PUT: api/Students/{canvasOAuthToken}

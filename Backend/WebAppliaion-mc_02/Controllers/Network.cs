@@ -90,8 +90,13 @@ namespace WebApplication_mc_02.Controllers
             //Insert into table
             for (int i = 0; i < courses.Count; i++)
             {
-
+                Student2CourseMap s2cm = new Student2CourseMap();
+                s2cm.CourseID = courses[i].CourseID;
+                s2cm.StudentID = myStu.StudentID;
+                s2cm.UserType = "student";
+                s2cm.CurrentlyEnrolled = true;
                 SQLConnection.insert(courses[i]);
+                SQLConnection.insert(s2cm);
             }
             return myStu;
         }

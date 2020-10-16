@@ -34,6 +34,10 @@ namespace WebApplication_mc_02
             services.AddControllers();
             services.AddHttpClient();
             services.AddDbContext<StudentContext>(options => options.UseSqlServer(Configuration.GetConnectionString("StudentContext")));
+            services.AddSession(options => {
+                options.IdleTimeout = TimeSpan.FromMinutes(1);//You can set Time
+            });
+            services.AddMvc();
             //Provide a secret key to Encrypt and Decrypt the Token
             var SecretKey = Encoding.ASCII.GetBytes("YuurKey-2374-OFFKDI94LMAO:56753253-yeet-6969-0420-kfirox29zoxv");
 
@@ -110,6 +114,8 @@ namespace WebApplication_mc_02
             app.UseAuthentication();
 
             //app.UseHttpsRedirection();//////////////////////////////////////redirection 
+
+            app.UseSession();
 
             app.UseRouting();
 

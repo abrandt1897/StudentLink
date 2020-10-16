@@ -99,7 +99,7 @@ namespace WebApplication_mc_02.Controllers
         /// <param name="column">a string that represents the property of the given type and returns the column of that database. If null it assumes all columns</param>
         /// <param name="filter">a where clause that filters the values to be returned from the database</param>
         /// <returns>a generic list of the given type</returns>
-        public static List<dynamic> get(Type type, string filter = "", string column = "*")
+        public static List<dynamic> get(Type type, string filter = "", string column = "*")//TODO change the filter and the column to take in a variable of the type.
         {
             using (MySqlConnection conn = new MySqlConnection("server=coms-309-mc-02.cs.iastate.edu;port=3306;database=StudentLink;user=root;password=46988c18374d9b7d;"))
             {
@@ -129,6 +129,46 @@ namespace WebApplication_mc_02.Controllers
                 }
                 //conn.Close();
                 return list;
+            }
+        }
+        public static string get(string query)
+        {
+            using (MySqlConnection conn = new MySqlConnection("server=coms-309-mc-02.cs.iastate.edu;port=3306;database=StudentLink;user=root;password=46988c18374d9b7d;"))
+            {
+                conn.Open();
+                string obj = "";
+
+                MySqlCommand cmd = new MySqlCommand(query, conn);
+
+                using (var reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        var value = reader.GetName(0);
+                        var value2 = reader.GetString(value);
+                        obj += reader.ToString()+" ";
+                    }
+                }
+                return obj;
+            }
+        }
+
+        public static dynamic insert(string query)
+        {
+            using (MySqlConnection conn = new MySqlConnection("server=coms-309-mc-02.cs.iastate.edu;port=3306;database=StudentLink;user=root;password=46988c18374d9b7d;"))
+            {
+                conn.Open();
+                MySqlCommand cmd = new MySqlCommand(query, conn);
+                try
+                {
+                    cmd.ExecuteReader();
+                }
+                catch (Exception e)
+                {
+                    Debug.WriteLine(e.Message.ToString());
+                    return false;
+                }
+                return true;
             }
         }
     }

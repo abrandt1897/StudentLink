@@ -56,12 +56,13 @@ namespace WebApplication_mc_02.Controllers
         [HttpPut]
         public ActionResult<string> PutLogin([FromBody] Login user)
         {
-            Students student = SQLConnection.get(typeof(Students), $"Username={user.Username}")[0];
+            Students student = SQLConnection.get(typeof(Students), $"WHERE Username='{user.Username}'")[0];
 
             //Authenticate User, Check if it’s a registered user in Database
             if (user == null)
                 return null;
-            if (hashPassword(user.Password) == student.Password)
+            string hashedPasswd = hashPassword(user.Password);
+            if (hashedPasswd == student.Password)
             {
                 //Authentication successful, Issue Token with user credentials
                 //Provide the security key which was given in the JWToken configuration in Startup.cs
@@ -91,7 +92,7 @@ namespace WebApplication_mc_02.Controllers
             }
             string hashedPW = Convert.ToBase64String(KeyDerivation.Pbkdf2(
                 password: Password,
-                salt: salt,
+                salt: new byte[1],
                 prf: KeyDerivationPrf.HMACSHA1,
                 iterationCount: 10000,
                 numBytesRequested: 256 / 8));
