@@ -32,12 +32,13 @@ public class CreateAccountLogic extends AbstractLogic {
         userLoginData.put("Username", username);
         userLoginData.put("Password", password);
 //        connectionClass.putRequest(userLoginData,databaseName); // TODO: Uncomment for real functionality
-//        if(!connectionClass.getResponse().equals("Ok")){
-//            return "";
-//        }
-//        else{
+        if(connectionClass.getResponse().equals("Ok")){ // TODO: Add ! for real functionality
+            return "";
+        }
+        else{
             navigateToWebView(theActivity.getApplicationContext(), CanvasWebview.class, username, password);
-//        }
-        return null;
+            return "Ok";
+        }
+
     }
 }

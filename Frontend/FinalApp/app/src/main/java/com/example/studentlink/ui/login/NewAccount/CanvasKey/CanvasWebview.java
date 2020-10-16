@@ -6,6 +6,7 @@ import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.webkit.CookieManager;
 import android.webkit.WebView;
@@ -48,10 +49,7 @@ public class CanvasWebview extends AppCompatActivity {
         webview.getSettings().setLoadWithOverviewMode(true);
         webview.getSettings().setUseWideViewPort(true);
 
-
         // TODO: look into Jsoup and CookieManager.getInstance().setAcceptCookie(true); and WebViewClient
-
-
         webview.setWebViewClient(new WebViewClient(){
 
             @Override
@@ -71,20 +69,23 @@ public class CanvasWebview extends AppCompatActivity {
         doneButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // TODO: Need to error check for an incorrect CanvasToken or empty
+                if(TextUtils.isEmpty(CanvasToken.getText().toString())){
+                    CanvasToken.setError("Please enter a Canvas Token.");
+                    return;
+                }
                 String databaseName = "api/Students/" + CanvasToken.getText().toString();
                 String ResponseForAGoodLogin = "Ok";
                 Map<String,String> userLoginData = new HashMap<String,String>();
                 userLoginData.put("Username",username);
                 userLoginData.put("Password",password);
-                connectionClass.putRequest(userLoginData,databaseName);
-                if(!connectionClass.getResponse().equals(ResponseForAGoodLogin)){
+//                connectionClass.putRequest(userLoginData,databaseName); // TODO: Uncomment for real functionality
+                if(connectionClass.getResponse().equals(ResponseForAGoodLogin)){ // TODO: Add ! for real functionality
                     CanvasToken.setError("Your Canvas Token is incorrect.");
                     return;
                 }
                 else{
                     Toast.makeText(context,"Congrats you made your account!", Toast.LENGTH_LONG).show();
-                    // MoveToHome();
+                    // MoveToHome(); // TODO: Uncomment for real functionality
                 }
             }
         });
