@@ -14,14 +14,6 @@ namespace WebApplication_mc_02.Controllers
     [ApiController]
     public class ChatsController : ControllerBase
     {
-        private readonly StudentContext DB;
-        private readonly IHttpClientFactory _clientFactory;
-        private MySqlConnection conn;
-        public ChatsController(IHttpClientFactory clientFactory)
-        {
-            _clientFactory = clientFactory;
-        }
-
         // GET: api/Students
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Chats>>> GetChat()
@@ -37,17 +29,19 @@ namespace WebApplication_mc_02.Controllers
         public async Task<ActionResult<Chats>> GetChat(int id)
         {
             List<dynamic> chat = new List<dynamic>();
-            chat = SQLConnection.get(typeof(Students), "WHERE StudentID = " + id);
+            chat = SQLConnection.get(typeof(Chats), "WHERE ChatID = " + id);
             if (chat.Count == 0)
-                return Ok();
+                return BadRequest("theres no chat under that id");
             return Ok(chat);
         }
         // PUT: api/Students/5
         [HttpPut]
         public async Task<ActionResult<Chats>> PutChat([FromBody] int[] studIDs)
         {
-            string query = $"SELECT MAX(ChatID) FROM StudentLink.Chats";
-            string result = SQLConnection.get(query);
+            string query = "SELECT MAX(ChatID) FROM StudentLink.Student2ChatMap";
+            object result = SQLConnection.get(query);
+            if (result.ToString() == "")
+                result = "0";
             foreach (int stuID in studIDs)
             {
                 Student2ChatMap s2cm = new Student2ChatMap();
@@ -55,14 +49,16 @@ namespace WebApplication_mc_02.Controllers
                 s2cm.StudentID = stuID;
                 SQLConnection.insert(s2cm);
             }
-            return Ok(result);
+            return Ok(Convert.ToInt32(result) + 1);
         }
 
         // POST: api/Students/
         [HttpPost]
-        public async Task<ActionResult<Chats>> PostChat(Chats chat)//TODO this method will allow users to add a message to the database
+        public async Task<ActionResult<Chats>> PostChat([FromBody] Chats chat)//TODO this method will allow users to add a message to the database
         {
-            SQLConnection.insert(chat);//TODO CHECK IF THE DATA IS CLEAN
+            if (SQLConnection.get(typeof(Student2ChatMap), $"WHERE ChatID={chat.ChatID} and StudentID={chat.SenderID}").Count < 1)
+                return BadRequest("your not allowed to send data in this chat");
+            SQLConnection.insert(chat); //TODO CHECK IF THE DATA IS CLEAN AND SANITIZED
             return Ok(chat);
         }
 
@@ -70,11 +66,10 @@ namespace WebApplication_mc_02.Controllers
         [HttpDelete("{id}")]
         public async Task<ActionResult<Chats>> DeleteChat(int id)
         {
-            Chats chat = SQLConnection.get(typeof(Chats), $"WHERE ChatID = {id}")[0];
-            Chats updateChat = new Chats();
-            updateChat.ChatID = id;
-            SQLConnection.update(updateChat);
-            return chat;
+            var chat = SQLConnection.get(typeof(Chats), $"WHERE ChatID = {id}")[0];
+            if (SQLConnection.delete(chat))
+                return Ok(chat);
+            return BadRequest("sum went wrong, idk");
         }
     }
 }

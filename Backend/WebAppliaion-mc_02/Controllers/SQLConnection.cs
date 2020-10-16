@@ -131,22 +131,45 @@ namespace WebApplication_mc_02.Controllers
                 return list;
             }
         }
-        public static string get(string query)
+
+        public static bool delete(dynamic data)
+        {
+            using (MySqlConnection conn = new MySqlConnection("server=coms-309-mc-02.cs.iastate.edu;port=3306;database=StudentLink;user=root;password=46988c18374d9b7d;"))
+            {
+                conn.Open();
+
+                string query = $"delete from StudentLink.{data.GetType().Name}";
+
+                var property = data.GetType().GetProperties()[0];
+                query += $" where {property.Name}={property.GetValue(data)};";
+
+                MySqlCommand cmd = new MySqlCommand(query, conn);
+
+                try
+                {
+                    cmd.ExecuteReader();
+                }
+                catch (Exception e) { 
+                    Debug.WriteLine(e.Message.ToString());
+                    return false;
+                }
+                return true;
+            }
+        }
+
+        public static dynamic get(string query)
         {
             using (MySqlConnection conn = new MySqlConnection("server=coms-309-mc-02.cs.iastate.edu;port=3306;database=StudentLink;user=root;password=46988c18374d9b7d;"))
             {
                 conn.Open();
                 string obj = "";
-
                 MySqlCommand cmd = new MySqlCommand(query, conn);
 
                 using (var reader = cmd.ExecuteReader())
                 {
                     while (reader.Read())
                     {
-                        var value = reader.GetName(0);
-                        var value2 = reader.GetString(value);
-                        obj += reader.ToString()+" ";
+                        return reader.GetValue(0);
                     }
                 }
                 return obj;

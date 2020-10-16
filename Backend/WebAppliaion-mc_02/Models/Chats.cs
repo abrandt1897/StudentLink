@@ -10,7 +10,7 @@ namespace WebApplication_mc_02.Models
     {
         [Key]
         public int ChatID { get; set; }
-        public int Sender { get; set; }
+        public int SenderID { get; set; }
         public string Data { get; set; }
     }
 }

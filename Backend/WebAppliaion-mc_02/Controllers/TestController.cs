@@ -43,7 +43,7 @@ namespace WebApplication_mc_02.Controllers
             {
                 ChatID = 420,
                 Data = "yeet",
-                Sender = 69
+                SenderID = 69
             };
             return JsonConvert.SerializeObject(std);
 
