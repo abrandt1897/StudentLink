@@ -51,7 +51,6 @@ public class CanvasWebview extends AppCompatActivity {
 
         // TODO: look into Jsoup and CookieManager.getInstance().setAcceptCookie(true); and WebViewClient
         webview.setWebViewClient(new WebViewClient(){
-
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
                 progDailog.show();
@@ -74,12 +73,11 @@ public class CanvasWebview extends AppCompatActivity {
                     return;
                 }
                 String databaseName = "api/Students/" + CanvasToken.getText().toString();
-                String ResponseForAGoodLogin = "Ok";
                 Map<String,String> userLoginData = new HashMap<String,String>();
                 userLoginData.put("Username",username);
                 userLoginData.put("Password",password);
 //                connectionClass.putRequest(userLoginData,databaseName); // TODO: Uncomment for real functionality
-                if(connectionClass.getResponse().equals(ResponseForAGoodLogin)){ // TODO: Add ! for real functionality
+                if(!connectionClass.getResponse().equals("Bad response")){ // TODO: Remove ! for real functionality
                     CanvasToken.setError("Your Canvas Token is incorrect.");
                     return;
                 }

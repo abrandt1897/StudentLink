@@ -118,6 +118,7 @@ public class ConnectionClass extends AppCompatActivity {
                 {
                     @Override
                     public void onErrorResponse(VolleyError error) {
+                        serverResponse = "Bad Response";
                         // error
                         //Log.d("Error.Response", response);
                     }

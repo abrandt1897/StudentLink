@@ -27,12 +27,12 @@ public class CreateAccountLogic extends AbstractLogic {
 
     @Override
     public String checkCredentials(String username, String password) {
-        String databaseName = "Login";
+        String databaseName = "Students";
         Map<String,String> userLoginData = new HashMap<String,String>();
         userLoginData.put("Username", username);
         userLoginData.put("Password", password);
-//        connectionClass.putRequest(userLoginData,databaseName); // TODO: Uncomment for real functionality
-        if(connectionClass.getResponse().equals("Ok")){ // TODO: Add ! for real functionality
+        connectionClass.putRequest(userLoginData,databaseName);
+        if(!connectionClass.getResponse().equals("No student under that username")){
             return "";
         }
         else{

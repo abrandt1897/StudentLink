@@ -12,8 +12,10 @@ import android.widget.EditText;
 import android.widget.TextView;
 import com.example.studentlink.ConnectionClass;
 import com.example.studentlink.R;
+import com.example.studentlink.ui.login.ILogic;
 import com.example.studentlink.ui.login.NewAccount.CanvasKey.CanvasWebview;
 import com.example.studentlink.ui.login.NewAccount.Logic.CreateAccountLogic;
+import com.example.studentlink.ui.login.NewAccount.Logic.MockCreateAccountLogic;
 
 public class CreateAccount extends AppCompatActivity {
 
@@ -22,7 +24,7 @@ public class CreateAccount extends AppCompatActivity {
     private EditText password;
     private TextView LoginText;
     private TextView ErrorText;
-    private CreateAccountLogic logic;
+    private ILogic logic;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,7 +37,7 @@ public class CreateAccount extends AppCompatActivity {
         LoginText = findViewById(R.id.LoginText);
         LoginText.setText("Welcome to StudentLink! Please create an account.");
         ErrorText = findViewById(R.id.CreateAccountErrorText);
-        logic = new CreateAccountLogic(this);
+        logic = new MockCreateAccountLogic(this); // TODO: Remove Mock
 
 
         Context c = this;

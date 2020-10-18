@@ -13,14 +13,13 @@ public class LoginLogic extends AbstractLogic {
         super(activity);
     }
 
-
     @Override
     public String checkCredentials(String username, String password) {
         String databaseName = "api/Login";
         Map<String,String> userLoginData = new HashMap<String,String>();
         userLoginData.put("Username",username);
         userLoginData.put("Password",password);
-//        connectionClass.putRequest(userLoginData,databaseName); // TODO: Uncomment for real functionality
+        connectionClass.putRequest(userLoginData,databaseName);
 
         if(!connectionClass.getResponse().equals("Ok")){
             return "";
@@ -28,7 +27,6 @@ public class LoginLogic extends AbstractLogic {
         else{
             moveToHome();
         }
-
         return null;
     }
 }

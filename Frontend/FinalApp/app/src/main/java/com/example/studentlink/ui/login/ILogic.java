@@ -5,8 +5,7 @@ import android.content.Intent;
 
 public interface ILogic {
 
-    public void moveToHome();
-    public String checkCredentials(String username, String password);
-    public void navigateToNewActivity(Context context, Class moveToThisClass);
+    void moveToHome();
+    String checkCredentials(String username, String password);
 
 }

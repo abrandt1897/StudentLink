@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.studentlink.R;
 import com.example.studentlink.ui.login.ILogic;
 import com.example.studentlink.ui.login.SignIn.Logic.LoginLogic;
+import com.example.studentlink.ui.login.SignIn.Logic.MockLoginLogic;
 
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -35,7 +36,7 @@ public class LoginActivity extends AppCompatActivity {
         username = findViewById(R.id.LoginUsername);
         password = findViewById(R.id.LoginPassword);
         ErrorText = findViewById(R.id.ShowErrorText);
-        logic = new LoginLogic(this);
+        logic = new MockLoginLogic(this); // TODO: Change to LoginLogic for actual put request
 
         LoginUserButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -51,7 +52,6 @@ public class LoginActivity extends AppCompatActivity {
                     if(!message.equals("Ok")){
                         ErrorText.setText("Incorrect username or password");
                     }
-
                 }
             }
         });

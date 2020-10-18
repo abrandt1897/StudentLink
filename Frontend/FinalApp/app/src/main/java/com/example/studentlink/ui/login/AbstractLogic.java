@@ -1,8 +1,5 @@
 package com.example.studentlink.ui.login;
 
-import android.content.Context;
-import android.content.Intent;
-
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -10,8 +7,6 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.example.studentlink.ConnectionClass;
 import com.example.studentlink.R;
-import com.example.studentlink.ui.login.NewAccount.CreateAccount;
-import com.example.studentlink.ui.login.SignIn.LoginActivity;
 import com.example.studentlink.ui.splash.SplashFragment;
 
 public class AbstractLogic implements ILogic{
@@ -45,12 +40,6 @@ public class AbstractLogic implements ILogic{
     @Override
     public String checkCredentials(String username, String password) {
         return null;
-    }
-
-    @Override
-    public void navigateToNewActivity(Context context, Class moveToThisClass) {
-        Intent intent = new Intent(context, moveToThisClass);
-        theActivity.startActivity(intent);
     }
 
 
