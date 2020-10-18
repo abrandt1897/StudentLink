@@ -71,6 +71,7 @@ namespace WebApplication_mc_02.Controllers
                     { typeof(String), () => query += "'"+ property.GetValue(data) + "'" },
                     { typeof(Int32), () => query += property.GetValue(data) },
                     { typeof(Int64), () => query += property.GetValue(data) },
+                    { typeof(bool), () => query += property.GetValue(data) },
                 };
                     @typeSwitch[property.PropertyType]();
                     query += ", ";

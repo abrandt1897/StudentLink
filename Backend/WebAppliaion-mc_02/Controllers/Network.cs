@@ -61,6 +61,7 @@ namespace WebApplication_mc_02.Controllers
             myStu.Classification = classification;
             myStu.Major = major;
             myStu.StudentID = Int32.Parse(studentID);
+            myStu.Role = "Student";
 
             List<Courses> courses = new List<Courses>();
             foreach (JsonObject jsonObject in courseJsonResponse)
@@ -93,7 +94,7 @@ namespace WebApplication_mc_02.Controllers
                 Student2CourseMap s2cm = new Student2CourseMap();
                 s2cm.CourseID = courses[i].CourseID;
                 s2cm.StudentID = myStu.StudentID;
-                s2cm.UserType = "student";
+                s2cm.UserType = "Student";
                 s2cm.CurrentlyEnrolled = true;
                 SQLConnection.insert(courses[i]);
                 SQLConnection.insert(s2cm);

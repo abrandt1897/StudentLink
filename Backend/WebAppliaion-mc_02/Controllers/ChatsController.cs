@@ -7,6 +7,9 @@ using WebApplication_mc_02.Models;
 using System.Net.Http;
 using MySql.Data.MySqlClient;
 using WebApplication_mc_02.Models.DTO;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.EntityFrameworkCore.Query;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 namespace WebApplication_mc_02.Controllers
 {
@@ -16,6 +19,7 @@ namespace WebApplication_mc_02.Controllers
     {
         // GET: api/Students
         [HttpGet]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Student,Admin,Host")]
         public async Task<ActionResult<IEnumerable<Chats>>> GetChat()
         {
             List<dynamic> list = new List<dynamic>();
@@ -26,6 +30,7 @@ namespace WebApplication_mc_02.Controllers
 
         // GET: api/Students/5
         [HttpGet("{id}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Student,Admin,Host")]
         public async Task<ActionResult<Chats>> GetChat(int id)
         {
             List<dynamic> chat = new List<dynamic>();
@@ -36,6 +41,7 @@ namespace WebApplication_mc_02.Controllers
         }
         // PUT: api/Students/5
         [HttpPut]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Student,Admin,Host")]
         public async Task<ActionResult<Chats>> PutChat([FromBody] int[] studIDs)
         {
             string query = "SELECT MAX(ChatID) FROM StudentLink.Student2ChatMap";
@@ -54,12 +60,14 @@ namespace WebApplication_mc_02.Controllers
 
         // POST: api/Students/
         [HttpPost]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Student,Admin,Host")]
         public async Task<ActionResult<Chats>> PostChat([FromBody] Chats chat)//TODO this method will allow users to add a message to the database
         {
             if (SQLConnection.get(typeof(Student2ChatMap), $"WHERE ChatID={chat.ChatID} and StudentID={chat.SenderID}").Count < 1)
                 return BadRequest("your not allowed to send data in this chat");
-            SQLConnection.insert(chat); //TODO CHECK IF THE DATA IS CLEAN AND SANITIZED
-            return Ok(chat);
+            if(SQLConnection.insert(chat)) //TODO CHECK IF THE DATA IS CLEAN AND SANITIZED
+                return Ok(chat);
+            return BadRequest();
         }
 
         // DELETE: api/Students/5
@@ -70,6 +78,14 @@ namespace WebApplication_mc_02.Controllers
             if (SQLConnection.delete(chat))
                 return Ok(chat);
             return BadRequest("sum went wrong, idk");
+        }
+        public async static Task<List<dynamic>> GetNotifications(int StudentID)
+        {
+            List<dynamic> notifications = new List<dynamic>();
+            notifications = SQLConnection.get(typeof(Notifications), "WHERE StudentID = " + StudentID);
+            if (notifications.Count == 0)
+                return null;
+            return notifications;
         }
     }
 }

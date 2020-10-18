@@ -15,6 +15,8 @@ using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.AspNetCore.Http;
 using WebApplication_mc_02.Models.DTO;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -27,6 +29,7 @@ namespace WebApplication_mc_02.Controllers
     {
         // GET: api/<LoginController>
         [HttpGet]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
         public IEnumerable<string> Get()
         {
             return new string[] { "no" };
@@ -34,14 +37,15 @@ namespace WebApplication_mc_02.Controllers
 
         // GET api/<LoginController>/5
         [HttpGet("{id}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
         public string Get(int id)
         {
             return "maybe";
         }
 
         // POST api/<LoginController>
-        [HttpPost("{myLogin}")]
-        public ActionResult<string> PostLogin(Login user)
+        [HttpPost]
+        public ActionResult<string> PostLogin([FromBody] Login user)
         {
             return PutLogin(user);
         }
@@ -60,7 +64,7 @@ namespace WebApplication_mc_02.Controllers
 
             //Authenticate User, Check if it’s a registered user in Database
             if (user == null)
-                return null;
+                return "No student under that username";
             string hashedPasswd = hashPassword(user.Password);
             if (hashedPasswd == student.Password)
             {
@@ -80,8 +84,8 @@ namespace WebApplication_mc_02.Controllers
                 var token = new JwtSecurityTokenHandler().WriteToken(JWToken);
                 HttpContext.Session.SetString("JWToken", token);
                 return token;
-            }
-            return null;
+            }else
+                return "Wrong Password";
         }
         public static string hashPassword(string Password)
         {
@@ -100,6 +104,7 @@ namespace WebApplication_mc_02.Controllers
         }
         // DELETE api/<LoginController>/5
         [HttpDelete("{id}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Student,TA,Admin")]
         public void Delete(string id)
         {
             HttpContext.Session.Remove(id);

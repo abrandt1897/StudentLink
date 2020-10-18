@@ -9,6 +9,7 @@ using MySql.Data.MySqlClient;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using WebApplication_mc_02.Models.DTO;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 namespace WebApplication_mc_02.Controllers
 {
@@ -51,14 +52,16 @@ namespace WebApplication_mc_02.Controllers
             Students myStu = network.getStudentProfile(canvasOAuthToken).Result;
             myStu.Username = myuser.Username;
             myStu.Password = LoginController.hashPassword(myuser.Password);
-            _ = SQLConnection.insert(myStu);
-            return myStu;
+            if(SQLConnection.insert(myStu))
+                return Ok(myStu);
+            return BadRequest("try being gud");
         }
 
         // POST: api/Students
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see https://aka.ms/RazorPagesCRUD.
         [HttpPost]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Student,Admin,Host")]
         public async Task<ActionResult<Students>> PostStudent([FromBody] Students myStu)
         {
             SQLConnection.update(myStu);
@@ -67,11 +70,13 @@ namespace WebApplication_mc_02.Controllers
 
         // DELETE: api/Students/5
         [HttpDelete("{id}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Student,Admin,Host")]
         public async Task<ActionResult<object>> DeleteStudent(int id)
         {
-
-            var student = GetStudent(id).Result.Value.ToList()[0];
-            return student;
+            var student = SQLConnection.get(typeof(Students), $"WHERE StudentID = {id}")[0];
+            if (SQLConnection.delete(student))
+                return Ok(student);
+            return BadRequest("sum went wrong, idk");
         }
     }
 }
