@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.graphics.Canvas;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -15,15 +16,17 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.example.studentlink.ConnectionClass;
+import com.example.studentlink.ui.login.ILogic;
+import com.example.studentlink.ui.login.NewAccount.Logic.CanvasLogic;
 import com.example.studentlink.R;
 
-import java.util.HashMap;
-import java.util.Map;
 
 public class CanvasWebview extends AppCompatActivity {
 
     private WebView webview;
+    private ILogic logic;
+    private EditText CanvasToken;
+    private Button doneButton;
 
     private ProgressDialog progDailog;
 
@@ -33,12 +36,11 @@ public class CanvasWebview extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_canvas_webview);
 
-        Button doneButton = findViewById(R.id.doneButton);
-        EditText CanvasToken = findViewById(R.id.CanvasToken);
-        ConnectionClass connectionClass = new ConnectionClass(this.getApplicationContext());
-        Context context = this;
+        doneButton = findViewById(R.id.doneButton);
+        CanvasToken = findViewById(R.id.CanvasToken);
         String username = getIntent().getExtras().getString("Username");
         String password = getIntent().getExtras().getString("Password");
+        logic = new CanvasLogic(this);
 
         progDailog = ProgressDialog.show(this, "Loading","Please wait...", true);
         progDailog.setCancelable(false);
@@ -50,12 +52,12 @@ public class CanvasWebview extends AppCompatActivity {
         webview.getSettings().setUseWideViewPort(true);
 
         // TODO: look into Jsoup and CookieManager.getInstance().setAcceptCookie(true); and WebViewClient
+
         webview.setWebViewClient(new WebViewClient(){
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
                 progDailog.show();
                 view.loadUrl(url);
-
                 return true;
             }
             @Override
@@ -72,19 +74,10 @@ public class CanvasWebview extends AppCompatActivity {
                     CanvasToken.setError("Please enter a Canvas Token.");
                     return;
                 }
-                String databaseName = "api/Students/" + CanvasToken.getText().toString();
-                Map<String,String> userLoginData = new HashMap<String,String>();
-                userLoginData.put("Username",username);
-                userLoginData.put("Password",password);
-//                connectionClass.putRequest(userLoginData,databaseName); // TODO: Uncomment for real functionality
-                if(!connectionClass.getResponse().equals("Bad response")){ // TODO: Remove ! for real functionality
-                    CanvasToken.setError("Your Canvas Token is incorrect.");
-                    return;
-                }
-                else{
-                    Toast.makeText(context,"Congrats you made your account!", Toast.LENGTH_LONG).show();
-                    // MoveToHome(); // TODO: Uncomment for real functionality
-                }
+                logic.setToken(CanvasToken.getText().toString());
+                logic.checkCredentials(username, password);
+                // error checking???
+
             }
         });
 

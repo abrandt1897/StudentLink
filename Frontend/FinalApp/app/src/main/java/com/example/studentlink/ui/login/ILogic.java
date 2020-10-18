@@ -4,8 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 
 public interface ILogic {
-
     void moveToHome();
     String checkCredentials(String username, String password);
-
+    void setToken(String token);
 }

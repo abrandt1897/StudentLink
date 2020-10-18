@@ -6,7 +6,9 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.example.studentlink.ConnectionClass;
+import com.example.studentlink.PageController;
 import com.example.studentlink.R;
+import com.example.studentlink.ui.home.HomeFragment;
 import com.example.studentlink.ui.splash.SplashFragment;
 
 public class AbstractLogic implements ILogic{
@@ -21,16 +23,16 @@ public class AbstractLogic implements ILogic{
 
     @Override
     public void moveToHome() {
-        Fragment fragment = new SplashFragment();
-        FragmentManager fragmentManager = theActivity.getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.nav_view, fragment); // drawer_layout
-        fragmentTransaction.addToBackStack(null);
+//        Fragment fragment = new SplashFragment();
+//        FragmentManager fragmentManager = theActivity.getSupportFragmentManager();
+//        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+//        fragmentTransaction.replace(R.id.nav_view, fragment); // drawer_layout
+//        fragmentTransaction.addToBackStack(null);
+//        fragmentTransaction.commit();
 //        setContentView(R.layout.controller_layout);
-        fragmentTransaction.commit();
-//        PageController pc = new PageController();
-//        pc.startActivity(new HomeFragment().getActivity().getIntent());
-//        pc.navigateUpTo(new HomeFragment().getActivity().getIntent());
+        PageController pc = new PageController();
+        pc.startActivity(new HomeFragment().getActivity().getIntent());
+        pc.navigateUpTo(new HomeFragment().getActivity().getIntent());
 //        Intent i = pc.getIntent();
 //        pc.startActivity(new HomeFragment().getActivity().getIntent());
 //        pc.navigateUpTo(new HomeFragment().getActivity().getIntent());
@@ -42,5 +44,8 @@ public class AbstractLogic implements ILogic{
         return null;
     }
 
+    @Override
+    public void setToken(String token) {
+    }
 
 }
