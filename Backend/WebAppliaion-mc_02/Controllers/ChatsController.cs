@@ -10,6 +10,7 @@ using WebApplication_mc_02.Models.DTO;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore.Query;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using System.Collections;
 
 namespace WebApplication_mc_02.Controllers
 {
@@ -36,26 +37,17 @@ namespace WebApplication_mc_02.Controllers
             List<dynamic> chat = new List<dynamic>();
             chat = SQLConnection.get(typeof(Chats), "WHERE ChatID = " + id);
             if (chat.Count == 0)
-                return BadRequest("theres no chat under that id");
+                return BadRequest("There's no chat under that id");
             return Ok(chat);
         }
         // PUT: api/Students/5
         [HttpPut]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Student,Admin,Host")]
-        public async Task<ActionResult<Chats>> PutChat([FromBody] int[] studIDs)
+        public async Task<ActionResult<Chats>> PutGroupChat([FromBody] int studIDs)
         {
-            string query = "SELECT MAX(ChatID) FROM StudentLink.Student2ChatMap";
-            object result = SQLConnection.get(query);
-            if (result.ToString() == "")
-                result = "0";
-            foreach (int stuID in studIDs)
-            {
-                Student2ChatMap s2cm = new Student2ChatMap();
-                s2cm.ChatID = Convert.ToInt32(result)+1;
-                s2cm.StudentID = stuID;
-                SQLConnection.insert(s2cm);
-            }
-            return Ok(Convert.ToInt32(result) + 1);
+            
+            var result = makeGroupChat(groupAlgorithm(studIDs));
+            return Ok("ChatID: "+Convert.ToInt32(result) + 1);
         }
 
         // POST: api/Students/
@@ -86,6 +78,38 @@ namespace WebApplication_mc_02.Controllers
             if (notifications.Count == 0)
                 return null;
             return notifications;
+        }
+
+        private int makeGroupChat(int[] studIDs){
+            string query = "SELECT MAX(ChatID) FROM StudentLink.Student2ChatMap";
+            object result = SQLConnection.get(query);
+            if (result.ToString() == "")
+                result = "0";
+            foreach (int stuID in studIDs)
+            {
+                Student2ChatMap s2cm = new Student2ChatMap();
+                s2cm.ChatID = Convert.ToInt32(result)+1;
+                s2cm.StudentID = stuID;
+                SQLConnection.insert(s2cm);
+            }
+            return Convert.ToInt32(result)+1;
+        }
+
+        private int[] groupAlgorithm(int StudentID){
+            Hashtable Student2Course = new Hashtable();
+            var courseList = SQLConnection.get(typeof(Student2CourseMap), $"WHERE StudentID={StudentID}", "CourseID");
+            foreach(var course in courseList){
+                var studentList2 = SQLConnection.get(typeof(Student2CourseMap), $"WHERE courseID={course}", "StudentID");
+                foreach(var student in studentList2)
+                {
+                    if(Student2Course.Contains(student))
+                        Student2Course[student].Value += 1;
+                    else
+                        Student2Course.Add(student, 1);
+                }
+            }
+            List<int> list = new List<int>();
+            return (int[])Student2Course.Keys;
         }
     }
 }
