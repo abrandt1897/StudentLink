@@ -130,7 +130,7 @@ namespace WebApplication_mc_02
                     if (context.WebSockets.IsWebSocketRequest)
                     {
                         WebSocket webSocket = await context.WebSockets.AcceptWebSocketAsync();
-                        await Echo(context, webSocket);
+                        await websocketHandler(context, webSocket);
                     }
                     else
                     {
@@ -149,7 +149,7 @@ namespace WebApplication_mc_02
                 endpoints.MapControllers();
             });
         }
-        private async Task Echo(HttpContext context, WebSocket webSocket)
+        public async Task websocketHandler(HttpContext context, WebSocket webSocket)
         {
             int PATH_FORWARDSLASH_OFFSET = 1;
             var buffer = new byte[1024 * 4];
@@ -158,8 +158,10 @@ namespace WebApplication_mc_02
             {
                 int number = context.Request.Path.Value.LastIndexOf('/') + PATH_FORWARDSLASH_OFFSET;
                 string value = context.Request.Path.Value.Substring(number);
-                int numbererer = Convert.ToInt32(value);
-                List<dynamic> notifications = await ChatsController.GetNotifications(numbererer);
+                int StudentID = Convert.ToInt32(value);
+
+                List<dynamic> notifications = await ChatsController.GetNotifications(StudentID);
+
                 byte[] bytes2send = Encoding.UTF8.GetBytes(notifications[0].Data);
                 await webSocket.SendAsync(new ArraySegment<byte>(bytes2send), WebSocketMessageType.Text, true, CancellationToken.None);
 

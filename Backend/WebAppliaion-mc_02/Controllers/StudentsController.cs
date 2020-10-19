@@ -41,20 +41,39 @@ namespace WebApplication_mc_02.Controllers
             student = SQLConnection.get(typeof(Students), "WHERE StudentID = " + id)[0];
             return student;
         }
+
+        [HttpGet("{id}")]
+        public async Task<ActionResult<IEnumerable<object>>> GetStudent(string Username)
+        {
+            List<dynamic> student = new List<dynamic>();
+            student = SQLConnection.get(typeof(Students), $"WHERE Username = {Username}");
+            return student;
+        }
+
         // PUT: api/Students/{canvasOAuthToken}
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see https://aka.ms/RazorPagesCRUD.
         [HttpPut("{canvasOAuthToken}")]
         [AllowAnonymous]
-        public async Task<ActionResult<Students>> PutStudent( string canvasOAuthToken, [FromBody] Login myuser )
+        public async Task<ActionResult<Students>> PutStudent(string canvasOAuthToken, [FromBody] Login myuser)
         {
             Networking network = new Networking(_clientFactory);
             Students myStu = network.getStudentProfile(canvasOAuthToken).Result;
             myStu.Username = myuser.Username;
             myStu.Password = LoginController.hashPassword(myuser.Password);
-            if(SQLConnection.insert(myStu))
+            if (SQLConnection.insert(myStu))
                 return Ok(myStu);
             return BadRequest("try being gud");
+        }
+
+        [HttpPut]
+        [AllowAnonymous]
+        public async Task<ActionResult<Students>> PutFriendNotification([FromBody] Notifications noti)
+        {
+            //TODO sanitize data
+            if (SQLConnection.insert(noti))
+                return Ok(noti);
+            return BadRequest("error inserting into Notification Database");
         }
 
         // POST: api/Students
@@ -66,6 +85,18 @@ namespace WebApplication_mc_02.Controllers
         {
             SQLConnection.update(myStu);
             return CreatedAtAction("GetStudent", new { id = myStu.StudentID }, myStu);
+        }
+        //api/Students/{StudentID}
+        [HttpPost("{student}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Student,Admin,Host")]
+        public async Task<ActionResult<Students>> PostFriend(int student, [FromBody] Notifications noti)
+        {
+            Student2StudentMap friends = new Student2StudentMap();
+            friends.StudentID = student;
+            friends.FriendID = noti.StudentID;
+            if (SQLConnection.insert(friends) && SQLConnection.delete(noti))
+                return Ok(noti);
+            return BadRequest("couldnt delete or insert idk");
         }
 
         // DELETE: api/Students/5

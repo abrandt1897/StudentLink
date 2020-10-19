@@ -18,7 +18,6 @@ namespace WebApplication_mc_02.Models
         public string Attributes { get; set; }
         public string Classification { get; set; }        
         public string Major { get; set; }
-        public string Friends { get; set; }
         public string Role { get; set; }//'Student', 'TA', 'Admin'
         
         public IEnumerable<Claim> GetUserClaims()

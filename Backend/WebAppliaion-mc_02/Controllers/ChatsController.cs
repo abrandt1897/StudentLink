@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore.Query;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using System.Collections;
+using System.Threading;
 
 namespace WebApplication_mc_02.Controllers
 {
@@ -71,12 +72,24 @@ namespace WebApplication_mc_02.Controllers
                 return Ok(chat);
             return BadRequest("sum went wrong, idk");
         }
+        [HttpDelete]
+        public async Task<ActionResult<Chats>> DeleteChat()
+        {
+            var chat = SQLConnection.get(typeof(Chats))[0];
+            if (SQLConnection.delete(chat))
+                return Ok(chat);
+            return BadRequest("sum went wrong, idk");
+        }
         public async static Task<List<dynamic>> GetNotifications(int StudentID)
         {
             List<dynamic> notifications = new List<dynamic>();
-            notifications = SQLConnection.get(typeof(Notifications), "WHERE StudentID = " + StudentID);
-            if (notifications.Count == 0)
-                return null;
+            //TODO make the notification not spam the DB but only update when new data is put in (get gid)
+            do{
+                notifications = SQLConnection.get(typeof(Notifications), "WHERE StudentID = " + StudentID);
+                await Task.Delay(1000);
+            } while(notifications.Count == 0);
+            foreach (Notifications noti in notifications)
+                SQLConnection.delete(noti);
             return notifications;
         }
 
