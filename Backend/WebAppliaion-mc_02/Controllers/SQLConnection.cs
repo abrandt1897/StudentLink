@@ -32,6 +32,8 @@ namespace WebApplication_mc_02.Controllers
                     var @switch = new Dictionary<Type, Action> {
                     { typeof(String), () => query += $"{property.Name} = '{property.GetValue(data)}'" },
                     { typeof(Int32), () => query += $"{property.Name} = {property.GetValue(data)}" },
+                    { typeof(Int64), () => query += $"{property.Name} = {property.GetValue(data)}" },
+                    { typeof(bool), () => query += $"{property.Name} = {Convert.ToBoolean(property.GetValue(data))}" },
                 };
                     @switch[property.PropertyType]();
                     query += ", ";
@@ -116,14 +118,34 @@ namespace WebApplication_mc_02.Controllers
                     while (reader.Read())
                     {
                         var data = Activator.CreateInstance(type);
-                        foreach (var property in type.GetProperties())
+                        if (column == "*")
                         {
-                            var @switch = new Dictionary<Type, Action> {
-                            { typeof(String), () => property.SetValue(data, reader[property.Name].ToString()) },
-                            { typeof(Int32), () => property.SetValue(data, Convert.ToInt32(reader[property.Name])) },
-                            { typeof(bool), () => property.SetValue(data, Convert.ToBoolean(reader[property.Name])) },
-                        };
-                            @switch[property.PropertyType]();
+                            foreach (var property in type.GetProperties())
+                            {
+                                var @switch = new Dictionary<Type, Action> {
+                                    { typeof(String), () => property.SetValue(data, reader[property.Name].ToString()) },
+                                    { typeof(Int32), () => property.SetValue(data, Convert.ToInt32(reader[property.Name])) },
+                                    { typeof(Int64), () => property.SetValue(data, Convert.ToInt64(reader[property.Name])) },
+                                    { typeof(bool), () => property.SetValue(data, Convert.ToBoolean(reader[property.Name])) },
+                                };
+                                @switch[property.PropertyType]();
+                            }
+                        }
+                        else
+                        {
+                            foreach (var property in type.GetProperties())
+                            {
+                                if (column.Contains(property.Name))
+                                {
+                                    var @switch = new Dictionary<Type, Action> {
+                                        { typeof(String), () => property.SetValue(data, reader[property.Name].ToString()) },
+                                        { typeof(Int32), () => property.SetValue(data, Convert.ToInt32(reader[property.Name])) },
+                                        { typeof(Int64), () => property.SetValue(data, Convert.ToInt64(reader[property.Name])) },
+                                        { typeof(bool), () => property.SetValue(data, Convert.ToBoolean(reader[property.Name])) },
+                                    };
+                                    @switch[property.PropertyType]();
+                                }
+                            }
                         }
                         list.Add(data);
                     }

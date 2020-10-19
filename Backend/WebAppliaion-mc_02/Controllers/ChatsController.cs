@@ -47,7 +47,7 @@ namespace WebApplication_mc_02.Controllers
         {
             
             var result = makeGroupChat(groupAlgorithm(studIDs));
-            return Ok("ChatID: "+Convert.ToInt32(result) + 1);
+            return Ok("ChatID: "+result);
         }
 
         // POST: api/Students/
@@ -80,7 +80,7 @@ namespace WebApplication_mc_02.Controllers
             return notifications;
         }
 
-        private int makeGroupChat(int[] studIDs){
+        private int makeGroupChat(List<int> studIDs){
             string query = "SELECT MAX(ChatID) FROM StudentLink.Student2ChatMap";
             object result = SQLConnection.get(query);
             if (result.ToString() == "")
@@ -95,21 +95,27 @@ namespace WebApplication_mc_02.Controllers
             return Convert.ToInt32(result)+1;
         }
 
-        private int[] groupAlgorithm(int StudentID){
-            Hashtable Student2Course = new Hashtable();
-            var courseList = SQLConnection.get(typeof(Student2CourseMap), $"WHERE StudentID={StudentID}", "CourseID");
+        private List<int> groupAlgorithm(int StudentID){
+            Dictionary<int, int> Student2Course = new Dictionary<int, int>();
+            int GroupSize = 7;
+            var courseList = SQLConnection.get(typeof(Student2CourseMap), $"WHERE StudentID={StudentID}");
             foreach(var course in courseList){
-                var studentList2 = SQLConnection.get(typeof(Student2CourseMap), $"WHERE courseID={course}", "StudentID");
+                var studentList2 = SQLConnection.get(typeof(Student2CourseMap), $"WHERE CourseID={course.CourseID}");
                 foreach(var student in studentList2)
                 {
-                    if(Student2Course.Contains(student))
-                        Student2Course[student].Value += 1;
+                    if(Student2Course.ContainsKey(student.StudentID))
+                        Student2Course[student.StudentID]++;
                     else
-                        Student2Course.Add(student, 1);
+                        Student2Course.Add(student.StudentID, 1);
                 }
             }
-            List<int> list = new List<int>();
-            return (int[])Student2Course.Keys;
+            Student2Course.OrderBy(entry => entry.Value).ToList();
+            List<int> simStudents = new List<int>();
+            for(int i = 0; i < ((Student2Course.Count < GroupSize) ? Student2Course.Count : GroupSize); i++)
+            {
+                simStudents.Add(Student2Course.ElementAt(i).Key);
+            }
+            return simStudents;
         }
     }
 }
