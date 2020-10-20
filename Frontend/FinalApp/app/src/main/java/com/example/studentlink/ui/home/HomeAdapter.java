@@ -11,13 +11,13 @@ import com.example.studentlink.R;
 
 import java.util.List;
 
-class someAdapter extends BaseAdapter {
+class HomeAdapter extends BaseAdapter {
 
     Context context;
     private List<Notification> notifications;
     private static LayoutInflater inflater = null;
 
-    public someAdapter(Context context, List<Notification> data) {
+    public HomeAdapter(Context context, List<Notification> data) {
 
         this.context = context;
         this.notifications = data;
@@ -46,18 +46,18 @@ class someAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         View vi = convertView;
-        TextView text = null;
         if (vi == null)
             if(notifications.get(position).getType().equals("Request")){
                 vi = inflater.inflate(R.layout.item_request,null);
-                text = (TextView) vi.findViewById(R.id.requestText);
+                TextView text = (TextView) vi.findViewById(R.id.requestText);
+                text.setText(notifications.get(position).getDescription());
             }
         else{
                 vi = inflater.inflate(R.layout.item_announcement, null);
-                text = (TextView) vi.findViewById(R.id.announceText);
+                TextView text = (TextView) vi.findViewById(R.id.announceText);
+                text.setText(notifications.get(position).getDescription());
             }
 
-        text.setText(notifications.get(position).getDescription());
         return vi;
     }
 }

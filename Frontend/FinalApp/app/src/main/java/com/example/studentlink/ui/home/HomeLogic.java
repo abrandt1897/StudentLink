@@ -9,11 +9,12 @@ public class HomeLogic {
     private List<Notification> notifications;
     private Context context;
 
+
     public HomeLogic(Context c){
         context = c;
     }
 
-    public List<Notification> MockgetNotifications(){
+    public List<Notification> MockGetNotifications(){
 
         notifications = new ArrayList<Notification>();
         notifications.add(new Notification("Hi Hiiiii. Friend meeee","Request"));
@@ -24,7 +25,7 @@ public class HomeLogic {
         return notifications;
     }
 
-    public List<Notification> getNotifications(){
+    public List<Notification> getNotifications(int studentID){
         // connect to websocket
         // ws://http://coms-309-mc-02.cs.iastate.edu:5000/ws/{StudentID}
 

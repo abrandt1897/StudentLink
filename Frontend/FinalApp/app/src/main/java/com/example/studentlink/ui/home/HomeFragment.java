@@ -5,16 +5,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.studentlink.R;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class HomeFragment extends Fragment {
@@ -28,9 +24,9 @@ public class HomeFragment extends Fragment {
 
         listview = root.findViewById(R.id.listview);
         logic = new HomeLogic(this.getContext());
-        notifications = logic.MockgetNotifications();
+        notifications = logic.MockGetNotifications();
 
-        listview.setAdapter(new someAdapter(this.getContext(), notifications));
+        listview.setAdapter(new HomeAdapter(this.getContext(), notifications));
 
         return root;
     }
