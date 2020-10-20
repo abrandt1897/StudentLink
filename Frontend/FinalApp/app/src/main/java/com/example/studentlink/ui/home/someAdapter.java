@@ -9,46 +9,55 @@ import android.widget.TextView;
 
 import com.example.studentlink.R;
 
+import java.util.List;
+
 class someAdapter extends BaseAdapter {
 
     Context context;
-    String[] data;
+    private List<Notification> notifications;
     private static LayoutInflater inflater = null;
 
-    public someAdapter(Context context, String[] data) {
-        // TODO Auto-generated constructor stub
+    public someAdapter(Context context, List<Notification> data) {
+
         this.context = context;
-        this.data = data;
+        this.notifications = data;
         inflater = (LayoutInflater) context
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
     @Override
     public int getCount() {
-        // TODO Auto-generated method stub
-        return data.length;
+
+        return notifications.size();
     }
 
     @Override
     public Object getItem(int position) {
-        // TODO Auto-generated method stub
-        return data[position];
+
+        return notifications.get(position);
     }
 
     @Override
     public long getItemId(int position) {
-        // TODO Auto-generated method stub
+
         return position;
     }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        // TODO Auto-generated method stub
         View vi = convertView;
+        TextView text = null;
         if (vi == null)
-            vi = inflater.inflate(R.layout.item_request, null);
-//        TextView text = (TextView) vi.findViewById(R.id.text);
-//        text.setText(data[position]);
+            if(notifications.get(position).getType().equals("Request")){
+                vi = inflater.inflate(R.layout.item_request,null);
+                text = (TextView) vi.findViewById(R.id.requestText);
+            }
+        else{
+                vi = inflater.inflate(R.layout.item_announcement, null);
+                text = (TextView) vi.findViewById(R.id.announceText);
+            }
+
+        text.setText(notifications.get(position).getDescription());
         return vi;
     }
 }

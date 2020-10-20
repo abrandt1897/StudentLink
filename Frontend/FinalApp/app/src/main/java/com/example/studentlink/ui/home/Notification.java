@@ -10,4 +10,12 @@ public class Notification {
         type = t;
     }
 
+    public String getType(){
+        return type;
+    }
+
+    public String getDescription(){
+        return description;
+    }
+
 }

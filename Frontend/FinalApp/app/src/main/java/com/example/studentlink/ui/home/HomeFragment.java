@@ -14,32 +14,23 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.studentlink.R;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class HomeFragment extends Fragment {
 
     private List<Notification> notifications;
-    ListView listview;
+    private ListView listview;
+    private HomeLogic logic;
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.home_layout, container, false);
 
         listview = root.findViewById(R.id.listview);
-        listview.setAdapter(new someAdapter(this.getContext(), new String[] { "data1",
-                "data2" }));
+        logic = new HomeLogic(this.getContext());
+        notifications = logic.MockgetNotifications();
 
-//        RecyclerView rv = root.findViewById(R.id.rv);
-//        rv.setHasFixedSize(true);
-
-//        LinearLayoutManager llm = new LinearLayoutManager(this.getContext());
-//        rv.setLayoutManager(llm);
-
-
-
-        // connect to this web socket for notifications
-        // ws://http://coms-309-mc-02.cs.iastate.edu:5000/ws/{StudentID}
-
-
+        listview.setAdapter(new someAdapter(this.getContext(), notifications));
 
         return root;
     }
