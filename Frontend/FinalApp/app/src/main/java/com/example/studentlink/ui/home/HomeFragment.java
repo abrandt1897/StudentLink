@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -18,19 +19,20 @@ import java.util.List;
 public class HomeFragment extends Fragment {
 
     private List<Notification> notifications;
+    ListView listview;
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.home_layout, container, false);
 
-        TextView HomeText = root.findViewById(R.id.HomeText);
+        listview = root.findViewById(R.id.listview);
+        listview.setAdapter(new someAdapter(this.getContext(), new String[] { "data1",
+                "data2" }));
 
-        HomeText.setText("Home Page Stuff");
+//        RecyclerView rv = root.findViewById(R.id.rv);
+//        rv.setHasFixedSize(true);
 
-        RecyclerView rv = root.findViewById(R.id.rv);
-        //rv.setHasFixedSize(true);
-
-        LinearLayoutManager llm = new LinearLayoutManager(this.getContext());
-        rv.setLayoutManager(llm);
+//        LinearLayoutManager llm = new LinearLayoutManager(this.getContext());
+//        rv.setLayoutManager(llm);
 
 
 
