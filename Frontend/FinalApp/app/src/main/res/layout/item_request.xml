@@ -23,8 +23,7 @@
             android:layout_height="60dp"
             android:layout_below="@id/requestText"
             android:text="Accept"
-            android:background="#04DD07"
-            />
+            android:background="#04DD07"/>
 
         <Button
             android:id="@+id/DeclineButton"
@@ -34,8 +33,7 @@
             android:layout_below="@id/requestText"
             android:layout_marginLeft="20dp"
             android:text="Decline"
-            android:background="#F1353B"
-            />
+            android:background="#F1353B"/>
 
     </RelativeLayout>
 
