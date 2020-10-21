@@ -84,10 +84,7 @@ namespace WebApplication_mc_02.Controllers
         {
             List<dynamic> notifications = new List<dynamic>();
             //TODO make the notification not spam the DB but only update when new data is put in (get gid)
-            do{
-                notifications = SQLConnection.get(typeof(Notifications), "WHERE StudentID = " + StudentID);
-                await Task.Delay(1000);
-            } while(notifications.Count == 0);
+            notifications = SQLConnection.get(typeof(Notifications), "WHERE StudentID = " + StudentID);
             foreach (Notifications noti in notifications)
                 SQLConnection.delete(noti);
             return notifications;

@@ -15,7 +15,6 @@ using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.AspNetCore.Http;
-using Microsoft.Owin;
 using System.Net.WebSockets;
 using System.Threading;
 using System.Text.RegularExpressions;
@@ -130,7 +129,7 @@ namespace WebApplication_mc_02
                     if (context.WebSockets.IsWebSocketRequest)
                     {
                         WebSocket webSocket = await context.WebSockets.AcceptWebSocketAsync();
-                        await websocketHandler(context, webSocket);
+                        await WebSocketHandler.websocketHandler(context, webSocket);
                     }
                     else
                     {
@@ -148,26 +147,6 @@ namespace WebApplication_mc_02
             {
                 endpoints.MapControllers();
             });
-        }
-        public async Task websocketHandler(HttpContext context, WebSocket webSocket)
-        {
-            int PATH_FORWARDSLASH_OFFSET = 1;
-            var buffer = new byte[1024 * 4];
-            WebSocketReceiveResult result = await webSocket.ReceiveAsync(new ArraySegment<byte>(buffer), CancellationToken.None);
-            while (!result.CloseStatus.HasValue)
-            {
-                int number = context.Request.Path.Value.LastIndexOf('/') + PATH_FORWARDSLASH_OFFSET;
-                string value = context.Request.Path.Value.Substring(number);
-                int StudentID = Convert.ToInt32(value);
-
-                List<dynamic> notifications = await ChatsController.GetNotifications(StudentID);
-
-                byte[] bytes2send = Encoding.UTF8.GetBytes(notifications[0].Data);
-                await webSocket.SendAsync(new ArraySegment<byte>(bytes2send), WebSocketMessageType.Text, true, CancellationToken.None);
-
-                result = await webSocket.ReceiveAsync(new ArraySegment<byte>(bytes2send), CancellationToken.None);
-            }
-            await webSocket.CloseAsync(result.CloseStatus.Value, result.CloseStatusDescription, CancellationToken.None);
         }
     }
 }

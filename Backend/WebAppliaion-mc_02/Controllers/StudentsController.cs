@@ -10,6 +10,9 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using WebApplication_mc_02.Models.DTO;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using System.Text;
+using System.Net.WebSockets;
+using System.Threading;
 
 namespace WebApplication_mc_02.Controllers
 {
@@ -35,6 +38,7 @@ namespace WebApplication_mc_02.Controllers
 
         // GET: api/Students/5
         [HttpGet("{id}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Student,Admin,Host")]
         public async Task<ActionResult<IEnumerable<object>>> GetStudent(int id)
         {
             List<dynamic> student = new List<dynamic>();
@@ -43,6 +47,7 @@ namespace WebApplication_mc_02.Controllers
         }
 
         [HttpGet("{id}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Student,Admin,Host")]
         public async Task<ActionResult<IEnumerable<object>>> GetStudent(string Username)
         {
             List<dynamic> student = new List<dynamic>();
@@ -67,10 +72,17 @@ namespace WebApplication_mc_02.Controllers
         }
 
         [HttpPut]
-        [AllowAnonymous]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Student,Admin,Host")]
         public async Task<ActionResult<Students>> PutFriendNotification([FromBody] Notifications noti)
         {
             //TODO sanitize data
+            if (Global.websockets.ContainsKey(noti.StudentID))
+            {
+                byte[] bytes2send = Encoding.UTF8.GetBytes(noti.Data);
+                await Global.websockets[noti.StudentID]
+                    .SendAsync(new ArraySegment<byte>(bytes2send), WebSocketMessageType.Text, true, CancellationToken.None);
+                return Ok(noti);
+            }
             if (SQLConnection.insert(noti))
                 return Ok(noti);
             return BadRequest("error inserting into Notification Database");
@@ -89,10 +101,10 @@ namespace WebApplication_mc_02.Controllers
         //api/Students/{StudentID}
         [HttpPost("{student}")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Student,Admin,Host")]
-        public async Task<ActionResult<Students>> PostFriend(int student, [FromBody] Notifications noti)
+        public async Task<ActionResult<Students>> PostFriend(int studentID, [FromBody] Notifications noti)
         {
             Student2StudentMap friends = new Student2StudentMap();
-            friends.StudentID = student;
+            friends.StudentID = studentID;
             friends.FriendID = noti.StudentID;
             if (SQLConnection.insert(friends) && SQLConnection.delete(noti))
                 return Ok(noti);
