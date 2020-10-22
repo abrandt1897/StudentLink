@@ -83,7 +83,7 @@ namespace WebApplication_mc_02.Controllers
                 );
                 var token = new JwtSecurityTokenHandler().WriteToken(JWToken);
                 HttpContext.Session.SetString("JWToken", token);
-                return token;
+                return SQLConnection.get(typeof(Students), $"Where Username={user.Username}", "StudentID")+token;
             }else
                 return "Wrong Password";
         }

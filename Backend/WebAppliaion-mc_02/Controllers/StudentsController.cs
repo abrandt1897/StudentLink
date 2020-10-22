@@ -69,7 +69,7 @@ namespace WebApplication_mc_02.Controllers
             myStu.Password = LoginController.hashPassword(myuser.Password);
             if (SQLConnection.insert(myStu))
                 return Ok(myStu);
-            return BadRequest("try being gud");
+            return BadRequest("bad");
         }
 
         [HttpPut]
