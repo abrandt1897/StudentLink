@@ -20,7 +20,7 @@
     "WebApplication_mc_02": {
       "commandName": "Project",
       "launchBrowser": true,
-      "launchUrl": "api/Students",
+      "launchUrl": "api/Login",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
@@ -29,7 +29,7 @@
     "Docker": {
       "commandName": "Docker",
       "launchBrowser": true,
-      "launchUrl": "{Scheme}://{ServiceHost}:{ServicePort}/api/Students",
+      "launchUrl": "{Scheme}://{ServiceHost}:{ServicePort}/api/Login",
       "environmentVariables": {
         "ASPNETCORE_URLS": "https://+:443;http://+:80",
         "ASPNETCORE_HTTPS_PORT": "44368"

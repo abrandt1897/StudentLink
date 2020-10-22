@@ -35,6 +35,7 @@ namespace WebApplication_mc_02
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+            services.AddControllersWithViews();
             services.AddHttpClient();
             services.AddSession(options => {
                 options.IdleTimeout = TimeSpan.FromMinutes(1);//You can set Time
@@ -69,7 +70,6 @@ namespace WebApplication_mc_02
                     ClockSkew = TimeSpan.Zero
                 };
             });
-            services.AddMvc();
             services.Configure<IdentityOptions>(options =>
             {
                 // Password settings.
@@ -95,7 +95,6 @@ namespace WebApplication_mc_02
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -142,10 +141,12 @@ namespace WebApplication_mc_02
                 }
 
             });
-
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+                endpoints.MapControllerRoute(
+                    name: "default",
+                    pattern: "{controller=Login}/{action=Get}/{id?}");
             });
         }
     }

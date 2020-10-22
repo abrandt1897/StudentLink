@@ -24,15 +24,14 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 namespace WebApplication_mc_02.Controllers
 {
     [Route("api/[controller]")]
-    [ApiController]
-    public class LoginController : ControllerBase
+    //[ApiController]
+    public class LoginController : Controller
     {
         // GET: api/<LoginController>
         [HttpGet]
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
-        public IEnumerable<string> Get()
+        public ActionResult Get()
         {
-            return new string[] { "no" };
+            return View("Login");
         }
 
         // GET api/<LoginController>/5
@@ -45,7 +44,7 @@ namespace WebApplication_mc_02.Controllers
 
         // POST api/<LoginController>
         [HttpPost]
-        public ActionResult<string> PostLogin([FromBody] Login user)
+        public ActionResult<string> PostLogin([Bind("Password,Username")] Login user)
         {
             return PutLogin(user);
         }
@@ -58,14 +57,14 @@ namespace WebApplication_mc_02.Controllers
         /// <param name="Password"></param>
         /// <returns>token for users access</returns>
         [HttpPut]
-        public ActionResult<string> PutLogin([FromBody] Login user)
+        public ActionResult<string> PutLogin([FromBody] Login loginForm)
         {
-            Students student = SQLConnection.get(typeof(Students), $"WHERE Username='{user.Username}'")[0];
+            Students student = SQLConnection.get(typeof(Students), $"WHERE Username='{loginForm.Username}'")[0];
 
             //Authenticate User, Check if it’s a registered user in Database
-            if (user == null)
+            if (loginForm == null)
                 return "No student under that username";
-            string hashedPasswd = hashPassword(user.Password);
+            string hashedPasswd = hashPassword(loginForm.Password);
             if (hashedPasswd == student.Password)
             {
                 //Authentication successful, Issue Token with user credentials
@@ -83,7 +82,7 @@ namespace WebApplication_mc_02.Controllers
                 );
                 var token = new JwtSecurityTokenHandler().WriteToken(JWToken);
                 HttpContext.Session.SetString("JWToken", token);
-                return SQLConnection.get(typeof(Students), $"Where Username={user.Username}", "StudentID")+token;
+                return SQLConnection.get(typeof(Students), $"Where Username={loginForm.Username}", "StudentID")+token;
             }else
                 return "Wrong Password";
         }
