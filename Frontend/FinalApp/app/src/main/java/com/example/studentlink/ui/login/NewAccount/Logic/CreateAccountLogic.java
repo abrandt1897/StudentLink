@@ -3,6 +3,8 @@ package com.example.studentlink.ui.login.NewAccount.Logic;
 import android.content.Context;
 import android.content.Intent;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.example.studentlink.ui.login.NewAccount.CanvasKey.*;
 import com.example.studentlink.ui.login.NewAccount.CreateAccount;
 
@@ -13,8 +15,7 @@ import com.example.studentlink.ui.login.AbstractLogic;
 
 public class CreateAccountLogic extends AbstractLogic {
 
-
-    public CreateAccountLogic(CreateAccount activity){
+    public CreateAccountLogic(AppCompatActivity activity){
         super(activity);
     }
 
@@ -32,13 +33,12 @@ public class CreateAccountLogic extends AbstractLogic {
         userLoginData.put("Username", username);
         userLoginData.put("Password", password);
         connectionClass.putRequest(userLoginData,databaseName);
-        if(!connectionClass.getResponse().equals("No student under that username")){
+        if(!connectionClass.getResponse().equals("No student under that username") || connectionClass.getResponse().equals("")){
             return "";
         }
         else{
             navigateToWebView(theActivity.getApplicationContext(), CanvasWebview.class, username, password);
             return "Ok";
         }
-
     }
 }

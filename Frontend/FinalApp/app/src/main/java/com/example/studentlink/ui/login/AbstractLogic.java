@@ -23,6 +23,10 @@ public class AbstractLogic implements ILogic{
         connectionClass = new ConnectionClass(activity.getApplicationContext());
     }
 
+    public void setConnectionClass(ConnectionClass cc){
+        connectionClass = cc;
+    }
+
     @Override
     public void moveToHome() {
 //        Fragment fragment = new HomeFragment();
