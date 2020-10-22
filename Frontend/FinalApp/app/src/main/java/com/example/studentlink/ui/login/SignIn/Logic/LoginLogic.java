@@ -26,9 +26,10 @@ public class LoginLogic extends AbstractLogic {
             return "";
         }
         else{
-            // for existing user, we get the student ID and bearer token, which has to be in the header for all calls after that
-            Global.studentID = 234234;
-
+            // for existing user, we get the student ID (for Home page notifications) and bearer token (has to be in the header for all calls)
+            String[] answer = connectionClass.getResponse().split(" ");
+            Global.studentID = Integer.parseInt(answer[0]);
+            Global.bearerToken = answer[1];
             moveToHome();
         }
         return null;
