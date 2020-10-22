@@ -46,7 +46,6 @@ namespace WebApplication_mc_02.Controllers
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Student,Admin,Host")]
         public async Task<ActionResult<Chats>> PutGroupChat([FromBody] int studIDs)
         {
-            
             var result = makeGroupChat(groupAlgorithm(studIDs));
             return Ok("ChatID: "+result);
         }

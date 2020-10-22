@@ -13,6 +13,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using System.Text;
 using System.Net.WebSockets;
 using System.Threading;
+using Nancy.Json;
 
 namespace WebApplication_mc_02.Controllers
 {
@@ -76,16 +77,13 @@ namespace WebApplication_mc_02.Controllers
         public async Task<ActionResult<Students>> PutFriendNotification([FromBody] Notifications noti)
         {
             //TODO sanitize data
-            if (Global.websockets.ContainsKey(noti.StudentID))
+            if (Global.websockets.ContainsKey(noti.StudentID) && WebSocketHandler.sendDataAsync(Global.websockets[noti.StudentID], noti).Result)
             {
-                byte[] bytes2send = Encoding.UTF8.GetBytes(noti.Data);
-                await Global.websockets[noti.StudentID]
-                    .SendAsync(new ArraySegment<byte>(bytes2send), WebSocketMessageType.Text, true, CancellationToken.None);
                 return Ok(noti);
             }
             if (SQLConnection.insert(noti))
                 return Ok(noti);
-            return BadRequest("error inserting into Notification Database");
+            return BadRequest("client websocket isnt listening and there was an error inserting into Notification Database");
         }
 
         // POST: api/Students
