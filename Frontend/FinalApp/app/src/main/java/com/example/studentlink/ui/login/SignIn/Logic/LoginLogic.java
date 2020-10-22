@@ -1,5 +1,7 @@
 package com.example.studentlink.ui.login.SignIn.Logic;
 
+import android.os.Handler;
+
 import com.example.studentlink.ConnectionClass;
 import com.example.studentlink.Global;
 import com.example.studentlink.ui.login.AbstractLogic;
@@ -22,7 +24,7 @@ public class LoginLogic extends AbstractLogic {
         userLoginData.put("Password",password);
         connectionClass.putRequest(userLoginData,databaseName);
 
-        if(connectionClass.getResponse().equals("bad")){
+        if(connectionClass.getResponse().equals("bad") || connectionClass.getResponse().equals("")){
             return "";
         }
         else{

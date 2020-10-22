@@ -32,6 +32,8 @@ public class HomeLogic {
         // connect to websocket
         // ws://http://coms-309-mc-02.cs.iastate.edu:5000/ws/{StudentID}
 
+        // remember to send the static StudentID in the header
+
         notifications = new ArrayList<Notification>();
 
         // parse data from Greyson JSONParser
