@@ -19,6 +19,9 @@ public class HomeLogic {
         notifications = new ArrayList<Notification>();
         notifications.add(new Notification("Hi Hiiiii. Friend meeee","Request"));
         for (int i = 0; i<7;i++){
+            if(i==3){
+                notifications.add(new Notification("Nah. Friend me","Request"));
+            }
             notifications.add(new Notification("Update soon!","Announce"));
         }
 
@@ -31,7 +34,7 @@ public class HomeLogic {
 
         notifications = new ArrayList<Notification>();
 
-        // parse data from Greyson
+        // parse data from Greyson JSONParser
 
         return notifications;
     }

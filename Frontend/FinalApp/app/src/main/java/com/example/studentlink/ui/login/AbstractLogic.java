@@ -1,5 +1,7 @@
 package com.example.studentlink.ui.login;
 
+import android.content.Intent;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -23,18 +25,19 @@ public class AbstractLogic implements ILogic{
 
     @Override
     public void moveToHome() {
-//        Fragment fragment = new SplashFragment();
+//        Fragment fragment = new HomeFragment();
 //        FragmentManager fragmentManager = theActivity.getSupportFragmentManager();
 //        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 //        fragmentTransaction.replace(R.id.nav_view, fragment); // drawer_layout
 //        fragmentTransaction.addToBackStack(null);
 //        fragmentTransaction.commit();
 //        setContentView(R.layout.controller_layout);
-        PageController pc = new PageController();
-        pc.startActivity(new HomeFragment().getActivity().getIntent());
-        pc.navigateUpTo(new HomeFragment().getActivity().getIntent());
-//        Intent i = pc.getIntent();
+//        PageController pc = new PageController();
 //        pc.startActivity(new HomeFragment().getActivity().getIntent());
+//        pc.navigateUpTo(new HomeFragment().getActivity().getIntent());
+//        Intent i = pc.getIntent();
+//        theActivity.startActivity(i);
+        theActivity.startActivity(new Intent(theActivity, PageController.class));
 //        pc.navigateUpTo(new HomeFragment().getActivity().getIntent());
 //        startActivity(i);
     }

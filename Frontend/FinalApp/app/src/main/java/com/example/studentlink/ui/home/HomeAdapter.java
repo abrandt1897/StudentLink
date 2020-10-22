@@ -19,13 +19,13 @@ class HomeAdapter extends BaseAdapter {
     Context context;
     private List<Notification> notifications;
     private static LayoutInflater inflater = null;
+    private HomeFragment frag;
 
-    public HomeAdapter(Context context, List<Notification> data) {
-
+    public HomeAdapter(HomeFragment hf, Context context, List<Notification> data) {
+        frag = hf;
         this.context = context;
         this.notifications = data;
-        inflater = (LayoutInflater) context
-                .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
     @Override
@@ -44,49 +44,44 @@ class HomeAdapter extends BaseAdapter {
     }
 
 
+    public void removeRow(int position) {
+        notifications.remove(position);
+        frag.resetAdapter(this);
+    }
+
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         View vi = convertView;
-        if (vi == null)
-            if(notifications.get(position).getType().equals("Request")){
-                vi = inflater.inflate(R.layout.item_request,null);
+        if (vi == null) {
+            if (notifications.get(position).getType().equals("Request")) {
+                vi = inflater.inflate(R.layout.item_request, null);
                 TextView text = (TextView) vi.findViewById(R.id.requestText);
                 text.setText(notifications.get(position).getDescription());
+
                 Button acceptButton = (Button) vi.findViewById(R.id.AcceptButton);
                 acceptButton.setTag(position);
                 acceptButton.setOnClickListener(v -> {
-                    Toast.makeText(context,"Congrats!" + v.getTag().toString(), Toast.LENGTH_LONG).show();
+                    removeRow(position);
+                });
+
+                Button declineButton = (Button) vi.findViewById(R.id.DeclineButton);
+                declineButton.setTag(position);
+                declineButton.setOnClickListener(v -> {
+                    Toast.makeText(context, "Congrats!" + v.getTag().toString(), Toast.LENGTH_LONG).show();
 //                    int pos = (int)v.getTag();
 //                    notifications.remove(pos);
 //                    HomeAdapter.this.notifyDataSetChanged();
                 });
-            }
-        else{
+
+            } else {
                 vi = inflater.inflate(R.layout.item_announcement, null);
                 TextView text = (TextView) vi.findViewById(R.id.announceText);
                 text.setText(notifications.get(position).getDescription());
-
-
             }
 
-
-
+        }
 
         return vi;
     }
-}
 
-//    public void AcceptClickHandler(View v)
-//    {
-//        //get the row the clicked button is in
-//        LinearLayout vwParentRow = (LinearLayout) v.getParent();
-//
-//        TextView child = (TextView)vwParentRow.getChildAt(0);
-//        Button btnChild = (Button)vwParentRow.getChildAt(1);
-//        btnChild.setText(child.getText());
-//        btnChild.setText("I've been clicked!");
-//
-//        int c = Color.CYAN;
-//        vwParentRow.setBackgroundColor(c);
-//        vwParentRow.refreshDrawableState();
-//    }
+}

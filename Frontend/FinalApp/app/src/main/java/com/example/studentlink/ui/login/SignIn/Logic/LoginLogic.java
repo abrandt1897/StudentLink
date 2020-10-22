@@ -1,6 +1,7 @@
 package com.example.studentlink.ui.login.SignIn.Logic;
 
 import com.example.studentlink.ConnectionClass;
+import com.example.studentlink.Global;
 import com.example.studentlink.ui.login.AbstractLogic;
 import com.example.studentlink.ui.login.SignIn.LoginActivity;
 
@@ -21,10 +22,13 @@ public class LoginLogic extends AbstractLogic {
         userLoginData.put("Password",password);
         connectionClass.putRequest(userLoginData,databaseName);
 
-        if(!connectionClass.getResponse().equals("Ok")){
+        if(connectionClass.getResponse().equals("bad")){
             return "";
         }
         else{
+            // for existing user, we get the student ID and bearer token, which has to be in the header for all calls after that
+            Global.studentID = 234234;
+
             moveToHome();
         }
         return null;
