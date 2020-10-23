@@ -3,8 +3,6 @@ package com.example.studentlink;
 import org.junit.Test;
 
 import android.content.Context;
-import android.widget.EditText;
-import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -18,7 +16,7 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
-
+import org.powermock.api.mockito.PowerMockito;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -32,7 +30,7 @@ import static org.mockito.Mockito.when;
 import static org.junit.Assert.*;
 
 @RunWith(MockitoJUnitRunner.class)
-public class LoginTest {
+public class CreateAccountTest {
 
     @Mock
     private ConnectionClass connectionClass;
@@ -47,7 +45,7 @@ public class LoginTest {
     private HashMap<String,String> data;
 
     @Test
-    public void testNavigateToWebView(){
+    public void testBadUsernameLogin(){
         CreateAccountLogic createAccountLogic = new CreateAccountLogic(theActivity);
         createAccountLogic.setConnectionClass(connectionClass); //inject mock
 //        CreateAccountLogic spy = Mockito.spy(createAccountLogic);
@@ -60,6 +58,22 @@ public class LoginTest {
         Assert.assertEquals(response, "");
 
     }
+
+//    @Test
+//    public void testNavigateToWebview(){
+//        CreateAccountLogic createAccountLogic = new CreateAccountLogic(theActivity);
+//        createAccountLogic.setConnectionClass(connectionClass); //inject mock
+////        CreateAccountLogic spy = Mockito.spy(createAccountLogic);
+////        Mockito.doNothing().when(spy).navigateWebView();
+//        when(connectionClass.getResponse()).thenReturn("No");
+////        doNothing().when(createAccountLogic,"navigateWebView").thenReturn();
+//
+//        String response = createAccountLogic.checkCredentials("badUsername","badPassword");
+//
+//        Assert.assertEquals(response, "");
+//
+//    }
+
 
     @Test
     public void testForCheckServerResponse() {

@@ -33,7 +33,7 @@ public class CreateAccountLogic extends AbstractLogic {
         userLoginData.put("Username", username);
         userLoginData.put("Password", password);
         connectionClass.putRequest(userLoginData,databaseName);
-        if(!connectionClass.getResponse().equals("No student under that username") || connectionClass.getResponse().equals("")){
+        if(!connectionClass.getResponse().equals("No student under that username")){
             return "";
         }
         else{
