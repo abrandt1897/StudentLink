@@ -29,8 +29,8 @@ namespace WebApplication_mc_02.Controllers
         public async Task<Students> getStudentProfile(string token)
         {
             //get student string data
-            
             var courseResponse = await makeRequest("https://canvas.instructure.com/api/v1/courses?include[]=sections&include[]=term&per_page=100", token);
+            var headers = courseResponse.get(courseResponse, headers);
             var profileResponse = await makeRequest("https://canvas.iastate.edu/api/v1/users/self/", token);
             //parse student data to json
             JsonArray courseJsonResponse = new JavaScriptSerializer().Deserialize<JsonArray>(courseResponse);
