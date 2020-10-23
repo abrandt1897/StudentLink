@@ -1,7 +1,11 @@
-﻿@model WebApplication_mc_02.Models.DTO.Login
+﻿@model WebApplication_mc_02.Models.Students
+
 @{
     Layout = null;
 }
+
+<!DOCTYPE html>
+
 <html>
 <head>
     <meta name="viewport" content="width=device-width" />
@@ -127,39 +131,51 @@
             }
     </style>
     <script>
-        function sendLogin() {
-            var loginForm = document.getElementById("loginform");
-            console.log(loginForm);
-            var username = loginForm[1].value
-            var password = loginForm[2].value
-            var formData = "{Username:" + username + ", Password:" + password + "}"
+        function getToken() {
+            var childWindow = window.open("https://canvas.iastate.edu/profile/settings");
+            childWindow.focus();
+        }
+
+        function createAccount() {
+            var username = document.getElementById("username").value;
+            var password = document.getElementById("password").value;
+            var token = document.getElementById("token").value;
+            var formData = "{Username:" + username + ", Password:" + password + "}";
             console.log(formData);
+            console.log(token);
             $.ajax({
-                type: "POST",
-                url: "/api/Login",
+                type: "PUT",
+                url: "/api/Students/"+token,
                 data: formData,
-                success: function () {
-                    console.log("success")
+                success: function (response) {
+                    console.log(response)
                 },
                 dataType: "json",
                 contentType: "application/json"
             });
         }
     </script>
-    <title>Login</title>
+    <title>Create Account</title>
 </head>
 <body>
-    <!--Contents of the webpage-->
     <div class="container justify-content-center">
         <div class="form-style-5">
-            @using (Html.BeginForm("PostLogin", "Login", FormMethod.Post))
+            @using (Html.BeginForm("PostStudent", "Students", FormMethod.Post))
             {
-                <legend><span class="number">1</span> Student Login</legend>
+                <legend><span class="number ">1</span>Get Token</legend>
+                <input type="button" value="Get Token" onclick="getToken()" />
+                <legend><span class="number">i</span>Login to your Canvas profile</legend>
+                <legend><span class="number">ii</span>Click <code>New Access Token</code></legend>
+                <legend><span class="number">iii</span><code>Generate Token</code></legend>
+                <legend><span class="number">iv</span>Copy Token</legend>
+                <br>
                 <fieldset>
-                    <input type="text" name="Username" placeholder="Your Username *">
-                    <input type="password" name="Password" placeholder="Your Password *">
+                    <legend><span class="number">2</span>Create Account</legend>
+                    <input id="username" type="text" name="Username" placeholder="Create Username *">
+                    <input id="password" type="password" name="Password" placeholder="Create Password *">
+                    <input id="token" type="text" name="canvasOAuthToken" placeholder="Paste Token *" />
                 </fieldset>
-                <input type="submit" value="Submit" />
+                <input type="submit" value="Create Account" />
             }
         </div>
     </div>

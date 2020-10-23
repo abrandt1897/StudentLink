@@ -19,7 +19,7 @@ namespace WebApplication_mc_02.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class StudentsController : ControllerBase
+    public class StudentsController : Controller
     {
         private readonly IHttpClientFactory _clientFactory;
         public StudentsController(IHttpClientFactory clientFactory)
@@ -31,15 +31,11 @@ namespace WebApplication_mc_02.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Students>>> GetStudents()
         {
-            List<dynamic> list = new List<dynamic>();
-            list = SQLConnection.get(typeof(Students));
-            var ret = list.Cast<Students>();
-            return Ok(ret);
+            return View("CreateStudent");
         }
 
         // GET: api/Students/5
         [HttpGet("{id}")]
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Student,Admin,Host")]
         public async Task<ActionResult<IEnumerable<object>>> GetStudent(int id)
         {
             List<dynamic> student = new List<dynamic>();
@@ -47,33 +43,22 @@ namespace WebApplication_mc_02.Controllers
             return student;
         }
 
-        [HttpGet("{id}")]
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Student,Admin,Host")]
-        public async Task<ActionResult<IEnumerable<object>>> GetStudent(string Username)
-        {
-            List<dynamic> student = new List<dynamic>();
-            student = SQLConnection.get(typeof(Students), $"WHERE Username = {Username}");
-            return student;
-        }
-
         // PUT: api/Students/{canvasOAuthToken}
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see https://aka.ms/RazorPagesCRUD.
-        [HttpPut("{canvasOAuthToken}")]
-        [AllowAnonymous]
-        public async Task<ActionResult<Students>> PutStudent(string canvasOAuthToken, [FromBody] Login myuser)
+        [HttpPut]
+        public async Task<ActionResult<Students>> PutStudent(CreateAccount myuser)
         {
             Networking network = new Networking(_clientFactory);
-            Students myStu = network.getStudentProfile(canvasOAuthToken).Result;
+            Students myStu = network.getStudentProfile(myuser.canvasOAuthToken).Result;
             myStu.Username = myuser.Username;
             myStu.Password = LoginController.hashPassword(myuser.Password);
             if (SQLConnection.insert(myStu))
                 return Ok(myStu);
-            return BadRequest("bad");
+            return View("/Views/Login/Login.cshtml");
         }
 
         [HttpPut]
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Student,Admin,Host")]
         public async Task<ActionResult<Students>> PutFriendNotification([FromBody] Notifications noti)
         {
             //TODO sanitize data
@@ -90,11 +75,9 @@ namespace WebApplication_mc_02.Controllers
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see https://aka.ms/RazorPagesCRUD.
         [HttpPost]
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Student,Admin,Host")]
-        public async Task<ActionResult<Students>> PostStudent([FromBody] Students myStu)
+        public async Task<ActionResult<Students>> PostStudent([FromForm] CreateAccount myStu)
         {
-            SQLConnection.update(myStu);
-            return CreatedAtAction("GetStudent", new { id = myStu.StudentID }, myStu);
+            return await PutStudent(myStu);
         }
         //api/Students/{StudentID}
         [HttpPost("{student}")]
