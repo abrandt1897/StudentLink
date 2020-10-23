@@ -2,6 +2,7 @@
   "format": 1,
   "restore": {
 <<<<<<< HEAD
+<<<<<<< HEAD
     "C:\\Users\\Adam Brandt\\OneDrive\\Documents\\CS309\\mc_02\\Backend\\WebAppliaion-mc_02\\WebApplication-mc_02.csproj": {}
   },
   "projects": {
@@ -16,6 +17,22 @@
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\Adam Brandt\\AppData\\Roaming\\NuGet\\NuGet.Config",
+=======
+    "C:\\Users\\greys\\Documents\\Github\\mc_02\\Backend\\WebAppliaion-mc_02\\WebApplication-mc_02.csproj": {}
+  },
+  "projects": {
+    "C:\\Users\\greys\\Documents\\Github\\mc_02\\Backend\\WebAppliaion-mc_02\\WebApplication-mc_02.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Users\\greys\\Documents\\Github\\mc_02\\Backend\\WebAppliaion-mc_02\\WebApplication-mc_02.csproj",
+        "projectName": "WebApplication-mc_02",
+        "projectPath": "C:\\Users\\greys\\Documents\\Github\\mc_02\\Backend\\WebAppliaion-mc_02\\WebApplication-mc_02.csproj",
+        "packagesPath": "C:\\Users\\greys\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\greys\\Documents\\Github\\mc_02\\Backend\\WebAppliaion-mc_02\\obj\\",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "C:\\Users\\greys\\AppData\\Roaming\\NuGet\\NuGet.Config",
+>>>>>>> 2065a6d13970467440e2218c3def37570f58fe95
 =======
     "C:\\Users\\greys\\Documents\\Github\\mc_02\\Backend\\WebAppliaion-mc_02\\WebApplication-mc_02.csproj": {}
   },
@@ -157,7 +174,11 @@
             }
           },
 <<<<<<< HEAD
+<<<<<<< HEAD
           "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.402\\RuntimeIdentifierGraph.json"
+=======
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.302\\RuntimeIdentifierGraph.json"
+>>>>>>> 2065a6d13970467440e2218c3def37570f58fe95
 =======
           "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.302\\RuntimeIdentifierGraph.json"
 >>>>>>> 2065a6d13970467440e2218c3def37570f58fe95

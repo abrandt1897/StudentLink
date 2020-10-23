@@ -1,6 +1,7 @@
 {
   "version": 2,
 <<<<<<< HEAD
+<<<<<<< HEAD
   "dgSpecHash": "TlkwPFJbKFtZABI8KZYGog6hI07iyblSeXzRL2AMFCGlGPCoHBcr/ydR40I9dfNYtuuhLmigWJ0atZyzSQhtiQ==",
   "success": true,
   "projectFilePath": "C:\\Users\\Adam Brandt\\OneDrive\\Documents\\CS309\\mc_02\\Backend\\WebAppliaion-mc_02\\WebApplication-mc_02.csproj",
@@ -233,6 +234,12 @@
   "success": true,
   "projectFilePath": "C:\\Users\\greys\\Documents\\Github\\mc_02\\Backend\\WebAppliaion-mc_02\\WebApplication-mc_02.csproj",
   "expectedPackageFiles": [
+=======
+  "dgSpecHash": "gRPRsZ1YRFb/f6BJSwlc4dCZNky4sfBKQRg4iusDiV6SVlUIp44oPsq7o8PW7TvIslqReD7mTgqCRE4ehdXUmg==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\greys\\Documents\\Github\\mc_02\\Backend\\WebAppliaion-mc_02\\WebApplication-mc_02.csproj",
+  "expectedPackageFiles": [
+>>>>>>> 2065a6d13970467440e2218c3def37570f58fe95
     "C:\\Users\\greys\\.nuget\\packages\\bouncycastle.netcore\\1.8.3\\bouncycastle.netcore.1.8.3.nupkg.sha512",
     "C:\\Users\\greys\\.nuget\\packages\\entityframework\\6.1.0\\entityframework.6.1.0.nupkg.sha512",
     "C:\\Users\\greys\\.nuget\\packages\\google.protobuf\\3.6.1\\google.protobuf.3.6.1.nupkg.sha512",
@@ -456,6 +463,9 @@
     "C:\\Users\\greys\\.nuget\\packages\\system.xml.xmlserializer\\4.3.0\\system.xml.xmlserializer.4.3.0.nupkg.sha512",
     "C:\\Users\\greys\\.nuget\\packages\\system.xml.xpath\\4.0.1\\system.xml.xpath.4.0.1.nupkg.sha512",
     "C:\\Users\\greys\\.nuget\\packages\\system.xml.xpath.xmldocument\\4.0.1\\system.xml.xpath.xmldocument.4.0.1.nupkg.sha512"
+<<<<<<< HEAD
+>>>>>>> 2065a6d13970467440e2218c3def37570f58fe95
+=======
 >>>>>>> 2065a6d13970467440e2218c3def37570f58fe95
   ],
   "logs": [
