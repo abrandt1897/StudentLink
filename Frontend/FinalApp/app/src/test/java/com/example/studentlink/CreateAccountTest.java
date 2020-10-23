@@ -3,7 +3,6 @@ package com.example.studentlink;
 import org.junit.Test;
 
 import android.content.Context;
-import android.content.Intent;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -18,7 +17,6 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
-import org.powermock.api.mockito.PowerMockito;
 import java.util.HashMap;
 import java.util.Map;
 
