@@ -10792,11 +10792,16 @@
     ]
   },
   "packageFolders": {
+<<<<<<< HEAD
     "C:\\Users\\Adam Brandt\\.nuget\\packages\\": {}
+=======
+    "C:\\Users\\greys\\.nuget\\packages\\": {}
+>>>>>>> 2065a6d13970467440e2218c3def37570f58fe95
   },
   "project": {
     "version": "1.0.0",
     "restore": {
+<<<<<<< HEAD
       "projectUniqueName": "C:\\Users\\Adam Brandt\\OneDrive\\Documents\\CS309\\mc_02\\Backend\\WebAppliaion-mc_02\\WebApplication-mc_02.csproj",
       "projectName": "WebApplication-mc_02",
       "projectPath": "C:\\Users\\Adam Brandt\\OneDrive\\Documents\\CS309\\mc_02\\Backend\\WebAppliaion-mc_02\\WebApplication-mc_02.csproj",
@@ -10805,6 +10810,16 @@
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\Adam Brandt\\AppData\\Roaming\\NuGet\\NuGet.Config",
+=======
+      "projectUniqueName": "C:\\Users\\greys\\Documents\\Github\\mc_02\\Backend\\WebAppliaion-mc_02\\WebApplication-mc_02.csproj",
+      "projectName": "WebApplication-mc_02",
+      "projectPath": "C:\\Users\\greys\\Documents\\Github\\mc_02\\Backend\\WebAppliaion-mc_02\\WebApplication-mc_02.csproj",
+      "packagesPath": "C:\\Users\\greys\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\greys\\Documents\\Github\\mc_02\\Backend\\WebAppliaion-mc_02\\obj\\",
+      "projectStyle": "PackageReference",
+      "configFilePaths": [
+        "C:\\Users\\greys\\AppData\\Roaming\\NuGet\\NuGet.Config",
+>>>>>>> 2065a6d13970467440e2218c3def37570f58fe95
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -10929,7 +10944,11 @@
             "privateAssets": "all"
           }
         },
+<<<<<<< HEAD
         "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.402\\RuntimeIdentifierGraph.json"
+=======
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.302\\RuntimeIdentifierGraph.json"
+>>>>>>> 2065a6d13970467440e2218c3def37570f58fe95
       }
     }
   },

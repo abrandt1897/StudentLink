@@ -46,10 +46,15 @@ namespace WebApplication_mc_02.Controllers
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Student,Admin,Host")]
         public async Task<ActionResult<Chats>> PutGroupChat([FromBody] int studIDs)
         {
+<<<<<<< HEAD
             double match;
             var groupChat = groupAlgorithm(studIDs);
             var result = makeGroupChat(groupChat.Keys.ToList());
             return Ok($"ChatID: {result}, {groupChat}");
+=======
+            var result = makeGroupChat(groupAlgorithm(studIDs));
+            return Ok("ChatID: "+result);
+>>>>>>> 2065a6d13970467440e2218c3def37570f58fe95
         }
 
         // POST: api/Students/
@@ -85,10 +90,7 @@ namespace WebApplication_mc_02.Controllers
         {
             List<dynamic> notifications = new List<dynamic>();
             //TODO make the notification not spam the DB but only update when new data is put in (get gid)
-            do{
-                notifications = SQLConnection.get(typeof(Notifications), "WHERE StudentID = " + StudentID);
-                await Task.Delay(1000);
-            } while(notifications.Count == 0);
+            notifications = SQLConnection.get(typeof(Notifications), "WHERE StudentID = " + StudentID);
             foreach (Notifications noti in notifications)
                 SQLConnection.delete(noti);
             return notifications;
