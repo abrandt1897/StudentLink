@@ -3,6 +3,7 @@ package com.example.studentlink;
 import org.junit.Test;
 
 import android.content.Context;
+import android.content.Intent;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -48,35 +49,35 @@ public class NavWebViewTest {
     @Mock
     private AppCompatActivity theActivity;
 
-    @Mock
-    private Context context;
-
-    @Test
-    public void testNavigateToWebView() throws Exception{
-        CreateAccountLogic createAccountLogic = new CreateAccountLogic(theActivity);
-        createAccountLogic.setConnectionClass(connectionClass); //inject mock
-        createAccountLogic = PowerMockito.spy(createAccountLogic);
-
+//    @Test
+//    public void testNavigateToWebView() throws Exception{
+//        CreateAccountLogic createAccountLogic = new CreateAccountLogic(theActivity);
+//        createAccountLogic.setConnectionClass(connectionClass); //inject mock
+//        createAccountLogic = PowerMockito.spy(createAccountLogic);
+//
 //        PowerMockito.doNothing().when(createAccountLogic, PowerMockito.method(CreateAccountLogic.class, "navigateToWebView")).withArguments(context, CanvasWebview.class, "uniqueUsername", "goodPassword");
-        Mockito.when(connectionClass.getResponse()).thenReturn("No student under that username");
-        createAccountLogic.checkCredentials("uniqueUsername","goodPassword");
-        PrivateMethodVerification privateMethodInvocation = PowerMockito.verifyPrivate(createAccountLogic);
-
-        privateMethodInvocation.invoke("navigateToWebView", context, CanvasWebview.class, "uniqueUsername","goodPassword");
-
-    }
+//        Mockito.when(connectionClass.getResponse()).thenReturn("No student under that username");
+//        createAccountLogic.checkCredentials("uniqueUsername","goodPassword");
+//        PrivateMethodVerification privateMethodInvocation = PowerMockito.verifyPrivate(createAccountLogic);
+//
+//        privateMethodInvocation.invoke("navigateToWebView", context, CanvasWebview.class, "uniqueUsername","goodPassword");
+//
+//    }
 
     @Test
     public void test2() throws Exception {
         CreateAccountLogic createAccountLogic = new CreateAccountLogic(theActivity);
         createAccountLogic.setConnectionClass(connectionClass); //inject mock
         CreateAccountLogic theSpy = PowerMockito.spy(createAccountLogic);
+        Intent intent = new Intent(theActivity.getApplicationContext(),CanvasWebview.class);
 
         Mockito.when(connectionClass.getResponse()).thenReturn("No student under that username");
-        createAccountLogic.checkCredentials("uniqueUsername","goodPassword");
-
-        Whitebox.invokeMethod(theSpy, "navigateToWebView");
-        PowerMockito.verifyPrivate(theSpy, times(1)).invoke("navigateToWebView",context, CanvasWebview.class, "uniqueUsername","goodPassword");
+//        createAccountLogic.checkCredentials("uniqueUsername","goodPassword");
+//        Mockito.when(intent.putExtra("Username","unique")).thenReturn(intent);
+//        Mockito.when(intent.putExtra("Password","goodPassword")).thenReturn(intent);
+//            PowerMockito.when(theSpy,"putExtra").thenReturn(intent);
+        Whitebox.invokeMethod(theSpy, "checkCredentials","uniqueUser","password");
+        PowerMockito.verifyPrivate(theSpy, times(1)).invoke("navigateToWebView",intent, "uniqueUser","password");
 //        final SomeClass someClass = new SomeClass();
 //        final SomeClass spy = PowerMockito.spy(someClass);
 

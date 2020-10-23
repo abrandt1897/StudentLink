@@ -3,9 +3,11 @@ package com.example.studentlink;
 import org.junit.Test;
 
 import android.content.Context;
+import android.content.Intent;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.studentlink.ui.login.NewAccount.CanvasKey.CanvasWebview;
 import com.example.studentlink.ui.login.NewAccount.CreateAccount;
 import com.example.studentlink.ui.login.NewAccount.Logic.CreateAccountLogic;
 import com.example.studentlink.ui.login.SignIn.LoginActivity;
@@ -44,6 +46,10 @@ public class CreateAccountTest {
     @Mock
     private HashMap<String,String> data;
 
+//    @Mock
+//    private CreateAccountLogic createAccount;
+
+
     @Test
     public void testBadUsernameLogin(){
         CreateAccountLogic createAccountLogic = new CreateAccountLogic(theActivity);
@@ -55,24 +61,22 @@ public class CreateAccountTest {
 
         String response = createAccountLogic.checkCredentials("badUsername","badPassword");
 
-        Assert.assertEquals(response, "");
+        Assert.assertEquals( "", response);
 
     }
 
-//    @Test
-//    public void testNavigateToWebview(){
-//        CreateAccountLogic createAccountLogic = new CreateAccountLogic(theActivity);
-//        createAccountLogic.setConnectionClass(connectionClass); //inject mock
-////        CreateAccountLogic spy = Mockito.spy(createAccountLogic);
-////        Mockito.doNothing().when(spy).navigateWebView();
-//        when(connectionClass.getResponse()).thenReturn("No");
-////        doNothing().when(createAccountLogic,"navigateWebView").thenReturn();
-//
-//        String response = createAccountLogic.checkCredentials("badUsername","badPassword");
-//
-//        Assert.assertEquals(response, "");
-//
-//    }
+    @Test
+    public void testNavigateToWebView(){
+        CreateAccountLogic createAccount = new CreateAccountLogic(theActivity);
+        createAccount.setConnectionClass(connectionClass); //inject mock
+
+        when(connectionClass.getResponse()).thenReturn("No student under that username");
+//        doNothing().when(createAccount).navigateToWebView(null, "uniqueUser", "password");
+
+        String response = createAccount.checkCredentials("uniqueUser","password");
+        Assert.assertEquals("Ok", response);
+//        verify(createAccount, times(1)).navigateToWebView(null, "uniqueUser", "password");
+    }
 
 
     @Test

@@ -19,8 +19,9 @@ public class CreateAccountLogic extends AbstractLogic {
         super(activity);
     }
 
-    private void navigateToWebView(Context context, Class moveToThisClass, String username, String password) {
-        Intent intent = new Intent(context, moveToThisClass);
+
+    public void navigateToWebView(Intent intent, String username, String password) {
+//        Intent intent = new Intent(context, moveToThisClass);
         intent.putExtra("Username", username);
         intent.putExtra("Password", password);
         theActivity.startActivity(intent);
@@ -37,7 +38,7 @@ public class CreateAccountLogic extends AbstractLogic {
             return "";
         }
         else{
-            navigateToWebView(theActivity.getApplicationContext(), CanvasWebview.class, username, password);
+            this.navigateToWebView(new Intent(theActivity.getApplicationContext(), CanvasWebview.class), username, password);
             return "Ok";
         }
     }
