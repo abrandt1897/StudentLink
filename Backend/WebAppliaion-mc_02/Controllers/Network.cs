@@ -126,31 +126,6 @@ namespace WebApplication_mc_02.Controllers
             return ID1.ToString();
         }
 
-        public async Task<String> logUserIn(string userID, string password)
-        {
-            var request = new HttpRequestMessage(HttpMethod.Post, "https://iastate.okta.com/api/v1/authn");
-            request.Headers.Add("Accept", "application/json");
-            request.Headers.Add("User-Agent", "HttpClientFactory-Sample");
-            request.Headers.Add("Authorization", "SSWS 00Dn1-IfOQVpsWQ-ziuTWpBtnHu__8BvWgyyT99d4s");
-            request.Headers.Add("Cache-Control", "no-cache");
-            request.Headers.Add("X-Fowarded-For", "23.235.46.133");
-            request.Headers.Add("X-Device-Fingerprint", "application/json");
-            request.Content = new StringContent("{\"password\":\""+ password + "\",\"userID\":\""+ userID, System.Text.Encoding.UTF8, "application/json");
-            var client = _clientFactory.CreateClient();
-
-            var courseResponse = await client.SendAsync(request);
-            if (courseResponse.IsSuccessStatusCode)
-            {
-                string responce = await courseResponse.Content.ReadAsStringAsync();
-                return responce;
-            }
-            else
-            {
-                return "";
-            }
-
-            return "";
-        }
         public async Task<String> makeRequest(string URL, string token)
         {
             var request = new HttpRequestMessage(HttpMethod.Get, URL);
@@ -160,7 +135,8 @@ namespace WebApplication_mc_02.Controllers
 
             var client = _clientFactory.CreateClient();
 
-            var courseResponse = await client.SendAsync(request);
+            var courseResponse = await client.SendAsync(request);   
+            
             if (courseResponse.IsSuccessStatusCode)
             {
                 string responce = await courseResponse.Content.ReadAsStringAsync();
