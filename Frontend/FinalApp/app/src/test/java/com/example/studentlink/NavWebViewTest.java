@@ -2,15 +2,9 @@
 //
 //import org.junit.Test;
 //
-//import android.content.Context;
-//import android.content.Intent;
-//
 //import androidx.appcompat.app.AppCompatActivity;
 //
-//import com.example.studentlink.ui.login.NewAccount.CanvasKey.CanvasWebview;
-//import com.example.studentlink.ui.login.NewAccount.CreateAccount;
 //import com.example.studentlink.ui.login.NewAccount.Logic.CreateAccountLogic;
-//import com.example.studentlink.ui.login.SignIn.LoginActivity;
 //
 //import static org.powermock.api.mockito.PowerMockito.when;
 //import static org.powermock.api.mockito.PowerMockito.doNothing;
@@ -26,9 +20,6 @@
 //import org.powermock.modules.junit4.PowerMockRunner;
 //import org.powermock.reflect.Whitebox;
 //
-//import java.util.HashMap;
-//import java.util.Map;
-//
 //import static org.mockito.Mockito.doNothing;
 //import static org.mockito.Mockito.doReturn;
 //import static org.mockito.Mockito.mock;
@@ -37,7 +28,6 @@
 //import static org.mockito.Mockito.when;
 //
 //import static org.junit.Assert.*;
-//
 //
 //@RunWith(PowerMockRunner.class)
 //@PrepareForTest(CreateAccountLogic.class)

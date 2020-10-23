@@ -6,10 +6,7 @@ import android.content.Context;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.studentlink.ui.login.NewAccount.CanvasKey.CanvasWebview;
-import com.example.studentlink.ui.login.NewAccount.CreateAccount;
 import com.example.studentlink.ui.login.NewAccount.Logic.CreateAccountLogic;
-import com.example.studentlink.ui.login.SignIn.LoginActivity;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -18,7 +15,6 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 import java.util.HashMap;
-import java.util.Map;
 
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doReturn;
@@ -64,7 +60,7 @@ public class CreateAccountTest {
     }
 
     @Test
-    public void testNavigateToWebView(){
+    public void testGoodUsernameLogin(){
         CreateAccountLogic createAccount = new CreateAccountLogic(theActivity);
         createAccount.setConnectionClass(connectionClass); //inject mock
 
@@ -73,7 +69,19 @@ public class CreateAccountTest {
 
         String response = createAccount.checkCredentials("uniqueUser","password");
         Assert.assertEquals("Ok", response);
-//        verify(createAccount, times(1)).navigateToWebView(null, "uniqueUser", "password");
+    }
+
+
+    @Test
+    public void testNavigateToWebView(){
+        CreateAccountLogic myClass = new CreateAccountLogic(theActivity);
+        myClass.setConnectionClass(connectionClass); //inject mock
+        CreateAccountLogic theSpy = Mockito.spy(myClass);
+
+        Mockito.when(connectionClass.getResponse()).thenReturn("No student under that username");
+
+        theSpy.checkCredentials("uniqueUser","password");
+        verify(theSpy, times(1)).navigateToWebView(Mockito.any(), Mockito.any(),Mockito.any());
     }
 
 
