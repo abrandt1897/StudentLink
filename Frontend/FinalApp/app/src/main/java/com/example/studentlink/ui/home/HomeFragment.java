@@ -43,5 +43,9 @@ public class HomeFragment extends Fragment {
         listview.setAdapter(h);
     }
 
+    public void setListView(ListView aListView){
+        listview = aListView;
+    }
+
 
 }

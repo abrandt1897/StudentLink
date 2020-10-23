@@ -14,7 +14,7 @@ import com.example.studentlink.R;
 
 import java.util.List;
 
-class HomeAdapter extends BaseAdapter {
+public class HomeAdapter extends BaseAdapter {
 
     Context context;
     private List<Notification> notifications;
@@ -67,10 +67,7 @@ class HomeAdapter extends BaseAdapter {
                 Button declineButton = (Button) vi.findViewById(R.id.DeclineButton);
                 declineButton.setTag(position);
                 declineButton.setOnClickListener(v -> {
-                    Toast.makeText(context, "Congrats!" + v.getTag().toString(), Toast.LENGTH_LONG).show();
-//                    int pos = (int)v.getTag();
-//                    notifications.remove(pos);
-//                    HomeAdapter.this.notifyDataSetChanged();
+                    removeRow(position);
                 });
 
             } else {
