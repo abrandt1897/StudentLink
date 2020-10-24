@@ -424,3 +424,18 @@ C:\Users\Adam Brandt\OneDrive\Documents\CS309\mc_02\Backend\WebAppliaion-mc_02\b
 C:\Users\Adam Brandt\OneDrive\Documents\CS309\mc_02\Backend\WebAppliaion-mc_02\bin\Debug\netcoreapp3.0\Microsoft.Owin.Security.OAuth.dll
 C:\Users\Adam Brandt\OneDrive\Documents\CS309\mc_02\Backend\WebAppliaion-mc_02\bin\Debug\netcoreapp3.0\Owin.dll
 >>>>>>> 3c0798d3dfe7c69458a0712388c918a70717a6fa
+E:\Documents\GitHub\mc_02\Backend\WebAppliaion-mc_02\bin\Debug\netcoreapp3.0\WebApplication-mc_02.Views.dll
+E:\Documents\GitHub\mc_02\Backend\WebAppliaion-mc_02\bin\Debug\netcoreapp3.0\WebApplication-mc_02.Views.pdb
+E:\Documents\GitHub\mc_02\Backend\WebAppliaion-mc_02\bin\Debug\netcoreapp3.0\System.Web.Cors.dll
+E:\Documents\GitHub\mc_02\Backend\WebAppliaion-mc_02\bin\Debug\netcoreapp3.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+E:\Documents\GitHub\mc_02\Backend\WebAppliaion-mc_02\bin\Debug\netcoreapp3.0\Microsoft.Owin.Cors.dll
+E:\Documents\GitHub\mc_02\Backend\WebAppliaion-mc_02\obj\Debug\netcoreapp3.0\WebApplication-mc_02.RazorAssemblyInfo.cache
+E:\Documents\GitHub\mc_02\Backend\WebAppliaion-mc_02\obj\Debug\netcoreapp3.0\WebApplication-mc_02.RazorAssemblyInfo.cs
+E:\Documents\GitHub\mc_02\Backend\WebAppliaion-mc_02\obj\Debug\netcoreapp3.0\WebApplication-mc_02.TagHelpers.input.cache
+E:\Documents\GitHub\mc_02\Backend\WebAppliaion-mc_02\obj\Debug\netcoreapp3.0\WebApplication-mc_02.TagHelpers.output.cache
+E:\Documents\GitHub\mc_02\Backend\WebAppliaion-mc_02\obj\Debug\netcoreapp3.0\WebApplication-mc_02.RazorCoreGenerate.cache
+E:\Documents\GitHub\mc_02\Backend\WebAppliaion-mc_02\obj\Debug\netcoreapp3.0\Razor\Views\Login\Login.cshtml.g.cs
+E:\Documents\GitHub\mc_02\Backend\WebAppliaion-mc_02\obj\Debug\netcoreapp3.0\Razor\Views\Shared\_ValidationScriptsPartial.cshtml.g.cs
+E:\Documents\GitHub\mc_02\Backend\WebAppliaion-mc_02\obj\Debug\netcoreapp3.0\Razor\Views\Students\CreateStudent.cshtml.g.cs
+E:\Documents\GitHub\mc_02\Backend\WebAppliaion-mc_02\obj\Debug\netcoreapp3.0\WebApplication-mc_02.RazorTargetAssemblyInfo.cs
+E:\Documents\GitHub\mc_02\Backend\WebAppliaion-mc_02\obj\Debug\netcoreapp3.0\WebApplication-mc_02.Views.pdb

@@ -107,28 +107,28 @@
             text-shadow: 0 1px 0 rgba(255,255,255,0.2);
             border-radius: 15px 15px 15px 0px;
         }
-
-        .form-style-5 input[type="submit"],
-        .form-style-5 input[type="button"] {
-            position: relative;
-            display: block;
-            padding: 19px 39px 18px 39px;
-            color: #FFF;
-            margin: 0 auto;
-            background: #1abc9c;
-            font-size: 18px;
-            text-align: center;
-            font-style: normal;
-            width: 100%;
-            border: 1px solid #16a085;
-            border-width: 1px 1px 3px;
-            margin-bottom: 10px;
-        }
-
-            .form-style-5 input[type="submit"]:hover,
-            .form-style-5 input[type="button"]:hover {
-                background: #109177;
+            .form-style-5 button[type="submit"],
+            .form-style-5 input[type="submit"],
+            .form-style-5 input[type="button"] {
+                position: relative;
+                display: block;
+                padding: 19px 39px 18px 39px;
+                color: #FFF;
+                margin: 0 auto;
+                background: #1abc9c;
+                font-size: 18px;
+                text-align: center;
+                font-style: normal;
+                width: 100%;
+                border: 1px solid #16a085;
+                border-width: 1px 1px 3px;
+                margin-bottom: 10px;
             }
+                .form-style-5 button[type="submit"]:hover,
+                .form-style-5 input[type="submit"]:hover,
+                .form-style-5 input[type="button"]:hover {
+                    background: #109177;
+                }
     </style>
     <script>
         function getToken() {
@@ -154,28 +154,50 @@
                 contentType: "application/json"
             });
         }
+
+        function allowCreation() {
+            document.getElementById("creationbutton").removeAttribute("disabled");
+        }
     </script>
     <title>Create Account</title>
 </head>
-<body>
+<body style="background-color:#111111">
     <div class="container justify-content-center">
-        <div class="form-style-5">
+        <div class="form-style-5 bg-dark">
             @using (Html.BeginForm("PostStudent", "Students", FormMethod.Post))
             {
-                <legend><span class="number ">1</span>Get Token</legend>
-                <input type="button" value="Get Token" onclick="getToken()" />
-                <legend><span class="number">i</span>Login to your Canvas profile</legend>
-                <legend><span class="number">ii</span>Click <code>New Access Token</code></legend>
-                <legend><span class="number">iii</span><code>Generate Token</code></legend>
-                <legend><span class="number">iv</span>Copy Token</legend>
-                <br>
+                <nav class="navbar navbar-dark bg-dark">
+                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggleExternalContent" aria-controls="navbarToggleExternalContent" aria-expanded="false" aria-label="Toggle navigation">
+                        <!--<span class="navbar-toggler-icon"></span>-->
+                        <legend><span class="number ">1</span>Get Token</legend>
+                    </button>
+                </nav>
+                
+                <div class="collapse" id="navbarToggleExternalContent">
+                    <div class="bg-dark text-white p-4">
+                        <input type="button" value="Get Token" onclick="getToken()" />
+                        <legend><span class="number">i</span>Login to your Canvas profile</legend>
+                        <legend><span class="number">ii</span>Click <code>New Access Token</code></legend>
+                        <legend><span class="number">iii</span><code>Generate Token</code></legend>
+                        <legend><span class="number">iv</span>Copy Token</legend>
+                    </div>
+                </div>
                 <fieldset>
-                    <legend><span class="number">2</span>Create Account</legend>
-                    <input id="username" type="text" name="Username" placeholder="Create Username *">
-                    <input id="password" type="password" name="Password" placeholder="Create Password *">
-                    <input id="token" type="text" name="canvasOAuthToken" placeholder="Paste Token *" />
+                    <nav class="navbar navbar-dark bg-dark">
+                        <button class="navbar-toggler" type="button" onclick="allowCreation()" data-toggle="collapse" data-target="#navbarToggleExternalContent1" aria-controls="navbarToggleExternalContent1" aria-expanded="false" aria-label="Toggle navigation">
+                            <legend><span class="number">2</span>Create Account</legend>
+                        </button>
+                    </nav>
+
+                    <div class="collapse" id="navbarToggleExternalContent1">
+                        <div class="bg-dark p-4">
+                            <input class="text-white" id="username" type="text" name="Username" placeholder="Create Username *">
+                            <input class="text-white" id="password" type="password" name="Password" placeholder="Create Password *">
+                            <input class="text-white" id="token" type="text" name="canvasOAuthToken" placeholder="Paste Token *" />
+                        </div>
+                    </div>
                 </fieldset>
-                <input type="submit" value="Create Account" />
+                <button disabled id="creationbutton" type="submit">Create Account</button>
             }
         </div>
     </div>

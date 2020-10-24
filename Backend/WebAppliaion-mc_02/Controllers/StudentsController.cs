@@ -59,7 +59,7 @@ namespace WebApplication_mc_02.Controllers
         }
 
         [HttpPut]
-        public async Task<ActionResult<Students>> PutFriendNotification([FromBody] Notifications noti)
+        public async Task<ActionResult<Students>> PutNotification([FromBody] Notifications noti)
         {
             //TODO sanitize data
             if (Global.websockets.ContainsKey(noti.StudentID) && WebSocketHandler.sendDataAsync(Global.websockets[noti.StudentID], noti).Result)

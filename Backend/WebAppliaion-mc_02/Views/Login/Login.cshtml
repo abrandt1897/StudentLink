@@ -72,18 +72,18 @@
             margin-bottom: 30px;
         }
 
-            .form-style-5 input[type="text"]:focus,
-            .form-style-5 input[type="date"]:focus,
-            .form-style-5 input[type="datetime"]:focus,
-            .form-style-5 input[type="email"]:focus,
-            .form-style-5 input[type="number"]:focus,
-            .form-style-5 input[type="search"]:focus,
-            .form-style-5 input[type="time"]:focus,
-            .form-style-5 input[type="url"]:focus,
-            .form-style-5 textarea:focus,
-            .form-style-5 select:focus {
-                background: #d2d9dd;
-            }
+        .form-style-5 input[type="text"]:focus,
+        .form-style-5 input[type="date"]:focus,
+        .form-style-5 input[type="datetime"]:focus,
+        .form-style-5 input[type="email"]:focus,
+        .form-style-5 input[type="number"]:focus,
+        .form-style-5 input[type="search"]:focus,
+        .form-style-5 input[type="time"]:focus,
+        .form-style-5 input[type="url"]:focus,
+        .form-style-5 textarea:focus,
+        .form-style-5 select:focus {
+            background: #d2d9dd;
+        }
 
         .form-style-5 select {
             -webkit-appearance: menulist-button;
@@ -104,6 +104,7 @@
             border-radius: 15px 15px 15px 0px;
         }
 
+        .form-style-5 button[type="button"],
         .form-style-5 input[type="submit"],
         .form-style-5 input[type="button"] {
             position: relative;
@@ -121,10 +122,11 @@
             margin-bottom: 10px;
         }
 
-            .form-style-5 input[type="submit"]:hover,
-            .form-style-5 input[type="button"]:hover {
-                background: #109177;
-            }
+        .form-style-5 button[type="button"]:hover,
+        .form-style-5 input[type="submit"]:hover,
+        .form-style-5 input[type="button"]:hover {
+            background: #109177;
+        }
     </style>
     <script>
         function sendLogin() {
@@ -148,10 +150,10 @@
     </script>
     <title>Login</title>
 </head>
-<body>
+<body style="background-color:#111111">
     <!--Contents of the webpage-->
-    <div class="container justify-content-center">
-        <div class="form-style-5">
+    <div class="container">
+        <div class="form-style-5 bg-dark text-white">
             @using (Html.BeginForm("PostLogin", "Login", FormMethod.Post))
             {
                 <legend><span class="number">1</span> Student Login</legend>
@@ -161,6 +163,8 @@
                 </fieldset>
                 <input type="submit" value="Submit" />
             }
+            <legend class="justify-content-center text-white">Or</legend>
+            <button class="btn btn-secondary btn-sm" type="button" onclick="/api/Students">Create Account</button>
         </div>
     </div>
 </body>

@@ -20,7 +20,7 @@
     "WebApplication_mc_02": {
       "commandName": "Project",
       "launchBrowser": true,
-      "launchUrl": "api/Students",
+      "launchUrl": "api/Login",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
