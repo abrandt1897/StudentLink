@@ -27,9 +27,8 @@ public class CanvasLogic extends AbstractLogic {
         Map<String,String> userLoginData = new HashMap<String,String>();
         userLoginData.put("Username",username);
         userLoginData.put("Password",password);
-        connectionClass.putRequest(userLoginData,databaseName); // TODO: Uncomment for real functionality
-        if(!connectionClass.getResponse().equals("Bad response")){ // TODO: Remove ! for real functionality
-//            CanvasToken.setError("Your Canvas Token is incorrect.");
+        connectionClass.putRequest(userLoginData,databaseName);
+        if(connectionClass.getResponse().equals("Bad response") || connectionClass.getResponse().equals("")){
             return "";
         }
         else{

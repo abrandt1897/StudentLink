@@ -8,6 +8,7 @@ import android.util.Log;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -27,17 +28,25 @@ import java.net.CookieStore;
 import java.util.HashMap;
 import java.util.Map;
 
-
 public class ConnectionClass extends AppCompatActivity {
 
     private Context context;
     String serverResponse = "";
+    private Map<String,String> theHeaders;
+    private Map<String,String> theParameters;
+    JSONObject objectOfServerResponse;
 
-    public ConnectionClass(){};
+    public ConnectionClass(){
+        theHeaders = new HashMap<String,String>();
+        theHeaders.put("bearerToken", Global.bearerToken);
+        theParameters = new HashMap<String,String>();
+        theParameters.put("StudentID", Global.studentID + "");
+    };
 
     public ConnectionClass(Context c){
         context=c;
-
+        theHeaders = new HashMap<String,String>();
+        theHeaders.put("bearerToken",Global.bearerToken);
     };
 
     public void setContext(Context c){
@@ -55,15 +64,26 @@ public class ConnectionClass extends AppCompatActivity {
 
             @Override
             public void onResponse(JSONObject response) {
-
+                objectOfServerResponse = response;
                 serverResponse = response.toString();
             }
+
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Toast.makeText(context, error.toString(), Toast.LENGTH_SHORT).show();
             }
-        });
+        }){
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                //headers.put("Content-Type", "application/json");
+                return theHeaders;
+            }
+            @Override
+            public Map<String, String> getParams() {
+                return theParameters;
+            }
+        };
 
         // Add the request to the RequestQueue.
         RequestQueue.add(ObjRequest);
@@ -139,6 +159,10 @@ public class ConnectionClass extends AppCompatActivity {
 
     public String getResponse(){
         return serverResponse;
+    }
+
+    public JSONObject getObjectOfServerResponse(){
+        return objectOfServerResponse;
     }
 
 

@@ -75,7 +75,7 @@ public class CanvasWebview extends AppCompatActivity {
                     return;
                 }
                 logic.setToken(CanvasToken.getText().toString());
-                logic.checkCredentials(username, password);
+                String response = logic.checkCredentials(username, password);
                 // error checking???
 
             }
