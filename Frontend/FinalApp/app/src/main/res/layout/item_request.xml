@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp">
+
+        <TextView
+            android:id="@+id/requestText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="50dp"
+            android:text="Some friend request"
+            android:textSize="20sp" />
+
+        <Button
+            android:id="@+id/AcceptButton"
+            android:layout_width="120dp"
+            android:layout_height="60dp"
+            android:layout_below="@id/requestText"
+            android:text="Accept"
+            android:background="#04DD07"/>
+
+        <Button
+            android:id="@+id/DeclineButton"
+            android:layout_width="120dp"
+            android:layout_height="60dp"
+            android:layout_toRightOf="@id/AcceptButton"
+            android:layout_below="@id/requestText"
+            android:layout_marginLeft="20dp"
+            android:text="Decline"
+            android:background="#F1353B"/>
+
+    </RelativeLayout>
+
+</LinearLayout>
