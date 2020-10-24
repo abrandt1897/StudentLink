@@ -9,11 +9,8 @@ using WebApplication_mc_02.Models;
 using MySql.Data.MySqlClient;
 using Microsoft.AspNetCore.Mvc;
 using Nancy.Json.Simple;
-//Future Greyson
-//allow students to be added to a course
-//to do that you need to check if the course already exists
-//and then if it does add the student to the course otherwise
-//add the course with the current student in it
+using System.Net;
+using System.IO;
 namespace WebApplication_mc_02.Controllers
 {
     public class Networking
@@ -29,8 +26,8 @@ namespace WebApplication_mc_02.Controllers
         public async Task<Students> getStudentProfile(string token)
         {
             //get student string data
-            
-            var courseResponse = await makeRequest("https://canvas.instructure.com/api/v1/courses?include[]=sections&include[]=term&per_page=100", token);
+
+            var courseResponse = await makeRequest("https://canvas.instructure.com/api/v1/courses?state[]=available&state[]=deleted&state[]=completed&include[]=sections&include[]=term&per_page=150", token);
             var profileResponse = await makeRequest("https://canvas.iastate.edu/api/v1/users/self/", token);
             //parse student data to json
             JsonArray courseJsonResponse = new JavaScriptSerializer().Deserialize<JsonArray>(courseResponse);
@@ -49,7 +46,7 @@ namespace WebApplication_mc_02.Controllers
             var iastateResponse = client.SendAsync(request).Result;
             string data = iastateResponse.Content.ReadAsStringAsync().Result;
             //parse major
-            int majorStartIndex = data.IndexOf("Major:</span> ")+ "Major:</span> ".Length;
+            int majorStartIndex = data.IndexOf("Major:</span> ") + "Major:</span> ".Length;
             int majorEndIndex = data.Substring(majorStartIndex).IndexOf("</div>");
             string major = data.Substring(majorStartIndex, majorEndIndex);
             //parse classification
@@ -66,7 +63,6 @@ namespace WebApplication_mc_02.Controllers
             List<Courses> courses = new List<Courses>();
             foreach (JsonObject jsonObject in courseJsonResponse)
             {
-                CourseIDs += getJsonValue(jsonObject, "id") + " ";
                 //Build course object
                 Courses c = new Courses();
                 if (getJsonValue(jsonObject, "name") == "Error")
@@ -87,16 +83,13 @@ namespace WebApplication_mc_02.Controllers
                 c.SectionID = Int64.Parse(IdData);
                 c.Section = getJsonValue(data69, "name");
                 courses.Add(c);
-            }
-            //Insert into table
-            for (int i = 0; i < courses.Count; i++)
-            {
+                //map student to course
                 Student2CourseMap s2cm = new Student2CourseMap();
-                s2cm.CourseID = courses[i].CourseID;
+                s2cm.CourseID = c.CourseID;
                 s2cm.StudentID = myStu.StudentID;
                 s2cm.UserType = "Student";
-                s2cm.CurrentlyEnrolled = true;
-                SQLConnection.insert(courses[i]);
+                s2cm.CurrentlyEnrolled = getJsonValue((JsonObject)new JavaScriptSerializer().Deserialize<JsonArray>(getJsonValue(jsonObject, "enrollments"))[0], "enrollment_state") == "active" && getJsonValue(jsonObject, "workflow_state") == "active";
+                SQLConnection.insert(c);
                 SQLConnection.insert(s2cm);
             }
             return myStu;
@@ -114,7 +107,7 @@ namespace WebApplication_mc_02.Controllers
                 }
                 idx1++;
             }
-            if(!temp)
+            if (!temp)
             {
                 return "Error";
             }
@@ -135,8 +128,8 @@ namespace WebApplication_mc_02.Controllers
 
             var client = _clientFactory.CreateClient();
 
-            var courseResponse = await client.SendAsync(request);   
-            
+            var courseResponse = await client.SendAsync(request);
+
             if (courseResponse.IsSuccessStatusCode)
             {
                 string responce = await courseResponse.Content.ReadAsStringAsync();
