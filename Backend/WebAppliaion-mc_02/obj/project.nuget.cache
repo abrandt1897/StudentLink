@@ -1,7 +1,7 @@
 {
   "version": 2,
-  "dgSpecHash": "ZUoyY3vMOkXxhFnNz5q4BVmFFrACw5vM+DEOKLiOTu8zHRwVbC2aRqKueU/8NFEcQ57PwNG2+j0WP46gglf1oA==",
-  "success": false,
+  "dgSpecHash": "+HGneFE1duL7yQ4AMjxCmUrZGBIc7rSpEJ7joIcCXEbVCxAt/wguZE3WSZ1kdWnuxZvX7fdFxCpnLsmFZ1cArA==",
+  "success": true,
   "projectFilePath": "E:\\Documents\\GitHub\\mc_02\\Backend\\WebAppliaion-mc_02\\WebApplication-mc_02.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Tevatron\\.nuget\\packages\\bouncycastle.netcore\\1.8.3\\bouncycastle.netcore.1.8.3.nupkg.sha512",
@@ -19,7 +19,7 @@
     "C:\\Users\\Tevatron\\.nuget\\packages\\microsoft.aspnetcore.authentication.abstractions\\2.2.0\\microsoft.aspnetcore.authentication.abstractions.2.2.0.nupkg.sha512",
     "C:\\Users\\Tevatron\\.nuget\\packages\\microsoft.aspnetcore.authentication.cookies\\2.2.0\\microsoft.aspnetcore.authentication.cookies.2.2.0.nupkg.sha512",
     "C:\\Users\\Tevatron\\.nuget\\packages\\microsoft.aspnetcore.authentication.core\\2.2.0\\microsoft.aspnetcore.authentication.core.2.2.0.nupkg.sha512",
-    "C:\\Users\\Tevatron\\.nuget\\packages\\microsoft.aspnetcore.authentication.jwtbearer\\3.1.9\\microsoft.aspnetcore.authentication.jwtbearer.3.1.9.nupkg.sha512",
+    "C:\\Users\\Tevatron\\.nuget\\packages\\microsoft.aspnetcore.authentication.jwtbearer\\3.0.3\\microsoft.aspnetcore.authentication.jwtbearer.3.0.3.nupkg.sha512",
     "C:\\Users\\Tevatron\\.nuget\\packages\\microsoft.aspnetcore.cryptography.internal\\2.2.0\\microsoft.aspnetcore.cryptography.internal.2.2.0.nupkg.sha512",
     "C:\\Users\\Tevatron\\.nuget\\packages\\microsoft.aspnetcore.cryptography.keyderivation\\2.2.0\\microsoft.aspnetcore.cryptography.keyderivation.2.2.0.nupkg.sha512",
     "C:\\Users\\Tevatron\\.nuget\\packages\\microsoft.aspnetcore.dataprotection\\2.2.0\\microsoft.aspnetcore.dataprotection.2.2.0.nupkg.sha512",
@@ -344,15 +344,6 @@
       "warningLevel": 1,
       "message": "Package 'Owin 1.0.0' was restored using '.NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8' instead of the project target framework '.NETCoreApp,Version=v3.0'. This package may not be fully compatible with your project.",
       "libraryId": "Owin",
-      "targetGraphs": [
-        ".NETCoreApp,Version=v3.0"
-      ]
-    },
-    {
-      "code": "NU1202",
-      "level": "Error",
-      "message": "Package Microsoft.AspNetCore.Authentication.JwtBearer 3.1.9 is not compatible with netcoreapp3.0 (.NETCoreApp,Version=v3.0). Package Microsoft.AspNetCore.Authentication.JwtBearer 3.1.9 supports: netcoreapp3.1 (.NETCoreApp,Version=v3.1)",
-      "libraryId": "Microsoft.AspNetCore.Authentication.JwtBearer",
       "targetGraphs": [
         ".NETCoreApp,Version=v3.0"
       ]

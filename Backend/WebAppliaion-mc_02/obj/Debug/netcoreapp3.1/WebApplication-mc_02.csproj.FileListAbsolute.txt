@@ -676,3 +676,15 @@ C:\Users\greys\Documents\Github\mc_02\Backend\WebAppliaion-mc_02\obj\Debug\netco
 C:\Users\greys\Documents\Github\mc_02\Backend\WebAppliaion-mc_02\obj\Debug\netcoreapp3.1\WebApplication-mc_02.RazorTargetAssemblyInfo.cs
 C:\Users\greys\Documents\Github\mc_02\Backend\WebAppliaion-mc_02\obj\Debug\netcoreapp3.1\WebApplication-mc_02.Views.pdb
 C:\Users\greys\Documents\Github\mc_02\Backend\WebAppliaion-mc_02\obj\Debug\netcoreapp3.1\Razor\Views\Login\Login.cshtml.g.cs
+E:\Documents\GitHub\mc_02\Backend\WebAppliaion-mc_02\bin\Debug\netcoreapp3.1\WebApplication-mc_02.Views.dll
+E:\Documents\GitHub\mc_02\Backend\WebAppliaion-mc_02\bin\Debug\netcoreapp3.1\WebApplication-mc_02.Views.pdb
+E:\Documents\GitHub\mc_02\Backend\WebAppliaion-mc_02\obj\Debug\netcoreapp3.1\WebApplication-mc_02.RazorAssemblyInfo.cache
+E:\Documents\GitHub\mc_02\Backend\WebAppliaion-mc_02\obj\Debug\netcoreapp3.1\WebApplication-mc_02.RazorAssemblyInfo.cs
+E:\Documents\GitHub\mc_02\Backend\WebAppliaion-mc_02\obj\Debug\netcoreapp3.1\WebApplication-mc_02.TagHelpers.input.cache
+E:\Documents\GitHub\mc_02\Backend\WebAppliaion-mc_02\obj\Debug\netcoreapp3.1\WebApplication-mc_02.TagHelpers.output.cache
+E:\Documents\GitHub\mc_02\Backend\WebAppliaion-mc_02\obj\Debug\netcoreapp3.1\WebApplication-mc_02.RazorCoreGenerate.cache
+E:\Documents\GitHub\mc_02\Backend\WebAppliaion-mc_02\obj\Debug\netcoreapp3.1\Razor\Views\Login\Login.cshtml.g.cs
+E:\Documents\GitHub\mc_02\Backend\WebAppliaion-mc_02\obj\Debug\netcoreapp3.1\WebApplication-mc_02.RazorTargetAssemblyInfo.cs
+E:\Documents\GitHub\mc_02\Backend\WebAppliaion-mc_02\obj\Debug\netcoreapp3.1\WebApplication-mc_02.Views.pdb
+E:\Documents\GitHub\mc_02\Backend\WebAppliaion-mc_02\obj\Debug\netcoreapp3.1\Razor\Views\Shared\_ValidationScriptsPartial.cshtml.g.cs
+E:\Documents\GitHub\mc_02\Backend\WebAppliaion-mc_02\obj\Debug\netcoreapp3.1\Razor\Views\Students\CreateStudent.cshtml.g.cs

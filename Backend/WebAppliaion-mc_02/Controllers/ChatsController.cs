@@ -12,6 +12,7 @@ using Microsoft.EntityFrameworkCore.Query;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using System.Collections;
 using System.Threading;
+using Nancy.Json;
 
 namespace WebApplication_mc_02.Controllers
 {
@@ -43,12 +44,12 @@ namespace WebApplication_mc_02.Controllers
         }
         // PUT: api/Students/5
         [HttpPut]
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Student,Admin,Host")]
         public async Task<ActionResult<Chats>> PutGroupChat([FromBody] int studIDs)
         {
             var groupChat = groupAlgorithm(studIDs);
             var result = makeGroupChat(groupChat.Keys.ToList());
-            return Ok($"ChatID: {result}, {groupChat}");
+            var data = new JavaScriptSerializer().Serialize(groupChat);
+            return Ok("ChatID: "+result+", "+ groupChat.ToString());
         }
 
         // POST: api/Students/
@@ -105,11 +106,12 @@ namespace WebApplication_mc_02.Controllers
             return Convert.ToInt32(result)+1;
         }
 
-        private Dictionary<int, double> groupAlgorithm(int StudentID){
+        private Dictionary<int, double> groupAlgorithm(int StudentID)
+        {
             Dictionary<int, int> Student2Course = new Dictionary<int, int>();
             int GroupSize = 7;
             var courseList = SQLConnection.get(typeof(Student2CourseMap), $"WHERE StudentID={StudentID} and currentlyEnrolled=1");
-            foreach(var course in courseList){
+            foreach (var course in courseList){
                 var studentList2 = SQLConnection.get(typeof(Student2CourseMap), $"WHERE CourseID={course.CourseID}");
                 foreach(var student in studentList2)
                 {
@@ -121,11 +123,12 @@ namespace WebApplication_mc_02.Controllers
             }
             Student2Course.OrderBy(entry => entry.Value).ToList();
             Dictionary<int, double> simStudents = new Dictionary<int, double>();
-            for(int i = 0; i < ((Student2Course.Count < GroupSize) ? Student2Course.Count : GroupSize); i++)
+            for (int i = 0; i < ((Student2Course.Count < GroupSize) ? Student2Course.Count : GroupSize); i++)
             {
-                double percentMatch = Student2Course.ElementAt(i).Value / courseList.Count(); 
+                double percentMatch = Student2Course.ElementAt(i).Value / courseList.Count();
                 simStudents.Add(Student2Course.ElementAt(i).Key, percentMatch);
             }
+
             return simStudents;
         }
     }

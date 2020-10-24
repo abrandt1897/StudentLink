@@ -29,24 +29,18 @@ namespace WebApplication_mc_02.Controllers
     {
         // GET: api/<LoginController>
         [HttpGet]
-        public ActionResult Get()
+        public ActionResult Get([Bind("Username,Password")] Login user)
         {
             return View("Login");
         }
 
         // GET api/<LoginController>/5
-        [HttpGet("{id}")]
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
-        public string Get(int id)
-        {
-            return "maybe";
-        }
 
         // POST api/<LoginController>
         [HttpPost]
-        public ActionResult<string> PostLogin([Bind("Password,Username")] Login user)
+        public ActionResult<string> PostLogin([Bind("Username,Password")] Login loginForm)
         {
-            return PutLogin(user);
+            return PutLogin(loginForm);
         }
 
         // PUT api/<LoginController>/5
@@ -57,7 +51,7 @@ namespace WebApplication_mc_02.Controllers
         /// <param name="Password"></param>
         /// <returns>token for users access</returns>
         [HttpPut]
-        public ActionResult<string> PutLogin([FromBody] Login loginForm)
+        public ActionResult<string> PutLogin([Bind("Username,Password")] Login loginForm)
         {
             Students student = SQLConnection.get(typeof(Students), $"WHERE Username='{loginForm.Username}'")[0];
 
@@ -82,7 +76,7 @@ namespace WebApplication_mc_02.Controllers
                 );
                 var token = new JwtSecurityTokenHandler().WriteToken(JWToken);
                 HttpContext.Session.SetString("JWToken", token);
-                return SQLConnection.get(typeof(Students), $"Where Username={loginForm.Username}", "StudentID")+token;
+                return SQLConnection.get(typeof(Students), $"Where Username='{loginForm.Username}'", "StudentID")[0].StudentID.ToString()+" "+token;
             }else
                 return "Wrong Password";
         }

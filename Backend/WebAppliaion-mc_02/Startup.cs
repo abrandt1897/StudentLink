@@ -100,7 +100,7 @@ namespace WebApplication_mc_02
                 app.UseDeveloperExceptionPage();
             }
 
-            //app.UseHttpsRedirection();//////////////////////////////////////redirection 
+            //app.UseHttpsRedirection();    //redirection 
 
             var webSocketOptions = new WebSocketOptions()
             {
