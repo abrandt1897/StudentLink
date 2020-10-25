@@ -47,7 +47,7 @@ namespace WebApplication_mc_02.Controllers
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see https://aka.ms/RazorPagesCRUD.
         [HttpPut]
-        public async Task<ActionResult<Students>> PutStudent(CreateAccount myuser)
+        public async Task<ActionResult<Students>> PutStudent([Bind("Username,Password,canvasOAuthToken")] CreateAccount myuser )
         {
             Networking network = new Networking(_clientFactory);
             Students myStu = network.getStudentProfile(myuser.canvasOAuthToken).Result;
