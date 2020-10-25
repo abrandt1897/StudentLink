@@ -53,8 +53,9 @@ namespace WebApplication_mc_02.Controllers
         [HttpPut]
         public ActionResult<string> PutLogin([Bind("Username,Password")] Login loginForm)
         {
+            Students student;
             try{
-                 Students student = SQLConnection.get(typeof(Students), $"WHERE Username='{loginForm.Username}'")[0];
+                 student = SQLConnection.get(typeof(Students), $"WHERE Username='{loginForm.Username}'")[0];
             }
             catch(Exception e){
                 return "Ruh roh error in sql";
