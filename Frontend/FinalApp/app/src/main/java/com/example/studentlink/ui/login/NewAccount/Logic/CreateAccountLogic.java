@@ -20,7 +20,6 @@ public class CreateAccountLogic extends AbstractLogic {
     }
 
     public void navigateToWebView(Intent intent, String username, String password) {
-//        Intent intent = new Intent(context, moveToThisClass);
         intent.putExtra("Username", username);
         intent.putExtra("Password", password);
         theActivity.startActivity(intent);
@@ -28,7 +27,7 @@ public class CreateAccountLogic extends AbstractLogic {
 
     @Override
     public String checkCredentials(String username, String password) {
-        String databaseName = "Students";
+        String databaseName = "api/Students";
         Map<String,String> userLoginData = new HashMap<String,String>();
         userLoginData.put("Username", username);
         userLoginData.put("Password", password);

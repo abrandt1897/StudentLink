@@ -40,22 +40,22 @@ public class HomeLogic {
     }
 
     public List<Notification> getNotifications(int studentID) throws JSONException {
-        // connect to websocket
-        // ws://http://coms-309-mc-02.cs.iastate.edu:5000/ws/{StudentID}
+        // TODO: Connect to websocket    ws://http://coms-309-mc-02.cs.iastate.edu:5000/ws/{StudentID}
         // remember to send the static bearer token in the header
-        String database = "api/Students";
-        connectionClass.getRequest(database);
+        String databaseName = "api/Notifications/" + Global.studentID;
+        connectionClass.getRequest(databaseName);
 
         notifications = new ArrayList<Notification>();
         JSONObject jo = connectionClass.getObjectOfServerResponse();
         Map<String,Object> studentInfo = toMap(jo);
+
 
         //TODO: Parse data (list of hashmaps)
 
         jo.get("Data");
         jo.get("Type");
 
-        // parse data from Greyson JSONParser
+        // parse data from Greyson - JSONParser
 
         return notifications;
     }
