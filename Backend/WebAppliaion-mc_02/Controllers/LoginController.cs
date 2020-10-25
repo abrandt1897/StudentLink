@@ -57,7 +57,7 @@ namespace WebApplication_mc_02.Controllers
                  Students student = SQLConnection.get(typeof(Students), $"WHERE Username='{loginForm.Username}'")[0];
             }
             catch(Exception e){
-                return "Ruh roh error in sql"
+                return "Ruh roh error in sql";
             }
            
 
