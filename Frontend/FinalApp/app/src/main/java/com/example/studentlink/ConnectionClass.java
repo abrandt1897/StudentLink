@@ -1,9 +1,6 @@
 package com.example.studentlink;
 
-import android.app.Activity;
-import android.app.DownloadManager;
 import android.content.Context;
-import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
@@ -21,10 +18,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
-import java.net.CookieHandler;
-import java.net.CookieManager;
-import java.net.CookiePolicy;
-import java.net.CookieStore;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -35,6 +28,7 @@ public class ConnectionClass extends AppCompatActivity {
     private Map<String,String> theHeaders;
     private Map<String,String> theParameters;
     JSONObject objectOfServerResponse;
+    private RequestQueue requestQueue;
 
     public ConnectionClass(){
         theHeaders = new HashMap<String,String>();
@@ -118,26 +112,27 @@ public class ConnectionClass extends AppCompatActivity {
 
     //sends data to database
     public void putRequest(Map<String, String> data, String database){
-
         //our api's urls
         String url = "http://coms-309-mc-02.cs.iastate.edu:5000/" + database;
 
         //start a queue for requests for our api
-        RequestQueue RequestQueue = Volley.newRequestQueue(context);
+        requestQueue = Volley.newRequestQueue(context);
+        requestQueue.start();
 
         //create a request object for our api asking for a json object to be returned
-        StringRequest putRequest = new StringRequest(Request.Method.PUT, url,
-                new Response.Listener<String>()
-                {
-                    @Override
-                    public void onResponse(String response) {
-                        serverResponse = response;
-                    }
-                },
+        StringRequest putRequest = new StringRequest(Request.Method.PUT, url, new Response.Listener<String>()
+        {
+            @Override
+            public void onResponse(String response) {
+                serverResponse = response;
+            }
+        },
                 new Response.ErrorListener()
                 {
                     @Override
                     public void onErrorResponse(VolleyError error) {
+                        error.printStackTrace();
+                        Toast.makeText(context, error.toString(), Toast.LENGTH_SHORT).show();
                         serverResponse = "Bad Response";
                         // error
                         //Log.d("Error.Response", response);
@@ -153,13 +148,10 @@ public class ConnectionClass extends AppCompatActivity {
 
         };
 
-        RequestQueue.add(putRequest);
-        RequestQueue.start();
+        requestQueue.add(putRequest);
     }
 
-    public String getResponse(){
-        return serverResponse;
-    }
+    public String getResponse(){ return serverResponse; }
 
     public JSONObject getObjectOfServerResponse(){
         return objectOfServerResponse;

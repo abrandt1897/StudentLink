@@ -23,12 +23,13 @@ public class CanvasLogic extends AbstractLogic {
 
     @Override
     public String checkCredentials(String username, String password) {
-        String databaseName = "api/Students/" + CanvasToken;
+        String databaseName = "api/Students";
         Map<String,String> userLoginData = new HashMap<String,String>();
         userLoginData.put("Username",username);
         userLoginData.put("Password",password);
+        userLoginData.put("canvasOAuthToken", CanvasToken);
         connectionClass.putRequest(userLoginData,databaseName);
-        if(connectionClass.getResponse().equals("Bad response") || connectionClass.getResponse().equals("")){
+        if(connectionClass.getResponse().equals("Bad response")){
             return "";
         }
         else{

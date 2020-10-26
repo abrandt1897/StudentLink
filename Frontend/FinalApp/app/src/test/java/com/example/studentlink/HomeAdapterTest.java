@@ -40,22 +40,7 @@ import static org.junit.Assert.*;
 public class HomeAdapterTest {
 
     @Mock
-    LayoutInflater inflater;
-
-    @Mock
-    ViewGroup container;
-
-    @Mock
-    Bundle savedInstanceState;
-
-    @Mock
     private Context c;
-
-    @Mock
-    private Button button;
-
-    @Mock
-    private ListView listView;
 
     @Mock
     private HomeFragment hf;
@@ -74,5 +59,4 @@ public class HomeAdapterTest {
         Assert.assertEquals("Nah friend me!", nextDescription);
         Assert.assertEquals(2, ha.getCount());
     }
-
 }

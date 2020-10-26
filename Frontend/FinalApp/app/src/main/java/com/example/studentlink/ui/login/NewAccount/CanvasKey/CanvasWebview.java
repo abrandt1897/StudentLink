@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Canvas;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -16,9 +17,20 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+import com.example.studentlink.Global;
+import com.example.studentlink.PageController;
 import com.example.studentlink.ui.login.ILogic;
 import com.example.studentlink.ui.login.NewAccount.Logic.CanvasLogic;
 import com.example.studentlink.R;
+
+import java.util.HashMap;
+import java.util.Map;
 
 
 public class CanvasWebview extends AppCompatActivity {
@@ -27,6 +39,7 @@ public class CanvasWebview extends AppCompatActivity {
     private ILogic logic;
     private EditText CanvasToken;
     private Button doneButton;
+    private Context c;
 
     private ProgressDialog progDailog;
 
@@ -41,9 +54,10 @@ public class CanvasWebview extends AppCompatActivity {
         String username = getIntent().getExtras().getString("Username");
         String password = getIntent().getExtras().getString("Password");
         logic = new CanvasLogic(this);
-
+        c = this;
         progDailog = ProgressDialog.show(this, "Loading","Please wait...", true);
         progDailog.setCancelable(false);
+
 
         webview = (WebView) findViewById(R.id.CanvasPage);
         webview.setWebViewClient(new CanvasWebviewClient());
@@ -74,10 +88,46 @@ public class CanvasWebview extends AppCompatActivity {
                     CanvasToken.setError("Please enter a Canvas Token.");
                     return;
                 }
-                logic.setToken(CanvasToken.getText().toString());
-                String response = logic.checkCredentials(username, password);
-                // error checking???
+//                logic.setToken(CanvasToken.getText().toString());
+//                String response = logic.checkCredentials(username, password);
 
+                String databaseName = "api/Students";
+                Map<String,String> userLoginData = new HashMap<String,String>();
+                userLoginData.put("Username",username);
+                userLoginData.put("Password",password);
+                userLoginData.put("canvasOAuthToken", CanvasToken.getText().toString());
+                String url = "http://coms-309-mc-02.cs.iastate.edu:5000/" + databaseName;
+                RequestQueue requestQueue;
+                requestQueue = Volley.newRequestQueue(c);
+                requestQueue.start();
+
+                StringRequest putRequest = new StringRequest(Request.Method.PUT, url, new Response.Listener<String>()
+                {
+                    @Override
+                    public void onResponse(String response) {
+                        Toast.makeText(c, "yay connect" + response, Toast.LENGTH_SHORT).show();
+                        String[] answer = response.split(" ");
+                        Global.studentID = Integer.parseInt(answer[0]);
+                        Global.bearerToken = answer[1];
+                        Toast.makeText(c,"Congrats you made your account!  " + Global.studentID + " &  " + Global.bearerToken, Toast.LENGTH_LONG).show();
+                        c.startActivity(new Intent(c, PageController.class));
+                    }
+                },
+                        new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                                error.printStackTrace();
+                                Toast.makeText(c,"Error", Toast.LENGTH_LONG).show();
+                            }
+                        }
+                ) {
+                    @Override
+                    protected Map<String, String> getParams()
+                    {
+                        return userLoginData;
+                    }
+                };
+                requestQueue.add(putRequest);
             }
         });
 
