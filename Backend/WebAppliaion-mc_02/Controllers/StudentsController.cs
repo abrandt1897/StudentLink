@@ -49,13 +49,23 @@ namespace WebApplication_mc_02.Controllers
         [HttpPut]
         public async Task<ActionResult<Students>> PutStudent([Bind("Username,Password,canvasOAuthToken")] CreateAccount myuser )
         {
+            List<dynamic> checkUser = SQLConnection.get(typeof(Students), $"WHERE Username={myuser.Username}");
+            if (checkUser.Count > 0)
+                return BadRequest("username already exists");
             Networking network = new Networking(_clientFactory);
-            Students myStu = network.getStudentProfile(myuser.canvasOAuthToken).Result;
+            Students myStu = null;
+            try
+            {
+                myStu = network.getStudentProfile(myuser.canvasOAuthToken).Result;
+            }catch(Exception e)
+            {
+                return BadRequest("error getting student");
+            }
             myStu.Username = myuser.Username;
             myStu.Password = LoginController.hashPassword(myuser.Password);
             if (SQLConnection.insert(myStu))
                 return Ok(myStu);
-            return View("/Views/Login/Login.cshtml");
+            return BadRequest("couldnt insert user");
         }
 
         [HttpPut]
