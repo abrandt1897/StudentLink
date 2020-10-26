@@ -17,7 +17,7 @@ public class ProfileFragment  extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.profile_layout, container, false);
 
-        ConnectionClass connection = new ConnectionClass();
+        ConnectionClass connection = new ConnectionClass(getContext());
 
         TextView ProfileText = root.findViewById(R.id.ProfileText);
         TextView requestData = root.findViewById(R.id.requestData);
@@ -27,7 +27,7 @@ public class ProfileFragment  extends Fragment {
 
         RequestButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                connection.setContext(getContext());
+                // connection.setContext(getContext());
                 connection.getRequest("test/6969420");
 
                 requestData.setText(connection.getResponse());

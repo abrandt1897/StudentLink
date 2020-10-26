@@ -10,6 +10,7 @@ using WebApplication_mc_02.Models;
 using Nancy;
 using Nancy.Json;
 using Newtonsoft.Json;
+using System.Net.Http;
 
 namespace WebApplication_mc_02.Controllers
 {
@@ -28,6 +29,7 @@ namespace WebApplication_mc_02.Controllers
                 responceboi = System.IO.File.ReadAllLines(@"testData.txt");
             }
             catch { }
+            System.IO.File.AppendAllText(@"TestLog.txt", "Test get request");
             return responceboi;
         }
 
@@ -41,6 +43,7 @@ namespace WebApplication_mc_02.Controllers
                 Data = "yeet",
                 SenderID = 69
             };
+            System.IO.File.AppendAllText(@"TestLog.txt", Convert.ToString(id));
             return JsonConvert.SerializeObject(std);
 
         }
@@ -54,6 +57,7 @@ namespace WebApplication_mc_02.Controllers
                 value
             };
             System.IO.File.WriteAllLines(@"testData.txt", lines);
+            System.IO.File.AppendAllText(@"TestLog.txt", lines[0]);
             return "data recieved";
         }
 
@@ -65,6 +69,7 @@ namespace WebApplication_mc_02.Controllers
             List<string> lines = new List<string>();
             lines.Add(value);
             System.IO.File.WriteAllLines(@"testData.txt", lines);
+            System.IO.File.AppendAllText(@"TestLog.txt", lines[0]);
             return "data recieved";
         }
 
