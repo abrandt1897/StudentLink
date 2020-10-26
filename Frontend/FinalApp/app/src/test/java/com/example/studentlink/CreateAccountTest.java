@@ -2,8 +2,6 @@ package com.example.studentlink;
 
 import org.junit.Test;
 
-import android.content.Context;
-
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.studentlink.ui.login.NewAccount.Logic.CreateAccountLogic;

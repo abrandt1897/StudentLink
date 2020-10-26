@@ -45,11 +45,6 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
 
-    // Power Mock dependencies
-    testImplementation "org.powermock:powermock-core:1.7.3"
-    testImplementation "org.powermock:powermock-module-junit4:1.7.3"
-    testImplementation "org.powermock:powermock-api-mockito2:1.7.3"
-
     // Required -- JUnit 4 framework
     testImplementation 'junit:junit:4.13'
     // Optional -- Robolectric environment

@@ -17,6 +17,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -28,6 +29,9 @@ import com.example.studentlink.PageController;
 import com.example.studentlink.ui.login.ILogic;
 import com.example.studentlink.ui.login.NewAccount.Logic.CanvasLogic;
 import com.example.studentlink.R;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -121,11 +125,32 @@ public class CanvasWebview extends AppCompatActivity {
                             }
                         }
                 ) {
+//                    @Override
+//                    protected Map<String, String> getParams()
+//                    {
+//                        return userLoginData;
+//                    }
+
                     @Override
-                    protected Map<String, String> getParams()
-                    {
-                        return userLoginData;
+                    public byte[] getBody() throws AuthFailureError {
+                        JSONObject obj = new JSONObject();
+                        try {
+                            obj.put("Username", username);
+                            obj.put("Password", password);
+                            obj.put("canvasOAuthToken", CanvasToken.getText().toString());
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                        byte[] body = new byte[0];
+                        try {
+                            body = obj.toString().getBytes("UTF-8");
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                        return body;
                     }
+
                 };
                 requestQueue.add(putRequest);
             }
