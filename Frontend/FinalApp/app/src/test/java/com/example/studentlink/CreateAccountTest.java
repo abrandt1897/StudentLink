@@ -32,26 +32,13 @@ public class CreateAccountTest {
     private ConnectionClass connectionClass;
 
     @Mock
-    private Context context;
-
-    @Mock
     private AppCompatActivity theActivity;
-
-    @Mock
-    private HashMap<String,String> data;
-
-//    @Mock
-//    private CreateAccountLogic createAccount;
-
 
     @Test
     public void testBadUsernameLogin(){
         CreateAccountLogic createAccountLogic = new CreateAccountLogic(theActivity);
         createAccountLogic.setConnectionClass(connectionClass); //inject mock
-//        CreateAccountLogic spy = Mockito.spy(createAccountLogic);
-//        Mockito.doNothing().when(spy).navigateWebView();
         when(connectionClass.getResponse()).thenReturn("No");
-//        doNothing().when(createAccountLogic,"navigateWebView").thenReturn();
 
         String response = createAccountLogic.checkCredentials("badUsername","badPassword");
 
@@ -85,8 +72,8 @@ public class CreateAccountTest {
     }
 
 
-    @Test
-    public void testForCheckServerResponse() {
+//    @Test
+//    public void testForCheckServerResponse() {
 //        LoginActivity loginActivity = new LoginActivity();
 //        loginActivity.setConnectionClass(connectionClass); // injecting the mock
 //
@@ -95,10 +82,10 @@ public class CreateAccountTest {
 //        loginActivity.checkServerResponse(); // testing the method
 //
 //        verify(connectionClass, times(1)).getResponse();
-    }
+//    }
 
-    @Test
-    public void test() {
+//    @Test
+//    public void test() {
 //        LoginActivity loginActivity = new LoginActivity();
 //        loginActivity.setConnectionClass(connectionClass);
 //
@@ -107,10 +94,10 @@ public class CreateAccountTest {
 //        boolean response = loginActivity.checkServerResponse();
 //
 //        Assert.assertEquals(response, true);
-    }
+//    }
 
-    @Test
-    public void testForMakeTheConnection() {
+//    @Test
+//    public void testForMakeTheConnection() {
 //        LoginActivity loginActivity = new LoginActivity();
 //        loginActivity.setConnectionClass(connectionClass); // injecting the mock
 //
@@ -123,6 +110,6 @@ public class CreateAccountTest {
 //        when(loginActivity.makeTheConnection(username, password, ErrorText));
 //
 //        verify(connectionClass, times(1)).putRequest(map, databaseName);
-    }
+//    }
 
 }

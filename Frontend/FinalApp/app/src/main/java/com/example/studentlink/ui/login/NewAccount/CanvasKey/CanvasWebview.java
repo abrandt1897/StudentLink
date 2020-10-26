@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Canvas;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -23,6 +24,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.studentlink.Global;
+import com.example.studentlink.PageController;
 import com.example.studentlink.ui.login.ILogic;
 import com.example.studentlink.ui.login.NewAccount.Logic.CanvasLogic;
 import com.example.studentlink.R;
@@ -107,7 +109,7 @@ public class CanvasWebview extends AppCompatActivity {
                         Global.studentID = Integer.parseInt(answer[0]);
                         Global.bearerToken = answer[1];
                         Toast.makeText(c,"Congrats you made your account!  " + Global.studentID + " &  " + Global.bearerToken, Toast.LENGTH_LONG).show();
-//                            moveToHome();
+                        c.startActivity(new Intent(c, PageController.class));
                     }
                 },
                         new Response.ErrorListener() {
@@ -125,8 +127,6 @@ public class CanvasWebview extends AppCompatActivity {
                     }
                 };
                 requestQueue.add(putRequest);
-
-
             }
         });
 
