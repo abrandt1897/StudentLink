@@ -20,7 +20,6 @@ public class ChatPageActivity extends AppCompatActivity {
         setContentView(R.layout.chatpage_layout);
 
         TextView ChatText = findViewById(R.id.chatText);
-
         ChatText.setText("Chat Page Placeholder");
 
     }
