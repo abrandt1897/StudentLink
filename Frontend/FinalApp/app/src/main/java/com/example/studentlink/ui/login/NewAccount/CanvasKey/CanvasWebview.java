@@ -58,6 +58,7 @@ public class CanvasWebview extends AppCompatActivity {
         progDailog = ProgressDialog.show(this, "Loading","Please wait...", true);
         progDailog.setCancelable(false);
 
+
         webview = (WebView) findViewById(R.id.CanvasPage);
         webview.setWebViewClient(new CanvasWebviewClient());
         webview.getSettings().setJavaScriptEnabled(true);

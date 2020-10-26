@@ -60,5 +60,4 @@ public class HomeAdapterTest {
         Assert.assertEquals("Nah friend me!", nextDescription);
         Assert.assertEquals(2, ha.getCount());
     }
-
 }

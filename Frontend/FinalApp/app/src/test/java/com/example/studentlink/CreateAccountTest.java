@@ -58,7 +58,6 @@ public class CreateAccountTest {
         Assert.assertEquals("Ok", response);
     }
 
-
     @Test
     public void testNavigateToWebView(){
         CreateAccountLogic myClass = new CreateAccountLogic(theActivity);
