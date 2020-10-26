@@ -49,7 +49,7 @@ namespace WebApplication_mc_02.Controllers
         [HttpPut]
         public async Task<ActionResult<Students>> PutStudent([Bind("Username,Password,canvasOAuthToken")] CreateAccount myuser )
         {
-            List<dynamic> checkUser = SQLConnection.get(typeof(Students), $"WHERE Username={myuser.Username}");
+            List<dynamic> checkUser = SQLConnection.get(typeof(Students), $"WHERE Username='{myuser.Username}'");
             if (checkUser.Count > 0)
                 return BadRequest("username already exists");
             Networking network = new Networking(_clientFactory);
@@ -68,38 +68,19 @@ namespace WebApplication_mc_02.Controllers
             return BadRequest("couldnt insert user");
         }
 
-        [HttpPut]
-        public async Task<ActionResult<Students>> PutNotification([FromBody] Notifications noti)
-        {
-            //TODO sanitize data
-            if (Global.websockets.ContainsKey(noti.StudentID) && WebSocketHandler.sendDataAsync(Global.websockets[noti.StudentID], noti).Result)
-            {
-                return Ok(noti);
-            }
-            if (SQLConnection.insert(noti))
-                return Ok(noti);
-            return BadRequest("client websocket isnt listening and there was an error inserting into Notification Database");
-        }
+        
 
         // POST: api/Students
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see https://aka.ms/RazorPagesCRUD.
-        [HttpPost]
-        public async Task<ActionResult<Students>> PostStudent([FromForm] CreateAccount myStu)
+        [HttpPost("{canvasOAuthToken}")]
+        public async Task<ActionResult<Students>> PostStudent(string canvasOAuthToken, [Bind("Username,Password")] Login loginForm)
         {
-            return await PutStudent(myStu);
-        }
-        //api/Students/{StudentID}
-        [HttpPost("{student}")]
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Student,Admin,Host")]
-        public async Task<ActionResult<Students>> PostFriend(int studentID, [FromBody] Notifications noti)
-        {
-            Student2StudentMap friends = new Student2StudentMap();
-            friends.StudentID = studentID;
-            friends.FriendID = noti.StudentID;
-            if (SQLConnection.insert(friends) && SQLConnection.delete(noti))
-                return Ok(noti);
-            return BadRequest("couldnt delete or insert idk");
+            CreateAccount temp = new CreateAccount();
+            temp.Username = loginForm.Username;
+            temp.Password = loginForm.Password;
+            temp.canvasOAuthToken = canvasOAuthToken;
+            return await PutStudent(temp);
         }
 
         // DELETE: api/Students/5
