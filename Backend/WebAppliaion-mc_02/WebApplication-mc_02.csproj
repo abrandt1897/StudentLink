@@ -9,6 +9,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Migrations\**" />
+    <Content Remove="Migrations\**" />
+    <EmbeddedResource Remove="Migrations\**" />
+    <None Remove="Migrations\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Remove="Models\Chats.cs~RF14f3941c.TMP" />
     <None Remove="Models\Courses.cs~RF14f15e60.TMP" />
     <None Remove="Models\Courses.cs~RF14f7302e.TMP" />
@@ -41,7 +48,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Migrations\" />
     <Folder Include="Test\" />
   </ItemGroup>
 
