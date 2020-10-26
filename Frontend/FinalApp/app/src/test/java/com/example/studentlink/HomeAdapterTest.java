@@ -42,7 +42,6 @@ public class HomeAdapterTest {
     @Mock
     private Context c;
 
-
     @Mock
     private HomeFragment hf;
 
