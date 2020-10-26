@@ -15,7 +15,7 @@ namespace WebApplication_mc_02.Controllers
 {
     public class Networking
     {
-        private IHttpClientFactory _clientFactory;
+        private readonly IHttpClientFactory _clientFactory;
         //private MySqlConnection conn;
         public Networking(IHttpClientFactory clientFactory)
         {

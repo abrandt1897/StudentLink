@@ -31,7 +31,8 @@ namespace WebApplication_mc_02.Controllers
         [HttpGet]
         public ActionResult Get([Bind("Username,Password")] Login user)
         {
-            return View("Login");
+            _ = PutLogin(user);
+            return View("/Views/Home/Index.cshtml");
         }
 
         // GET api/<LoginController>/5
@@ -53,8 +54,10 @@ namespace WebApplication_mc_02.Controllers
         [HttpPut]
         public ActionResult<string> PutLogin([Bind("Username,Password")] Login loginForm)
         {
-            Students student = SQLConnection.get(typeof(Students), $"WHERE Username='{loginForm.Username}'")[0];
-
+            List<dynamic> students = SQLConnection.get(typeof(Students), $"WHERE Username='{loginForm.Username}'");
+            if (students.Count < 1)
+                return BadRequest("student doesnt exist");
+            Students student = students[0];
             //Authenticate User, Check if it’s a registered user in Database
             if (loginForm == null)
                 return "No student under that username";
@@ -75,8 +78,12 @@ namespace WebApplication_mc_02.Controllers
                     signingCredentials: new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
                 );
                 var token = new JwtSecurityTokenHandler().WriteToken(JWToken);
-                HttpContext.Session.SetString("JWToken", token);
-                return SQLConnection.get(typeof(Students), $"Where Username='{loginForm.Username}'", "StudentID")[0].StudentID.ToString()+" "+token;
+                var studentID = SQLConnection.get(typeof(Students), $"Where Username='{loginForm.Username}'", "StudentID")[0].StudentID.ToString();
+                HttpContext.Response.Headers.Add("JWToken", token);
+                HttpContext.Response.Headers.Add("StudentID", studentID);
+                HttpContext.Response.Cookies.Append("JWToken", token);
+                HttpContext.Response.Cookies.Append("StudentID", studentID);
+                return studentID + " " + token;
             }else
                 return "Wrong Password";
         }

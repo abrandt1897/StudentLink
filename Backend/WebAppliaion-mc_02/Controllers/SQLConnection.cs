@@ -1,12 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore.Metadata.Internal;
-using MySql.Data.MySqlClient;
+﻿using MySql.Data.MySqlClient;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
-using WebApplication_mc_02.Models;
 
 namespace WebApplication_mc_02.Controllers
 {

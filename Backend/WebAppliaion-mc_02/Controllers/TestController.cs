@@ -18,10 +18,6 @@ namespace WebApplication_mc_02.Controllers
     public class TestController
     {
         Hashtable table = new Hashtable();
-        int rollingID = 0;
-        public TestController()
-        {
-        }
         // GET test
         [HttpGet]
         public ActionResult<IEnumerable<string>> Get()
@@ -53,8 +49,10 @@ namespace WebApplication_mc_02.Controllers
         [HttpPost]
         public ActionResult<string> Post([FromBody] string value)
         {
-            List<string> lines = new List<string>();
-            lines.Add(value);
+            List<string> lines = new List<string>
+            {
+                value
+            };
             System.IO.File.WriteAllLines(@"testData.txt", lines);
             return "data recieved";
         }
