@@ -27,6 +27,11 @@ android-build:
             - Frontend/FinalApp/app/build/outputs/
 
 unitTests:
+    tags:        
+        - FRONTEND    
+    script:        
+        - cd Frontend/FinalApp/       
+        - ./gradlew assemble
     image: javiersantos/android-ci:latest
     stage: androidtest
     before_script:
