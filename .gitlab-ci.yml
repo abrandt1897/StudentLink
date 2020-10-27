@@ -1,6 +1,7 @@
 stages:
   - apibuild
   - androidbuild
+  - androidtest
   
 api-build:
     stage: apibuild
@@ -24,6 +25,7 @@ android-build:
     artifacts:
         paths:
             - Frontend/FinalApp/app/build/outputs/
+
 unitTests:
     image: javiersantos/android-ci:latest
     stage: androidtest
