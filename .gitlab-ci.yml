@@ -36,4 +36,4 @@ unitTests:
     stage: androidtest
     before_script:
     - export GRADLE_USER_HOME='pwd'/.gradle
-    - chmod +x ./Frontend/ExercyzeFrontend/gradlew
+    - chmod +x ./Frontend/FinalApp/gradlew
