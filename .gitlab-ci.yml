@@ -24,3 +24,9 @@ android-build:
     artifacts:
         paths:
             - Frontend/FinalApp/app/build/outputs/
+            
+unitTests:    
+    image: javiersantos/android-ci:latest
+    stage: androidtest
+    before_script:
+        - export GRADLE_USER_HOME='pwd'/.gradle
