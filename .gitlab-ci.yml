@@ -1,10 +1,18 @@
 stages:
   - apibuild
+  - apirun
   - androidbuild
   - androidtest
   
 api-build:
     stage: apibuild
+    tags:
+      - Backend
+    script:
+      - 
+      
+api-run:
+    stage: apirun
     tags:
       - Backend
     script:
