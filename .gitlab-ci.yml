@@ -1,5 +1,6 @@
 stages:
   - apibuild
+  - apirun
   - androidbuild
   - androidtest
   
@@ -10,6 +11,15 @@ api-build:
     script:
       - cd Backend/WebAppliaion-mc_02
       - sudo docker build --network="host" -t mybuild -f DockerfileBuild .
+      
+        
+api-run:
+    stage: apirun
+    tags:
+      - Backend
+    script:
+      - cd Backend/WebAppliaion-mc_02
+      - sudo ./restartServer.sh
       
 android-build:
     image: javiersantos/android-ci:latest
