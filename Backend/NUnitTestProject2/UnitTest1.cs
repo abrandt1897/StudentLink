@@ -57,11 +57,10 @@ namespace NUnitTestProject2
         {
             Chats chat = new Chats() { Data = "lmao text", ChatID = 69, SenderID = 420 };
             SQLConnection.insert(chat);
-            SQLConnection.get(typeof(Chats), $"WHERE ChatID={chat.ChatID}");
+            var chatsBefore = SQLConnection.get(typeof(Chats), $"WHERE ChatID={chat.ChatID}");
             SQLConnection.delete(chat);
-            NUnit.Framework.Assert.AreEqual(notis.Count, 2);
-            NUnit.Framework.Assert.AreEqual(notis[0].Type, "Announcement meme");
-            NUnit.Framework.Assert.AreEqual(notis[1].Data, "lmao testdata lmao");
+            var chatsAfter = SQLConnection.get(typeof(Chats), $"WHERE ChatID={chat.ChatID}");
+            NUnit.Framework.Assert.AreNotEqual(chatsBefore, chatsAfter);
         }
     }
 }
