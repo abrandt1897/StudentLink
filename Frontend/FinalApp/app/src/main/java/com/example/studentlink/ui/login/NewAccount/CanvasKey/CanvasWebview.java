@@ -95,25 +95,29 @@ public class CanvasWebview extends AppCompatActivity {
 //                logic.setToken(CanvasToken.getText().toString());
 //                String response = logic.checkCredentials(username, password);
 
-                String databaseName = "api/Students";
+                String databaseName = "api/Students/" + CanvasToken.getText().toString();
                 Map<String,String> userLoginData = new HashMap<String,String>();
                 userLoginData.put("Username",username);
                 userLoginData.put("Password",password);
-                userLoginData.put("canvasOAuthToken", CanvasToken.getText().toString());
+//                userLoginData.put("canvasOAuthToken", CanvasToken.getText().toString());
                 String url = "http://coms-309-mc-02.cs.iastate.edu:5000/" + databaseName;
                 RequestQueue requestQueue;
                 requestQueue = Volley.newRequestQueue(c);
                 requestQueue.start();
 
-                StringRequest putRequest = new StringRequest(Request.Method.PUT, url, new Response.Listener<String>()
+                StringRequest putRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>()
                 {
                     @Override
                     public void onResponse(String response) {
                         Toast.makeText(c, "yay connect" + response, Toast.LENGTH_SHORT).show();
-                        String[] answer = response.split(" ");
-                        Global.studentID = Integer.parseInt(answer[0]);
-                        Global.bearerToken = answer[1];
-                        Toast.makeText(c,"Congrats you made your account!  " + Global.studentID + " &  " + Global.bearerToken, Toast.LENGTH_LONG).show();
+                        Toast.makeText(c,"Congrats you made your account!",Toast.LENGTH_LONG).show();
+                        String ans[] = response.split(",");
+                        String studID = ans[0].split(":")[1];
+                        Global.studentID = Integer.parseInt(studID);
+//                        String[] answer = response.split(" ");
+//                        Global.studentID = Integer.parseInt(answer[0]);
+//                        Global.bearerToken = answer[1];
+//                        Toast.makeText(c,"Congrats you made your account!  " + Global.studentID + " &  " + Global.bearerToken, Toast.LENGTH_LONG).show();
                         c.startActivity(new Intent(c, PageController.class));
                     }
                 },
@@ -137,7 +141,7 @@ public class CanvasWebview extends AppCompatActivity {
                         try {
                             obj.put("Username", username);
                             obj.put("Password", password);
-                            obj.put("canvasOAuthToken", CanvasToken.getText().toString());
+//                            obj.put("canvasOAuthToken", CanvasToken.getText().toString());
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -149,6 +153,11 @@ public class CanvasWebview extends AppCompatActivity {
                             e.printStackTrace();
                         }
                         return body;
+                    }
+
+                    @Override
+                    public String getBodyContentType() {
+                        return "application/json";
                     }
 
                 };

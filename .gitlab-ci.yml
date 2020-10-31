@@ -1,6 +1,8 @@
 stages:
   - apibuild
+  - apirun
   - androidbuild
+  - androidtest
   
 api-build:
     stage: apibuild
@@ -9,6 +11,15 @@ api-build:
     script:
       - cd Backend/WebAppliaion-mc_02
       - sudo docker build --network="host" -t mybuild -f DockerfileBuild .
+      
+        
+api-run:
+    stage: apirun
+    tags:
+      - Backend
+    script:
+      - cd Backend/WebAppliaion-mc_02
+      - sudo ./restartServer.sh
       
 android-build:
     image: javiersantos/android-ci:latest
@@ -24,3 +35,15 @@ android-build:
     artifacts:
         paths:
             - Frontend/FinalApp/app/build/outputs/
+
+unitTests:
+    tags:        
+        - FRONTEND    
+    script:        
+        - cd Frontend/FinalApp/       
+        - ./gradlew assemble
+    image: javiersantos/android-ci:latest
+    stage: androidtest
+    before_script:
+    - export GRADLE_USER_HOME='pwd'/.gradle
+    - chmod +x ./Frontend/FinalApp/gradlew
