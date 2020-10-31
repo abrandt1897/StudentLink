@@ -18,7 +18,6 @@ using WebApplication_mc_02.Models.DTO;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 
-
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace WebApplication_mc_02.Controllers
@@ -79,10 +78,14 @@ namespace WebApplication_mc_02.Controllers
                 );
                 var token = new JwtSecurityTokenHandler().WriteToken(JWToken);
                 var studentID = SQLConnection.get(typeof(Students), $"Where Username='{loginForm.Username}'", "StudentID")[0].StudentID.ToString();
-                HttpContext.Response.Headers.Add("JWToken", token);
-                HttpContext.Response.Headers.Add("StudentID", studentID);
-                HttpContext.Response.Cookies.Append("JWToken", token);
-                HttpContext.Response.Cookies.Append("StudentID", studentID);
+                try
+                {
+                    HttpContext.Response.Headers.Add("JWToken", token);
+                    HttpContext.Response.Headers.Add("StudentID", studentID);
+                    HttpContext.Response.Cookies.Append("JWToken", token);
+                    HttpContext.Response.Cookies.Append("StudentID", studentID);
+                }
+                catch (Exception e){ }
                 return studentID + " " + token;
             }else
                 return "Wrong Password";

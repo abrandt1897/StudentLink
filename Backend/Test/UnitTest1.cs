@@ -1,41 +1,18 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using WebApplication_mc_02.Controllers;
 
-namespace Test
+namespace StoreTests.Controllers
 {
     [TestClass]
-    public class UnitTest1
+    public class ProductControllerTest
     {
-        public class Adam : dumbass { 
-            public string name = "adam";
-        }
-
-        public class dumbass
-        {
-            public bool dumbassery = true;
-        }
-
-        public class Dont_Do {
-            public static dumbass WhatIwantYouTo()
-            {
-                return new Adam();
-            }            
-        }
-        public class Do
-        {
-            public static void WhatIWantYouToDo(Adam a)
-            {
-
-            }
-        }
-
         [TestMethod]
-        public void TestMethod1()
+        public void TestDetailsView()
         {
-            Do.WhatIWantYouToDo(new Adam());
-            dumbass adam = Dont_Do.WhatIwantYouTo();
-            if (adam.dumbassery)
-                Console.WriteLine("adam is indeed a dumbass");
-        } 
+            var controller = new ProductController();
+            var result = controller.Details(2) as ViewResult;
+            Assert.AreEqual("Details", result.ViewName);
+
+        }
     }
 }
