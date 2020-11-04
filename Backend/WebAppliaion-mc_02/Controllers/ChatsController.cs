@@ -23,6 +23,9 @@ namespace WebApplication_mc_02.Controllers
         // GET: api/Students
         [HttpGet]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Student,Admin,Host")]
+        /// <summary>
+        /// gets a list of all chats
+        /// </summary>
         public async Task<ActionResult<IEnumerable<Chats>>> GetChat()
         {
             List<dynamic> list = new List<dynamic>();

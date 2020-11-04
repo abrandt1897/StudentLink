@@ -34,9 +34,10 @@ namespace NUnitTestProject2
             mystu.Major = "Computer Software Person";
             mystu.Role = "ADMIN";
             SQLConnection.insert(mystu);
-            String temp;
-            temp = loginContoller.PutLogin(myLogin).Value;
+            string temp = loginContoller.PutLogin(myLogin).Value;
             NUnit.Framework.Assert.AreEqual(temp.Split()[0], "2315");
+            SQLConnection.delete(mystu);
+            SQLConnection.delete(myLogin);
         }
 
         [Test]
@@ -49,6 +50,8 @@ namespace NUnitTestProject2
             NUnit.Framework.Assert.AreEqual(notis.Count, 2);
             NUnit.Framework.Assert.AreEqual(notis[0].Type, "Announcement meme");
             NUnit.Framework.Assert.AreEqual(notis[1].Data, "lmao testdata lmao");
+            SQLConnection.delete(noti);
+            SQLConnection.delete(noti);
         }
 
 
@@ -58,9 +61,13 @@ namespace NUnitTestProject2
             Chats chat = new Chats() { Data = "lmao text", ChatID = 69, SenderID = 420 };
             SQLConnection.insert(chat);
             var chatsBefore = SQLConnection.get(typeof(Chats), $"WHERE ChatID={chat.ChatID}");
+            chat = new Chats() { Data = "lmao text but better", ChatID = 69, SenderID = 420 };
+            SQLConnection.update(chat);
+            var chatsAfterUpdate = SQLConnection.get(typeof(Chats), $"WHERE ChatID={chat.ChatID}");
             SQLConnection.delete(chat);
-            var chatsAfter = SQLConnection.get(typeof(Chats), $"WHERE ChatID={chat.ChatID}");
-            NUnit.Framework.Assert.AreNotEqual(chatsBefore, chatsAfter);
+            var chatsAfterDel = SQLConnection.get(typeof(Chats), $"WHERE ChatID={chat.ChatID}");
+            NUnit.Framework.Assert.AreEqual(chatsAfterDel.Count, 0);
+            NUnit.Framework.Assert.AreNotEqual(chatsAfterDel, chatsAfterUpdate);
         }
     }
 }

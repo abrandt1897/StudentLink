@@ -1,0 +1,24 @@
+"delete": {
+    "tags": [
+        "Todo"
+    ],
+    "summary": "Deletes a specific TodoItem.",
+    "operationId": "ApiTodoByIdDelete",
+    "consumes": [],
+    "produces": [],
+    "parameters": [
+        {
+            "name": "id",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+        }
+    ],
+    "responses": {
+        "200": {
+            "description": "Success"
+        }
+    }
+}

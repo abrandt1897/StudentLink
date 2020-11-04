@@ -1,22 +1,14 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
-using Microsoft.EntityFrameworkCore;
-using WebApplication_mc_02.Models;
 using Microsoft.AspNetCore.Identity;
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
-using Microsoft.AspNetCore.Http;
 using System.Net.WebSockets;
-using System.Threading;
 using System.Text.RegularExpressions;
 using WebApplication_mc_02.Controllers;
 
@@ -37,10 +29,16 @@ namespace WebApplication_mc_02
             services.AddControllers();
             services.AddControllersWithViews();
             services.AddHttpClient();
-            services.AddSession(options => {
+            services.AddSession(options =>
+            {
                 options.IdleTimeout = TimeSpan.FromMinutes(1);//You can set Time
             });
-            
+
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo { Title = "API Docs", Version = "v1" });
+            });
+
             //Provide a secret key to Encrypt and Decrypt the Token
             var SecretKey = Encoding.ASCII.GetBytes("YuurKey-2374-OFFKDI94LMAO:56753253-yeet-6969-0420-kfirox29zoxv");
 
@@ -120,7 +118,21 @@ namespace WebApplication_mc_02
                 .AllowAnyHeader());
 
             app.UseAuthentication();
+
             app.UseAuthorization();
+
+            app.UseSwagger(c =>
+            {
+                c.RouteTemplate = "Docs/{documentName}/Docs.json";
+            });
+
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/Docs/v1/Docs.json", "API Documentation");
+                c.RoutePrefix = "Docs";
+            });
+
+
             app.Use(async (context, next) =>
             {
                 if (Regex.Matches(context.Request.Path, @"\/ws\/\d+").Count > 0)
