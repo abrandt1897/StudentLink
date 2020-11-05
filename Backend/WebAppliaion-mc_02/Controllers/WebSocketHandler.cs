@@ -7,6 +7,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Nancy.Json.Simple;
 using Nancy.Json;
+using WebApplication_mc_02.Models.DTO;
 
 namespace WebApplication_mc_02.Controllers
 {
@@ -24,7 +25,7 @@ namespace WebApplication_mc_02.Controllers
                 string value = context.Request.Path.Value.Substring(number);
                 int StudentID = Convert.ToInt32(value);
                 byte[] bytes2send = null;
-                List<dynamic> notifications = await ChatsController.GetNotifications(StudentID);
+                List<Notifications> notifications = await ChatsController.GetNotifications(StudentID);
                 if (Global.websockets.ContainsKey(StudentID))
                     Global.websockets.Remove(StudentID);
                 Global.websockets.Add(StudentID, webSocket);

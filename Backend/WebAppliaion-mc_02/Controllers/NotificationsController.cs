@@ -11,18 +11,31 @@ using WebApplication_mc_02.Models.DTO;
 
 namespace WebApplication_mc_02.Controllers
 {
+    /// <summary>
+    /// Interface With the Notification Database
+    /// </summary>
     [Route("api/[controller]")]
     [ApiController]
     public class NotificationsController : ControllerBase
     {
+        /// <summary>
+        /// Gets all of the notifications associate with a student
+        /// </summary>
+        /// <param name="user">Student ID</param>
+        /// <returns>List of Notifications</returns>
         [HttpGet("{user}")]
-        public ActionResult<List<dynamic>> Get(int user)
+        public ActionResult<List<Notifications>> Get(int user)
         {
-            return SQLConnection.get(typeof(Notifications), $"WHERE StudentID={user}");
+            return SQLConnection.get<Notifications>(typeof(Notifications), $"WHERE StudentID={user}");
         }
 
+        /// <summary>
+        /// sends a notification
+        /// </summary>
+        /// <param name="noti">Notification Object</param>
+        /// <returns>'Ok' if good or 'client websocket isnt listening and there was an error inserting into Notification Database' if bad</returns>
         [HttpPut]
-        public async Task<ActionResult<Students>> PutNotification([FromBody] Notifications noti)
+        public async Task<ActionResult<string>> PutNotification([FromBody] Notifications noti)
         {
             //TODO sanitize data
             if (Global.websockets.ContainsKey(noti.StudentID) && WebSocketHandler.sendDataAsync(Global.websockets[noti.StudentID], noti).Result)
@@ -30,19 +43,25 @@ namespace WebApplication_mc_02.Controllers
                 return Ok(noti);
             }
             if (SQLConnection.insert(noti))
-                return Ok(noti);
+                return Ok("Ok");
             return BadRequest("client websocket isnt listening and there was an error inserting into Notification Database");
         }
 
+        /// <summary>
+        /// sends a friend request
+        /// </summary>
+        /// <param name="studentID">student ID of the friend</param>
+        /// <param name="noti">notification object</param>
+        /// <returns>'Ok' if good 'couldnt delete or insert idk' if bad</returns>
         [HttpPost("{student}")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Student,Admin,Host")]
-        public async Task<ActionResult<Students>> PostFriend(int studentID, [FromBody] Notifications noti)
+        public async Task<ActionResult<Students>> PostFriend(int studentID, [Bind("StudentID,Data,Type")] Notifications noti)
         {
             Student2StudentMap friends = new Student2StudentMap();
             friends.StudentID = studentID;
             friends.FriendID = noti.StudentID;
             if (SQLConnection.insert(friends) && SQLConnection.delete(noti))
-                return Ok(noti);
+                return Ok("Ok");
             return BadRequest("couldnt delete or insert idk");
         }
     }

@@ -12,7 +12,7 @@ namespace WebApplication_mc_02.Controllers
         /// updates SQL database of the given object's key ID with the new data in the object
         /// </summary>
         /// <param name="data">the object to be updated in the database</param>
-        public static bool update(dynamic data)
+        public static bool update<T>(T data)
         {
             using (MySqlConnection conn = new MySqlConnection("server=coms-309-mc-02.cs.iastate.edu;port=3306;database=StudentLink;user=root;password=46988c18374d9b7d;"))
             {
@@ -53,7 +53,7 @@ namespace WebApplication_mc_02.Controllers
         /// inserts data into the data type's database
         /// </summary>
         /// <param name="data">the object that is to be inserted into the database</param>
-        public static bool insert(dynamic data)
+        public static bool insert<T>(T data)
         {
             using (MySqlConnection conn = new MySqlConnection("server=coms-309-mc-02.cs.iastate.edu;port=3306;database=StudentLink;user=root;password=46988c18374d9b7d;"))
             {
@@ -97,12 +97,12 @@ namespace WebApplication_mc_02.Controllers
         /// <param name="column">a string that represents the property of the given type and returns the column of that database. If null it assumes all columns</param>
         /// <param name="filter">a where clause that filters the values to be returned from the database</param>
         /// <returns>a generic list of the given type</returns>
-        public static List<dynamic> get(Type type, string filter = "", string column = "*")//TODO change the filter and the column to take in a variable of the type.
+        public static List<T> get<T>(Type type, string filter = "", string column = "*")//TODO change the filter and the column to take in a variable of the type.
         {
             using (MySqlConnection conn = new MySqlConnection("server=coms-309-mc-02.cs.iastate.edu;port=3306;database=StudentLink;user=root;password=46988c18374d9b7d;"))
             {
                 conn.Open();
-                List<dynamic> list = new List<dynamic>();
+                List<T> list = new List<T>();
 
                 string query = "SELECT " + (column == null ? "*" : column) + " FROM StudentLink." + type.Name + " " + filter;
 
@@ -142,14 +142,13 @@ namespace WebApplication_mc_02.Controllers
                                 }
                             }
                         }
-                        list.Add(data);
+                        list.Add((T)data);
                     }
                 }
                 //conn.Close();
                 return list;
             }
         }
-
         public static bool delete(dynamic data)
         {
             using (MySqlConnection conn = new MySqlConnection("server=coms-309-mc-02.cs.iastate.edu;port=3306;database=StudentLink;user=root;password=46988c18374d9b7d;"))

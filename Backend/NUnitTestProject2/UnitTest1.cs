@@ -46,7 +46,7 @@ namespace NUnitTestProject2
             Notifications noti = new Notifications() { Data = "lmao testdata lmao", Type = "Announcement meme", StudentID = 6969 };
             SQLConnection.insert(noti);
             SQLConnection.insert(noti);
-            List<dynamic> notis = ChatsController.GetNotifications(6969).Result;
+            List<Notifications> notis = ChatsController.GetNotifications(6969).Result;
             NUnit.Framework.Assert.AreEqual(notis.Count, 2);
             NUnit.Framework.Assert.AreEqual(notis[0].Type, "Announcement meme");
             NUnit.Framework.Assert.AreEqual(notis[1].Data, "lmao testdata lmao");
@@ -60,12 +60,12 @@ namespace NUnitTestProject2
         {
             Chats chat = new Chats() { Data = "lmao text", ChatID = 69, SenderID = 420 };
             SQLConnection.insert(chat);
-            var chatsBefore = SQLConnection.get(typeof(Chats), $"WHERE ChatID={chat.ChatID}");
+            var chatsBefore = SQLConnection.get<Chats>(typeof(Chats), $"WHERE ChatID={chat.ChatID}");
             chat = new Chats() { Data = "lmao text but better", ChatID = 69, SenderID = 420 };
             SQLConnection.update(chat);
-            var chatsAfterUpdate = SQLConnection.get(typeof(Chats), $"WHERE ChatID={chat.ChatID}");
+            var chatsAfterUpdate = SQLConnection.get<Chats>(typeof(Chats), $"WHERE ChatID={chat.ChatID}");
             SQLConnection.delete(chat);
-            var chatsAfterDel = SQLConnection.get(typeof(Chats), $"WHERE ChatID={chat.ChatID}");
+            var chatsAfterDel = SQLConnection.get<Chats>(typeof(Chats), $"WHERE ChatID={chat.ChatID}");
             NUnit.Framework.Assert.AreEqual(chatsAfterDel.Count, 0);
             NUnit.Framework.Assert.AreNotEqual(chatsAfterDel, chatsAfterUpdate);
         }

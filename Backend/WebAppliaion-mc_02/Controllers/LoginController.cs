@@ -26,23 +26,20 @@ namespace WebApplication_mc_02.Controllers
     //[ApiController]
     public class LoginController : Controller
     {
-        // GET: api/<LoginController>
-        [HttpGet]
-        public ActionResult Get([Bind("Username,Password")] Login user)
-        {
-            _ = PutLogin(user);
-            return View("/Views/Home/Index.cshtml");
-        }
 
         // GET api/<LoginController>/5
-
         // POST api/<LoginController>
+        /// <summary>
+        /// Login for a student
+        /// </summary>
+        /// <param name="loginForm"></param>
+        /// <returns>Student ID and Bearer token split buy a space.</returns>
         [HttpPost]
         public ActionResult<string> PostLogin([Bind("Username,Password")] Login loginForm)
         {
             return PutLogin(loginForm);
         }
-
+        
         // PUT api/<LoginController>/5
         /// <summary>
         /// saves a token for the user
@@ -53,7 +50,7 @@ namespace WebApplication_mc_02.Controllers
         [HttpPut]
         public ActionResult<string> PutLogin([Bind("Username,Password")] Login loginForm)
         {
-            List<dynamic> students = SQLConnection.get(typeof(Students), $"WHERE Username='{loginForm.Username}'");
+            List<Students> students = SQLConnection.get<Students>(typeof(Students), $"WHERE Username='{loginForm.Username}'");
             if (students.Count < 1)
                 return BadRequest("student doesnt exist");
             Students student = students[0];
@@ -77,7 +74,7 @@ namespace WebApplication_mc_02.Controllers
                     signingCredentials: new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
                 );
                 var token = new JwtSecurityTokenHandler().WriteToken(JWToken);
-                var studentID = SQLConnection.get(typeof(Students), $"Where Username='{loginForm.Username}'", "StudentID")[0].StudentID.ToString();
+                var studentID = SQLConnection.get<Students>(typeof(Students), $"Where Username='{loginForm.Username}'", "StudentID")[0].StudentID.ToString();
                 try
                 {
                     HttpContext.Response.Headers.Add("JWToken", token);
@@ -106,11 +103,14 @@ namespace WebApplication_mc_02.Controllers
             return hashedPW;
         }
         // DELETE api/<LoginController>/5
-        [HttpDelete("{id}")]
+        /// <summary>
+        /// Deletes a bearer token from user
+        /// </summary>
+        [HttpDelete]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Student,TA,Admin")]
-        public void Delete(string id)
+        public void Delete()
         {
-            HttpContext.Session.Remove(id);
+            HttpContext.Session.Remove("JWToken");
         }
     }
 }

@@ -17,6 +17,9 @@ using Nancy.Json;
 
 namespace WebApplication_mc_02.Controllers
 {
+    /// <summary>
+    /// Interface with the Students Database
+    /// </summary>
     [Route("api/[controller]")]
     [ApiController]
     public class StudentsController : Controller
@@ -27,29 +30,28 @@ namespace WebApplication_mc_02.Controllers
             _clientFactory = clientFactory;
         }
 
-        // GET: api/Students
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<Students>>> GetStudents()
-        {
-            return View("CreateStudent");
-        }
-
         // GET: api/Students/5
+        /// <summary>
+        /// Gets a Student
+        /// </summary>
+        /// <param name="id">Student ID</param>
+        /// <returns>Student Object</returns>
         [HttpGet("{id}")]
-        public async Task<ActionResult<IEnumerable<object>>> GetStudent(int id)
+        public async Task<ActionResult<Students>> GetStudent(int id)
         {
-            List<dynamic> student = new List<dynamic>();
-            student = SQLConnection.get(typeof(Students), "WHERE StudentID = " + id)[0];
-            return student;
+            return SQLConnection.get<Students>(typeof(Students), "WHERE StudentID = " + id)[0];
         }
 
         // PUT: api/Students/{canvasOAuthToken}
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for
-        // more details see https://aka.ms/RazorPagesCRUD.
+        /// <summary>
+        /// Creates a user/Student
+        /// </summary>
+        /// <param name="myuser">CreateAccount Object</param>
+        /// <returns>Student Object associated with the canvas token</returns>
         [HttpPut]
         public async Task<ActionResult<Students>> PutStudent([Bind("Username,Password,canvasOAuthToken")] CreateAccount myuser )
         {
-            List<dynamic> checkUser = SQLConnection.get(typeof(Students), $"WHERE Username='{myuser.Username}'");
+            List<Students> checkUser = SQLConnection.get<Students>(typeof(Students), $"WHERE Username='{myuser.Username}'");
             if (checkUser.Count > 0)
                 return BadRequest("username already exists");
             Networking network = new Networking(_clientFactory);
@@ -68,11 +70,15 @@ namespace WebApplication_mc_02.Controllers
             return BadRequest("couldnt insert user");
         }
 
-        
+
 
         // POST: api/Students
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for
-        // more details see https://aka.ms/RazorPagesCRUD.
+        /// /// <summary>
+        /// Creates a user/Student
+        /// </summary>
+        /// <param name="canvasOAuthToken">canvas token</param>
+        /// <param name="loginForm">creates username and password</param>
+        /// <returns>Student Object associated with the canvas token</returns>
         [HttpPost("{canvasOAuthToken}")]
         public async Task<ActionResult<Students>> PostStudent(string canvasOAuthToken, [Bind("Username,Password")] Login loginForm)
         {
@@ -84,11 +90,16 @@ namespace WebApplication_mc_02.Controllers
         }
 
         // DELETE: api/Students/5
+        /// <summary>
+        /// removes student from database
+        /// </summary>
+        /// <param name="id">student ID</param>
+        /// <returns>Student object that was removed</returns>
         [HttpDelete("{id}")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Student,Admin,Host")]
-        public async Task<ActionResult<object>> DeleteStudent(int id)
+        public async Task<ActionResult<Students>> DeleteStudent(int id)
         {
-            var student = SQLConnection.get(typeof(Students), $"WHERE StudentID = {id}")[0];
+            var student = SQLConnection.get<Students>(typeof(Students), $"WHERE StudentID = {id}")[0];
             if (SQLConnection.delete(student))
                 return Ok(student);
             return BadRequest("sum went wrong, idk");

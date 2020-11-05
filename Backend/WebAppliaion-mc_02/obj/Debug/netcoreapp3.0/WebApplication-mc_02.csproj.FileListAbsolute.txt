@@ -126,7 +126,6 @@ E:\Documents\GitHub\mc_02\Backend\WebAppliaion-mc_02\bin\Debug\netcoreapp3.0\Swa
 E:\Documents\GitHub\mc_02\Backend\WebAppliaion-mc_02\bin\Debug\netcoreapp3.0\Swashbuckle.AspNetCore.SwaggerUI.dll
 E:\Documents\GitHub\mc_02\Backend\WebAppliaion-mc_02\bin\Debug\netcoreapp3.0\WebApplication-mc_02.xml
 E:\Documents\GitHub\mc_02\Backend\WebAppliaion-mc_02\obj\Debug\netcoreapp3.0\WebApplication-mc_02.xml
-E:\Documents\GitHub\mc_02\Backend\WebAppliaion-mc_02\bin\Debug\netcoreapp3.0\Docs\v1\Docs.json
 E:\Documents\GitHub\mc_02\Backend\WebAppliaion-mc_02\bin\Debug\netcoreapp3.0\Microsoft.OpenApi.dll
 E:\Documents\GitHub\mc_02\Backend\WebAppliaion-mc_02\bin\Debug\netcoreapp3.0\System.Net.Http.Formatting.dll
 E:\Documents\GitHub\mc_02\Backend\WebAppliaion-mc_02\bin\Debug\netcoreapp3.0\System.Web.Http.dll
