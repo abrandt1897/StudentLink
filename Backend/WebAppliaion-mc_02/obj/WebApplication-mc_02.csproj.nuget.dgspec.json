@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\greys\\Documents\\Github\\mc_02\\Backend\\WebAppliaion-mc_02\\WebApplication-mc_02.csproj": {}
+    "E:\\Documents\\GitHub\\mc_02\\Backend\\WebAppliaion-mc_02\\WebApplication-mc_02.csproj": {}
   },
   "projects": {
-    "C:\\Users\\greys\\Documents\\Github\\mc_02\\Backend\\WebAppliaion-mc_02\\WebApplication-mc_02.csproj": {
+    "E:\\Documents\\GitHub\\mc_02\\Backend\\WebAppliaion-mc_02\\WebApplication-mc_02.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\greys\\Documents\\Github\\mc_02\\Backend\\WebAppliaion-mc_02\\WebApplication-mc_02.csproj",
+        "projectUniqueName": "E:\\Documents\\GitHub\\mc_02\\Backend\\WebAppliaion-mc_02\\WebApplication-mc_02.csproj",
         "projectName": "WebApplication-mc_02",
-        "projectPath": "C:\\Users\\greys\\Documents\\Github\\mc_02\\Backend\\WebAppliaion-mc_02\\WebApplication-mc_02.csproj",
-        "packagesPath": "C:\\Users\\greys\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\greys\\Documents\\Github\\mc_02\\Backend\\WebAppliaion-mc_02\\obj\\",
+        "projectPath": "E:\\Documents\\GitHub\\mc_02\\Backend\\WebAppliaion-mc_02\\WebApplication-mc_02.csproj",
+        "packagesPath": "C:\\Users\\Tevatron\\.nuget\\packages\\",
+        "outputPath": "E:\\Documents\\GitHub\\mc_02\\Backend\\WebAppliaion-mc_02\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\greys\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\Tevatron\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -57,6 +57,10 @@
             "Microsoft.AspNet.Identity.Owin": {
               "target": "Package",
               "version": "[2.2.3, )"
+            },
+            "Microsoft.AspNet.SignalR.Core": {
+              "target": "Package",
+              "version": "[2.4.1, )"
             },
             "Microsoft.AspNetCore.Authentication.JwtBearer": {
               "target": "Package",
@@ -107,6 +111,10 @@
             "Microsoft.VisualStudio.Web.CodeGeneration.Design": {
               "target": "Package",
               "version": "[3.1.4, )"
+            },
+            "Microsoft.WebSockets": {
+              "target": "Package",
+              "version": "[0.2.3.1, )"
             },
             "Moq": {
               "target": "Package",

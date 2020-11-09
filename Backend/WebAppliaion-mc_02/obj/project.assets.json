@@ -152,6 +152,15 @@
           "lib/net45/Microsoft.AspNet.Identity.Owin.dll": {}
         }
       },
+      "Microsoft.AspNet.SignalR.Core/2.4.1": {
+        "type": "package",
+        "compile": {
+          "lib/net45/Microsoft.AspNet.SignalR.Core.dll": {}
+        },
+        "runtime": {
+          "lib/net45/Microsoft.AspNet.SignalR.Core.dll": {}
+        }
+      },
       "Microsoft.AspNet.WebApi.Client/4.0.20710": {
         "type": "package",
         "dependencies": {
@@ -1057,6 +1066,15 @@
         },
         "runtime": {
           "lib/net461/dotnet-aspnet-codegenerator-design.exe": {}
+        }
+      },
+      "Microsoft.WebSockets/0.2.3.1": {
+        "type": "package",
+        "compile": {
+          "lib/net45/Microsoft.WebSockets.dll": {}
+        },
+        "runtime": {
+          "lib/net45/Microsoft.WebSockets.dll": {}
         }
       },
       "Microsoft.Win32.Registry/4.5.0": {
@@ -3019,6 +3037,20 @@
         "microsoft.aspnet.identity.owin.nuspec"
       ]
     },
+    "Microsoft.AspNet.SignalR.Core/2.4.1": {
+      "sha512": "da5vF7ERsXAfFz2RzyXIV2VZACxsw+NxWwKtwXuHde7xuApvI/njJhpzq+LkoYpOYfzPZ8BbccaZ1yOaw1AQ4w==",
+      "type": "package",
+      "path": "microsoft.aspnet.signalr.core/2.4.1",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "lib/net45/Microsoft.AspNet.SignalR.Core.dll",
+        "lib/net45/Microsoft.AspNet.SignalR.Core.pdb",
+        "lib/net45/Microsoft.AspNet.SignalR.Core.xml",
+        "microsoft.aspnet.signalr.core.2.4.1.nupkg.sha512",
+        "microsoft.aspnet.signalr.core.nuspec"
+      ]
+    },
     "Microsoft.AspNet.WebApi.Client/4.0.20710": {
       "sha512": "BwFtW0cGr8tg02XalvF8MmznOpYrhquD2eXWI0oF3LLSqLMFoFkb8Pmke/7SnqkiNc+YfsaUqdXEKbjhv1Ctrw==",
       "type": "package",
@@ -4267,6 +4299,18 @@
         "runtimes/win7-x64/lib/net461/dotnet-aspnet-codegenerator-design.xml",
         "runtimes/win7-x86/lib/net461/dotnet-aspnet-codegenerator-design.exe",
         "runtimes/win7-x86/lib/net461/dotnet-aspnet-codegenerator-design.xml"
+      ]
+    },
+    "Microsoft.WebSockets/0.2.3.1": {
+      "sha512": "z5tX7rYNudZQKPMnXsB8HFKTFjLHxExxcHPqQxeOO510FBzp1A51FJrSocWjPTd5wY83Qf+Wh9kym5nwEnl3sQ==",
+      "type": "package",
+      "path": "microsoft.websockets/0.2.3.1",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "lib/net45/Microsoft.WebSockets.dll",
+        "microsoft.websockets.0.2.3.1.nupkg.sha512",
+        "microsoft.websockets.nuspec"
       ]
     },
     "Microsoft.Win32.Registry/4.5.0": {
@@ -9199,6 +9243,7 @@
       "Microsoft.AspNet.Identity.Core >= 2.2.3",
       "Microsoft.AspNet.Identity.EntityFramework >= 2.2.3",
       "Microsoft.AspNet.Identity.Owin >= 2.2.3",
+      "Microsoft.AspNet.SignalR.Core >= 2.4.1",
       "Microsoft.AspNetCore.Authentication.JwtBearer >= 3.0.3",
       "Microsoft.AspNetCore.Identity >= 2.2.0",
       "Microsoft.EntityFrameworkCore >= 3.1.8",
@@ -9211,6 +9256,7 @@
       "Microsoft.Owin.Security.OAuth >= 4.1.1",
       "Microsoft.VisualStudio.Azure.Containers.Tools.Targets >= 1.10.8",
       "Microsoft.VisualStudio.Web.CodeGeneration.Design >= 3.1.4",
+      "Microsoft.WebSockets >= 0.2.3.1",
       "Moq >= 4.14.7",
       "MySql.Data >= 8.0.21",
       "MySql.Data.EntityFrameworkCore >= 8.0.20",
@@ -9224,19 +9270,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\greys\\.nuget\\packages\\": {}
+    "C:\\Users\\Tevatron\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\greys\\Documents\\Github\\mc_02\\Backend\\WebAppliaion-mc_02\\WebApplication-mc_02.csproj",
+      "projectUniqueName": "E:\\Documents\\GitHub\\mc_02\\Backend\\WebAppliaion-mc_02\\WebApplication-mc_02.csproj",
       "projectName": "WebApplication-mc_02",
-      "projectPath": "C:\\Users\\greys\\Documents\\Github\\mc_02\\Backend\\WebAppliaion-mc_02\\WebApplication-mc_02.csproj",
-      "packagesPath": "C:\\Users\\greys\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\greys\\Documents\\Github\\mc_02\\Backend\\WebAppliaion-mc_02\\obj\\",
+      "projectPath": "E:\\Documents\\GitHub\\mc_02\\Backend\\WebAppliaion-mc_02\\WebApplication-mc_02.csproj",
+      "packagesPath": "C:\\Users\\Tevatron\\.nuget\\packages\\",
+      "outputPath": "E:\\Documents\\GitHub\\mc_02\\Backend\\WebAppliaion-mc_02\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\greys\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\Tevatron\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -9279,6 +9325,10 @@
           "Microsoft.AspNet.Identity.Owin": {
             "target": "Package",
             "version": "[2.2.3, )"
+          },
+          "Microsoft.AspNet.SignalR.Core": {
+            "target": "Package",
+            "version": "[2.4.1, )"
           },
           "Microsoft.AspNetCore.Authentication.JwtBearer": {
             "target": "Package",
@@ -9329,6 +9379,10 @@
           "Microsoft.VisualStudio.Web.CodeGeneration.Design": {
             "target": "Package",
             "version": "[3.1.4, )"
+          },
+          "Microsoft.WebSockets": {
+            "target": "Package",
+            "version": "[0.2.3.1, )"
           },
           "Moq": {
             "target": "Package",
@@ -9476,6 +9530,16 @@
       "code": "NU1701",
       "level": "Warning",
       "warningLevel": 1,
+      "message": "Package 'Microsoft.AspNet.SignalR.Core 2.4.1' was restored using '.NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8' instead of the project target framework '.NETCoreApp,Version=v3.0'. This package may not be fully compatible with your project.",
+      "libraryId": "Microsoft.AspNet.SignalR.Core",
+      "targetGraphs": [
+        ".NETCoreApp,Version=v3.0"
+      ]
+    },
+    {
+      "code": "NU1701",
+      "level": "Warning",
+      "warningLevel": 1,
       "message": "Package 'Microsoft.AspNet.WebApi.Client 4.0.20710' was restored using '.NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8' instead of the project target framework '.NETCoreApp,Version=v3.0'. This package may not be fully compatible with your project.",
       "libraryId": "Microsoft.AspNet.WebApi.Client",
       "targetGraphs": [
@@ -9568,6 +9632,16 @@
       "warningLevel": 1,
       "message": "Package 'Microsoft.VisualStudio.Web.CodeGeneration.Design 3.1.4' was restored using '.NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8' instead of the project target framework '.NETCoreApp,Version=v3.0'. This package may not be fully compatible with your project.",
       "libraryId": "Microsoft.VisualStudio.Web.CodeGeneration.Design",
+      "targetGraphs": [
+        ".NETCoreApp,Version=v3.0"
+      ]
+    },
+    {
+      "code": "NU1701",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "Package 'Microsoft.WebSockets 0.2.3.1' was restored using '.NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8' instead of the project target framework '.NETCoreApp,Version=v3.0'. This package may not be fully compatible with your project.",
+      "libraryId": "Microsoft.WebSockets",
       "targetGraphs": [
         ".NETCoreApp,Version=v3.0"
       ]

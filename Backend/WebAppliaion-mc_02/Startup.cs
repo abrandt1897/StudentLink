@@ -13,6 +13,7 @@ using System.Text.RegularExpressions;
 using WebApplication_mc_02.Controllers;
 using System.Reflection;
 using System.IO;
+using System.Threading.Tasks;
 
 namespace WebApplication_mc_02
 {
@@ -31,6 +32,7 @@ namespace WebApplication_mc_02
             services.AddControllers();
             services.AddControllersWithViews();
             services.AddHttpClient();
+            services.AddSignalR();
             services.AddSession(options =>
             {
                 options.IdleTimeout = TimeSpan.FromMinutes(1);//You can set Time
@@ -113,7 +115,7 @@ namespace WebApplication_mc_02
             };
 
             app.UseWebSockets(webSocketOptions);
-
+            
             app.UseSession();
 
             app.UseRouting();
@@ -145,12 +147,14 @@ namespace WebApplication_mc_02
                 {
                     if (context.WebSockets.IsWebSocketRequest)
                     {
-                        WebSocket webSocket = await context.WebSockets.AcceptWebSocketAsync();
-                        await WebSocketHandler.websocketHandler(context, webSocket);
+                        using (WebSocket webSocket = await context.WebSockets.AcceptWebSocketAsync())
+                        {
+                            await MyWebSocketHandler.websocketHandler(context, webSocket);
+                        }
                     }
                     else
                     {
-                        context.Response.StatusCode = 400;
+                        context.Response.StatusCode = 469;
                     }
                 }
                 else
@@ -162,9 +166,7 @@ namespace WebApplication_mc_02
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
-                endpoints.MapControllerRoute(
-                    name: "default",
-                    pattern: "{controller=Login}/{action=Get}/{id?}");
+                endpoints.MapHub<MyWebSocketHandler>("/api/chat");
             });
         }
     }
