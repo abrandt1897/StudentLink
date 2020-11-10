@@ -402,3 +402,4 @@ E:\Documents\GitHub\mc_02\Backend\WebAppliaion-mc_02\obj\Debug\netcoreapp3.0\Web
 E:\Documents\GitHub\mc_02\Backend\WebAppliaion-mc_02\obj\Debug\netcoreapp3.0\WebApplication-mc_02.genruntimeconfig.cache
 E:\Documents\GitHub\mc_02\Backend\WebAppliaion-mc_02\obj\Debug\netcoreapp3.0\WebApplication-mc_02.csprojAssemblyReference.cache
 E:\Documents\GitHub\mc_02\Backend\WebAppliaion-mc_02\bin\Debug\netcoreapp3.0\Microsoft.AspNet.SignalR.Core.dll
+E:\Documents\GitHub\mc_02\Backend\WebAppliaion-mc_02\bin\Debug\netcoreapp3.0\Microsoft.WebSockets.dll

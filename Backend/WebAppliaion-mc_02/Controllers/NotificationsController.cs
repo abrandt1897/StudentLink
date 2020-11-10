@@ -38,7 +38,7 @@ namespace WebApplication_mc_02.Controllers
         public async Task<ActionResult<string>> PutNotification([FromBody] Notifications noti)
         {
             //TODO sanitize data
-            if (Global.websockets.ContainsKey(noti.StudentID) && WebSocketHandler.sendDataAsync(Global.websockets[noti.StudentID], noti).Result)
+            if (Global.websockets.ContainsKey(noti.StudentID) && MyWebSocketHandler.sendDataAsync(Global.websockets[noti.StudentID], noti).Result)
             {
                 return Ok(noti);
             }
