@@ -83,7 +83,7 @@ public class CanvasWebview extends AppCompatActivity {
                 progDailog.dismiss();
             }
         });
-        webview.loadUrl("https://canvas.iastate.edu/");
+        webview.loadUrl("https://canvas.iastate.edu/profile/settings");
 
         doneButton.setOnClickListener(new View.OnClickListener() {
             @Override
