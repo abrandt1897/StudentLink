@@ -1,18 +1,10 @@
 package com.example.studentlink.ui.home;
 
-import android.content.Context;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -71,9 +63,6 @@ public class HomeFragment extends Fragment {
             @Override
             public void onResponse(JSONArray response) {
                 Toast.makeText(hf.getContext(), "yay stuffs" + response, Toast.LENGTH_SHORT).show();
-                if(response.length() == 0){
-                    return;
-                }
 
                 Map<String, Object> theMap = new HashMap<String, Object>();
 
