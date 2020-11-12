@@ -83,19 +83,16 @@ public class HomeFragment extends Fragment {
                 if(theMap.get("type").toString().contains("announcement")){
                     type = "Announce";
                 }
-                Notification notification = new Notification(1,description, theMap.get("type").toString());
+                Notification notification = new Notification(hf.getContext(),1,description, theMap.get("type").toString());
                 notifications.add(notification);
 
                 // mocked data
-                notifications.add(new Notification(1,"Hi Hiiiii. Friend meeee","Request"));
-                notifications.add(new Notification(1,"Update soon!","Announce"));
-                notifications.add(new Notification(1,"Nah. Friend me","Request"));
+                notifications.add(new Notification(hf.getContext(),1,"Hi Hiiiii. Friend meeee","Request"));
+                notifications.add(new Notification(hf.getContext(),1,"Update soon!","Announce"));
+                notifications.add(new Notification(hf.getContext(),1,"Nah. Friend me","Request"));
 
                 homeAdapter = new HomeAdapter(hf, hf.getContext(), notifications);
                 resetAdapter(homeAdapter);
-
-
-//                Toast.makeText(hf.getContext(), theMap.values().toString(), Toast.LENGTH_SHORT).show();
 
             }
         },

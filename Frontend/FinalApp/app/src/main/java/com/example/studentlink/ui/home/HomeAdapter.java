@@ -63,7 +63,7 @@ public class HomeAdapter extends BaseAdapter {
         String databaseName = "api/Students/" + Global.studentID;
         String url = "http://coms-309-mc-02.cs.iastate.edu:5000/" + databaseName;
         Map<String,String> notificationData = new HashMap<String,String>();
-        notificationData.put("SenderID", notifications.get(position).getSenderID() + "");
+        notificationData.put("studentID", notifications.get(position).getSenderID() + "");
         notificationData.put("data", accepted + "");
         notificationData.put("type", "Request");
         notificationData.put("description", notifications.get(position).getDescription());
