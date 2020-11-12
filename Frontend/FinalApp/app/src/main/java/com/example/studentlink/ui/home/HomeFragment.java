@@ -83,6 +83,9 @@ public class HomeFragment extends Fragment {
                 if(theMap.get("type").toString().contains("announcement")){
                     type = "Announce";
                 }
+
+                // todo: change all these 1s to 81537 for testing with greyson's number
+
                 Notification notification = new Notification(hf.getContext(),1,description, theMap.get("type").toString());
                 notifications.add(notification);
 

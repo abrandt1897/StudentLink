@@ -22,6 +22,7 @@ import com.example.studentlink.Global;
 import com.example.studentlink.PageController;
 import com.example.studentlink.R;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.HashMap;
@@ -101,11 +102,39 @@ public class HomeAdapter extends BaseAdapter {
             }
         }
         ) {
+
             @Override
-            protected Map<String, String> getParams()
-            {
-                return notificationData;
+            public byte[] getBody() throws AuthFailureError {
+                JSONObject obj = new JSONObject();
+                try {
+                    obj.put("studentID", notifications.get(position).getSenderID());
+                    obj.put("data", accepted + "");
+//                    obj.put("type", "Request");
+//                    obj.put("description", notifications.get(position).getDescription());
+//                            obj.put("canvasOAuthToken", CanvasToken.getText().toString());
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+                byte[] body = new byte[0];
+                try {
+                    body = obj.toString().getBytes("UTF-8");
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                return body;
             }
+
+            @Override
+            public String getBodyContentType() {
+                return "application/json";
+            }
+
+//            @Override
+//            protected Map<String, String> getParams()
+//            {
+//                return notificationData;
+//            }
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
                 //headers.put("Content-Type", "application/json");

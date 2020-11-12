@@ -44,7 +44,7 @@ public class Notification {
     }
 
     public void setSenderName(){
-        String databaseName = "api/Students/" + getSenderID();
+        String databaseName = "api/Students/" + getSenderID(); // test with 81537
         String url = "http://coms-309-mc-02.cs.iastate.edu:5000/" + databaseName;
         RequestQueue requestQueue;
         requestQueue = Volley.newRequestQueue(context);
