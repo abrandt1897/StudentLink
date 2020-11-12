@@ -29,12 +29,12 @@ public class HomeLogic {
 
     public List<Notification> MockGetNotifications(){
         notifications = new ArrayList<Notification>();
-        notifications.add(new Notification(1, "Hi Hiiiii. Friend meeee","Request"));
+        notifications.add(new Notification(context,1, "Hi Hiiiii. Friend meeee","Request"));
         for (int i = 0; i<7;i++){
             if(i==3){
-                notifications.add(new Notification(1, "Nah. Friend me","Request"));
+                notifications.add(new Notification(context, 1, "Nah. Friend me","Request"));
             }
-            notifications.add(new Notification(1,"Update soon!","Announce"));
+            notifications.add(new Notification(context,1,"Update soon!","Announce"));
         }
         return notifications;
     }
