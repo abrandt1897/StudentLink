@@ -55,7 +55,7 @@ namespace WebApplication_mc_02.Controllers
         /// <param name="StudentID">student ID</param>
         /// <returns></returns>
         [HttpPut("{StudentID}")]
-        public async void PutStudent(int StudentID, [Bind("StudentID,Data,Type")] Notifications noti)
+        public async void PutStudent(int StudentID, [Bind("StudentID,Data")] Notifications noti)
         {
             if (bool.Parse(noti.Data))
                 SQLConnection.insert(new Student2StudentMap() { StudentID = noti.StudentID, FriendID = StudentID});
