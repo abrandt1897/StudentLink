@@ -64,6 +64,8 @@ public class HomeFragment extends Fragment {
             public void onResponse(JSONArray response) {
                 Toast.makeText(hf.getContext(), "yay stuffs" + response, Toast.LENGTH_SHORT).show();
 
+                if(response.length()==0)return;
+
                 Map<String, Object> theMap = new HashMap<String, Object>();
 
                 try {
@@ -78,13 +80,13 @@ public class HomeFragment extends Fragment {
                 if(theMap.get("type").toString().contains("announcement")){
                     type = "Announce";
                 }
-                Notification notification = new Notification(description, theMap.get("type").toString());
+                Notification notification = new Notification(1,description, theMap.get("type").toString());
                 notifications.add(notification);
 
                 // mocked data
-                notifications.add(new Notification("Hi Hiiiii. Friend meeee","Request"));
-                notifications.add(new Notification("Update soon!","Announce"));
-                notifications.add(new Notification("Nah. Friend me","Request"));
+                notifications.add(new Notification(1,"Hi Hiiiii. Friend meeee","Request"));
+                notifications.add(new Notification(1,"Update soon!","Announce"));
+                notifications.add(new Notification(1,"Nah. Friend me","Request"));
 
                 homeAdapter = new HomeAdapter(hf, hf.getContext(), notifications);
                 resetAdapter(homeAdapter);

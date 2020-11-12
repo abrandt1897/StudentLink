@@ -105,7 +105,7 @@ public class CanvasWebview extends AppCompatActivity {
                 requestQueue = Volley.newRequestQueue(c);
                 requestQueue.start();
 
-                StringRequest putRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>()
+                StringRequest postRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>()
                 {
                     @Override
                     public void onResponse(String response) {
@@ -198,7 +198,7 @@ public class CanvasWebview extends AppCompatActivity {
                     }
 
                 };
-                requestQueue.add(putRequest);
+                requestQueue.add(postRequest);
             }
         });
 

@@ -56,28 +56,30 @@ public class HomeAdapter extends BaseAdapter {
     }
 
 
-    public void removeRow(int position, boolean accepted) {
+    public void removeRow(int position, boolean accepted, RequestQueue requestQueue) {
         // Use Put Request to inform the backend of the decision
-        String databaseName = "api/Login"; // TODO: check database name with Greyson
+        String databaseName = "api/Students" + Global.studentID;
         String url = "http://coms-309-mc-02.cs.iastate.edu:5000/" + databaseName;
         Map<String,String> notificationData = new HashMap<String,String>();
-        notificationData.put("RequestID",notifications.get(position).getDescription()); // TODO: what data should greyson be sent back? Should we attach RequestIDs to all requests?
-        notificationData.put("AcceptedBool", accepted + "");
+        notificationData.put("SenderID", notifications.get(position).getSender());
+        notificationData.put("data", accepted + "");
 
-        notifications.remove(position);
-        frag.resetAdapter(this);
+        HomeAdapter ha = this;
 
         Map<String,String> header = new HashMap<String,String>();
         header.put("Authorization","Bearer " + Global.bearerToken);
 
-        RequestQueue requestQueue;
-        requestQueue = Volley.newRequestQueue(context);
+//        RequestQueue requestQueue;
+//        requestQueue = Volley.newRequestQueue(context);
         requestQueue.start();
 
         StringRequest putRequest = new StringRequest(Request.Method.PUT, url, new Response.Listener<String>()
         {
             @Override
             public void onResponse(String response) {
+                notifications.remove(position);
+                frag.resetAdapter(ha);
+
                 if(accepted){
                     Toast.makeText(context, "Request Accepted   " + response, Toast.LENGTH_SHORT).show();
                 }
@@ -93,7 +95,6 @@ public class HomeAdapter extends BaseAdapter {
                     }
                 }
         ) {
-            // TODO: Check how greyson wants to receive the data
             @Override
             protected Map<String, String> getParams()
             {
@@ -107,8 +108,6 @@ public class HomeAdapter extends BaseAdapter {
         }
         ;
         requestQueue.add(putRequest);
-
-
     }
 
     @Override
@@ -123,13 +122,15 @@ public class HomeAdapter extends BaseAdapter {
                 Button acceptButton = (Button) vi.findViewById(R.id.AcceptButton);
                 acceptButton.setTag(position);
                 acceptButton.setOnClickListener(v -> {
-                    removeRow(position, true);
+                    RequestQueue requestQueue = Volley.newRequestQueue(context);
+                    removeRow(position, true, requestQueue);
                 });
 
                 Button declineButton = (Button) vi.findViewById(R.id.DeclineButton);
                 declineButton.setTag(position);
                 declineButton.setOnClickListener(v -> {
-                    removeRow(position, false);
+                    RequestQueue requestQueue = Volley.newRequestQueue(context);
+                    removeRow(position, false, requestQueue);
                 });
 
             } else {

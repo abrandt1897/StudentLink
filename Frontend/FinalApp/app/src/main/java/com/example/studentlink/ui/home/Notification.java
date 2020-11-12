@@ -4,14 +4,22 @@ public class Notification {
 
     private String description;
     private String type;
+    private int senderID;
+//    private String data;
 
-    public Notification(String d, String t){
+    public Notification(int s, String d, String t){
+        senderID = s;
         description = d;
         type = t;
     }
 
     public String getType(){
         return type;
+    }
+
+    public String getSender(){
+        // do getRequest to get student sender name
+        return null;
     }
 
     public String getDescription(){
