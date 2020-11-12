@@ -268,8 +268,6 @@ C:\Users\greys\Documents\Github\mc_02\Backend\WebAppliaion-mc_02\obj\Debug\netco
 C:\Users\greys\Documents\Github\mc_02\Backend\WebAppliaion-mc_02\obj\Debug\netcoreapp3.0\WebApplication-mc_02.genruntimeconfig.cache
 E:\Documents\GitHub\mc_02\Backend\WebAppliaion-mc_02\bin\Debug\netcoreapp3.0\appsettings.Development.json
 E:\Documents\GitHub\mc_02\Backend\WebAppliaion-mc_02\bin\Debug\netcoreapp3.0\appsettings.json
-E:\Documents\GitHub\mc_02\Backend\WebAppliaion-mc_02\bin\Debug\netcoreapp3.0\Properties\launchSettings.json
-E:\Documents\GitHub\mc_02\Backend\WebAppliaion-mc_02\bin\Debug\netcoreapp3.0\Properties\ServiceDependencies\309mc02 - Web Deploy\profile.arm.json
 E:\Documents\GitHub\mc_02\Backend\WebAppliaion-mc_02\bin\Debug\netcoreapp3.0\test.json
 E:\Documents\GitHub\mc_02\Backend\WebAppliaion-mc_02\bin\Debug\netcoreapp3.0\WebApplication-mc_02.exe
 E:\Documents\GitHub\mc_02\Backend\WebAppliaion-mc_02\bin\Debug\netcoreapp3.0\WebApplication-mc_02.deps.json
@@ -403,3 +401,4 @@ E:\Documents\GitHub\mc_02\Backend\WebAppliaion-mc_02\obj\Debug\netcoreapp3.0\Web
 E:\Documents\GitHub\mc_02\Backend\WebAppliaion-mc_02\obj\Debug\netcoreapp3.0\WebApplication-mc_02.csprojAssemblyReference.cache
 E:\Documents\GitHub\mc_02\Backend\WebAppliaion-mc_02\bin\Debug\netcoreapp3.0\Microsoft.AspNet.SignalR.Core.dll
 E:\Documents\GitHub\mc_02\Backend\WebAppliaion-mc_02\bin\Debug\netcoreapp3.0\Microsoft.WebSockets.dll
+E:\Documents\GitHub\mc_02\Backend\WebAppliaion-mc_02\obj\Debug\netcoreapp3.0\scopedcss\bundle\WebApplication-mc_02.styles.css

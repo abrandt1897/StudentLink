@@ -42,32 +42,23 @@ namespace WebApplication_mc_02.Controllers
             return SQLConnection.get<Students>(typeof(Students), "WHERE StudentID = " + id)[0];
         }
 
+        [HttpGet("Username/{username}")]
+        public async Task<ActionResult<Students>> GetStudent(string username)
+        {
+            return SQLConnection.get<Students>(typeof(Students), $"WHERE Username = '{username}'")[0];
+        }
+
         // PUT: api/Students/{canvasOAuthToken}
         /// <summary>
-        /// Creates a user/Student
+        /// accept friend request
         /// </summary>
-        /// <param name="myuser">CreateAccount Object</param>
-        /// <returns>Student Object associated with the canvas token</returns>
-        [HttpPut]
-        public async Task<ActionResult<Students>> PutStudent([Bind("Username,Password,canvasOAuthToken")] CreateAccount myuser )
+        /// <param name="StudentID">student ID</param>
+        /// <returns></returns>
+        [HttpPut("{StudentID}")]
+        public async void PutStudent(int StudentID, [Bind("StudentID,Data,Type")] Notifications noti)
         {
-            List<Students> checkUser = SQLConnection.get<Students>(typeof(Students), $"WHERE Username='{myuser.Username}'");
-            if (checkUser.Count > 0)
-                return BadRequest("username already exists");
-            Networking network = new Networking(_clientFactory);
-            Students myStu = null;
-            try
-            {
-                myStu = network.getStudentProfile(myuser.canvasOAuthToken).Result;
-            }catch(Exception e)
-            {
-                return BadRequest("error getting student");
-            }
-            myStu.Username = myuser.Username;
-            myStu.Password = LoginController.hashPassword(myuser.Password);
-            if (SQLConnection.insert(myStu))
-                return Ok(myStu);
-            return BadRequest("couldnt insert user");
+            if (bool.Parse(noti.Data))
+                SQLConnection.insert(new Student2StudentMap() { StudentID = noti.StudentID, FriendID = StudentID});
         }
 
 
@@ -82,11 +73,31 @@ namespace WebApplication_mc_02.Controllers
         [HttpPost("{canvasOAuthToken}")]
         public async Task<ActionResult<Students>> PostStudent(string canvasOAuthToken, [Bind("Username,Password")] Login loginForm)
         {
-            CreateAccount temp = new CreateAccount();
-            temp.Username = loginForm.Username;
-            temp.Password = loginForm.Password;
-            temp.canvasOAuthToken = canvasOAuthToken;
-            return await PutStudent(temp);
+            CreateAccount myuser = new CreateAccount();
+            myuser.Username = loginForm.Username;
+            myuser.Password = loginForm.Password;
+            myuser.canvasOAuthToken = canvasOAuthToken;
+
+            List<Students> checkUser = SQLConnection.get<Students>(typeof(Students), $"WHERE Username='{myuser.Username}'");
+            if (checkUser.Count > 0)
+                return BadRequest("username already exists");
+            Networking network = new Networking(_clientFactory);
+            Students myStu = null;
+            try
+            {
+                myStu = network.getStudentProfile(myuser.canvasOAuthToken).Result;
+            }
+            catch (Exception e)
+            {
+                return BadRequest("error getting student");
+            }
+            myStu.Username = myuser.Username;
+            myStu.Password = LoginController.hashPassword(myuser.Password);
+            if (SQLConnection.insert(myStu))
+                return Ok(myStu);
+            return BadRequest("couldnt insert user");
+
+            return Ok(myuser);
         }
 
         // DELETE: api/Students/5

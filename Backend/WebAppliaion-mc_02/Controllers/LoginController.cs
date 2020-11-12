@@ -26,7 +26,7 @@ namespace WebApplication_mc_02.Controllers
     //[ApiController]
     public class LoginController : Controller
     {
-
+        
         // GET api/<LoginController>/5
         // POST api/<LoginController>
         /// <summary>

@@ -57,10 +57,7 @@ namespace WebApplication_mc_02.Controllers
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Student,Admin,Host")]
         public async Task<ActionResult<Students>> PostFriend(int studentID, [Bind("StudentID,Data,Type")] Notifications noti)
         {
-            Student2StudentMap friends = new Student2StudentMap();
-            friends.StudentID = studentID;
-            friends.FriendID = noti.StudentID;
-            if (SQLConnection.insert(friends) && SQLConnection.delete(noti))
+            if (SQLConnection.insert(noti))
                 return Ok("Ok");
             return BadRequest("couldnt delete or insert idk");
         }
