@@ -32,6 +32,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import javax.xml.transform.ErrorListener;
+
 public class HomeFragment extends Fragment {
 
     private List<Notification> notifications;
@@ -39,6 +41,7 @@ public class HomeFragment extends Fragment {
     private HomeLogic logic;
     private HomeAdapter homeAdapter;
     private HomeFragment hf;
+    private RequestQueue requestQueue;
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.home_layout, container, false);
@@ -50,7 +53,7 @@ public class HomeFragment extends Fragment {
 
         String databaseName = "api/Notifications/" + Global.studentID;
         String url = "http://coms-309-mc-02.cs.iastate.edu:5000/" + databaseName;
-        RequestQueue requestQueue;
+//        RequestQueue requestQueue;
         //start a queue for requests for our api
         requestQueue = Volley.newRequestQueue(hf.getContext());
         requestQueue.start();
@@ -121,7 +124,6 @@ public class HomeFragment extends Fragment {
     public void setListView(ListView aListView){
         listview = aListView;
     }
-
 
     public static Map<String, Object> toMap(JSONObject jsonobj)  throws JSONException {
         Map<String, Object> map = new HashMap<String, Object>();

@@ -22,6 +22,8 @@ import com.example.studentlink.Global;
 import com.example.studentlink.PageController;
 import com.example.studentlink.R;
 
+import org.json.JSONObject;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -38,6 +40,7 @@ public class HomeAdapter extends BaseAdapter {
         this.context = context;
         this.notifications = data;
         inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
     }
 
     @Override
@@ -58,10 +61,10 @@ public class HomeAdapter extends BaseAdapter {
 
     public void removeRow(int position, boolean accepted, RequestQueue requestQueue) {
         // Use Put Request to inform the backend of the decision
-        String databaseName = "api/Students" + Global.studentID;
+        String databaseName = "api/Students/" + Global.studentID;
         String url = "http://coms-309-mc-02.cs.iastate.edu:5000/" + databaseName;
         Map<String,String> notificationData = new HashMap<String,String>();
-        notificationData.put("SenderID", notifications.get(position).getSender());
+        notificationData.put("SenderID", notifications.get(position).getSenderID() + "");
         notificationData.put("data", accepted + "");
 
         HomeAdapter ha = this;
@@ -73,8 +76,9 @@ public class HomeAdapter extends BaseAdapter {
 //        requestQueue = Volley.newRequestQueue(context);
         requestQueue.start();
 
-        StringRequest putRequest = new StringRequest(Request.Method.PUT, url, new Response.Listener<String>()
-        {
+        StringRequest putRequest = new StringRequest(Request.Method.PUT, url,
+//                listenerResponse
+                new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 notifications.remove(position);
@@ -87,13 +91,14 @@ public class HomeAdapter extends BaseAdapter {
                     Toast.makeText(context, "Request Declined   " + response, Toast.LENGTH_SHORT).show();
                 }
             }
-        },
+        }
+        ,
                 new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        error.printStackTrace();
-                    }
-                }
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                error.printStackTrace();
+            }
+        }
         ) {
             @Override
             protected Map<String, String> getParams()
@@ -107,7 +112,10 @@ public class HomeAdapter extends BaseAdapter {
             }
         }
         ;
+
+//        Volley.newRequestQueue(frag.getContext()).add(putRequest);
         requestQueue.add(putRequest);
+
     }
 
     @Override
@@ -124,6 +132,7 @@ public class HomeAdapter extends BaseAdapter {
                 acceptButton.setOnClickListener(v -> {
                     RequestQueue requestQueue = Volley.newRequestQueue(context);
                     removeRow(position, true, requestQueue);
+
                 });
 
                 Button declineButton = (Button) vi.findViewById(R.id.DeclineButton);

@@ -21,8 +21,13 @@
             android:icon="@drawable/home_icon"
             android:title="Home" />
         <item
-            android:id="@+id/nav_chatlist"
+        android:id="@+id/nav_chatlist"
+        android:icon="@drawable/chatlist_icon"
+        android:title="ChatList" />
+        <item
+            android:id="@+id/nav_search"
             android:icon="@drawable/chatlist_icon"
-            android:title="ChatList" />
+            android:title="Search" />
+
     </group>
 </menu>

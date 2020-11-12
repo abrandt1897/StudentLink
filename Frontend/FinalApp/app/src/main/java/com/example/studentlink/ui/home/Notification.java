@@ -22,6 +22,13 @@ public class Notification {
         return null;
     }
 
+    public int getSenderID(){
+        return senderID;
+
+    }
+
+
+
     public String getDescription(){
         return description;
     }

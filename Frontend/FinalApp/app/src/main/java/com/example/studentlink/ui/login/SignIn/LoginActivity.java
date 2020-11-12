@@ -79,7 +79,6 @@ public class LoginActivity extends AppCompatActivity {
                     requestQueue = Volley.newRequestQueue(c);
                     requestQueue.start();
 
-
                     StringRequest putRequest = new StringRequest(Request.Method.PUT, url, new Response.Listener<String>()
                     {
                         @Override
