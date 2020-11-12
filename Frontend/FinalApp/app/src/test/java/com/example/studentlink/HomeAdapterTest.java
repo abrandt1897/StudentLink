@@ -61,7 +61,10 @@ public class HomeAdapterTest {
 //    }
 
 
-    // new test for demo 4
+    // 3 new tests for demo 4 below
+
+
+
     @Test
     public void testCheckPutRequest(){
         List<Notification> notifications = new ArrayList<Notification>();
@@ -74,6 +77,34 @@ public class HomeAdapterTest {
 
         verify(requestQueue, times(1)).start();
         verify(requestQueue, times(1)).add(Mockito.any());
+    }
+
+    @Test
+    public void testgetCount(){
+        List<Notification> notifications = new ArrayList<Notification>();
+        notifications.add(new Notification(1,"Hi Hiiiii. Friend meeee","Request"));
+        notifications.add(new Notification(1, "Nah friend me!","Request"));
+        notifications.add(new Notification(1, "Update soon!","Announce"));
+        HomeAdapter ha = new HomeAdapter(hf,c,notifications);
+
+        Assert.assertEquals(3, ha.getCount());
+    }
+
+
+    @Test
+    public void testgetItem(){
+        List<Notification> notifications = new ArrayList<Notification>();
+        notifications.add(new Notification(1,"Hi Hiiiii. Friend meeee","Request"));
+        notifications.add(new Notification(1, "Nah friend me!","Request"));
+        notifications.add(new Notification(1, "Update soon!","Announce"));
+        HomeAdapter ha = new HomeAdapter(hf,c,notifications);
+
+        Notification expected = new Notification(1,"Hi Hiiiii. Friend meeee","Request");
+        Notification actual = (Notification)ha.getItem(0);
+
+        Assert.assertEquals(expected.getSenderID(), actual.getSenderID());
+        Assert.assertEquals(expected.getDescription(), actual.getDescription());
+        Assert.assertEquals(expected.getType(), actual.getType());
     }
 
 

@@ -40,7 +40,6 @@ public class HomeAdapter extends BaseAdapter {
         this.context = context;
         this.notifications = data;
         inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-
     }
 
     @Override
@@ -66,6 +65,8 @@ public class HomeAdapter extends BaseAdapter {
         Map<String,String> notificationData = new HashMap<String,String>();
         notificationData.put("SenderID", notifications.get(position).getSenderID() + "");
         notificationData.put("data", accepted + "");
+        notificationData.put("type", "Request");
+        notificationData.put("description", notifications.get(position).getDescription());
 
         HomeAdapter ha = this;
 
