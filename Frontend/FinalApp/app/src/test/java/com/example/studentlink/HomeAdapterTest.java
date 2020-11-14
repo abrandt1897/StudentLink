@@ -45,6 +45,7 @@ public class HomeAdapterTest {
     @Mock
     RequestQueue requestQueue;
 
+
 //    @Test
 //    public void testRemoveRow(){
 //        List<Notification> notifications = new ArrayList<Notification>();
