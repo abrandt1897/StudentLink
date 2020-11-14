@@ -12,6 +12,19 @@ import androidx.fragment.app.Fragment;
 import androidx.annotation.NonNull;
 
 import com.example.studentlink.R;
+import android.text.method.ScrollingMovementMethod;
+import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
+
+import org.java_websocket.client.WebSocketClient;
+import org.java_websocket.handshake.ServerHandshake;
+
+import java.net.URI;
+import java.net.URISyntaxException;
+
 
 public class ChatPageActivity extends AppCompatActivity {
     @Override
@@ -21,6 +34,13 @@ public class ChatPageActivity extends AppCompatActivity {
 
         TextView ChatText = findViewById(R.id.chatText);
         ChatText.setText("Chat Page Placeholder");
+
+        Button bSend = findViewById(R.id.bSend);
+        EditText msgInput = findViewById(R.id.msgInput);
+
+
+
+
 
     }
 

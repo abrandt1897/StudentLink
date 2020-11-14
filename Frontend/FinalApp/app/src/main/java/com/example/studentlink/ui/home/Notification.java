@@ -39,6 +39,15 @@ public class Notification {
         this.setSenderName();
     }
 
+    public Notification(Context c, int s, String d, String t, String sName){
+        senderID = s;
+        description = d;
+        type = t;
+        context = c;
+        senderName = sName;
+    }
+
+
     public String getType(){
         return type;
     }

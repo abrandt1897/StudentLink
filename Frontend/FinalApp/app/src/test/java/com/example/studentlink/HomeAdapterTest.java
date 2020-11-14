@@ -63,14 +63,12 @@ public class HomeAdapterTest {
 
     // 3 new tests for demo 4 below
 
-
-
     @Test
     public void testCheckPutRequest(){
         List<Notification> notifications = new ArrayList<Notification>();
-        notifications.add(new Notification(1,"Hi Hiiiii. Friend meeee","Request"));
-        notifications.add(new Notification(1, "Nah friend me!","Request"));
-        notifications.add(new Notification(1, "Update soon!","Announce"));
+        notifications.add(new Notification(c,1,"Hi Hiiiii. Friend meeee","Request", "Taylor"));
+        notifications.add(new Notification(c,1, "Nah friend me!","Request", "Taylor"));
+        notifications.add(new Notification(c,1, "Update soon!","Announce","Taylor"));
 
         HomeAdapter ha = new HomeAdapter(hf,c,notifications);
         ha.removeRow(0, true, requestQueue);
@@ -82,9 +80,9 @@ public class HomeAdapterTest {
     @Test
     public void testgetCount(){
         List<Notification> notifications = new ArrayList<Notification>();
-        notifications.add(new Notification(1,"Hi Hiiiii. Friend meeee","Request"));
-        notifications.add(new Notification(1, "Nah friend me!","Request"));
-        notifications.add(new Notification(1, "Update soon!","Announce"));
+        notifications.add(new Notification(c,1,"Hi Hiiiii. Friend meeee","Request","Taylor"));
+        notifications.add(new Notification(c,1, "Nah friend me!","Request","Taylor"));
+        notifications.add(new Notification(c,1, "Update soon!","Announce","Taylor"));
         HomeAdapter ha = new HomeAdapter(hf,c,notifications);
 
         Assert.assertEquals(3, ha.getCount());
@@ -94,12 +92,12 @@ public class HomeAdapterTest {
     @Test
     public void testgetItem(){
         List<Notification> notifications = new ArrayList<Notification>();
-        notifications.add(new Notification(1,"Hi Hiiiii. Friend meeee","Request"));
-        notifications.add(new Notification(1, "Nah friend me!","Request"));
-        notifications.add(new Notification(1, "Update soon!","Announce"));
+        notifications.add(new Notification(c,1,"Hi Hiiiii. Friend meeee","Request","Taylor"));
+        notifications.add(new Notification(c,1, "Nah friend me!","Request","Taylor"));
+        notifications.add(new Notification(c,1, "Update soon!","Announce","Taylor"));
         HomeAdapter ha = new HomeAdapter(hf,c,notifications);
 
-        Notification expected = new Notification(1,"Hi Hiiiii. Friend meeee","Request");
+        Notification expected = new Notification(c,1,"Hi Hiiiii. Friend meeee","Request","Taylor");
         Notification actual = (Notification)ha.getItem(0);
 
         Assert.assertEquals(expected.getSenderID(), actual.getSenderID());
