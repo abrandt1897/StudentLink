@@ -54,8 +54,6 @@ public class HomeFragment extends Fragment {
 
         String databaseName = "api/Notifications/" + Global.studentID;
         String url = "http://coms-309-mc-02.cs.iastate.edu:5000/" + databaseName;
-//        RequestQueue requestQueue;
-        //start a queue for requests for our api
         requestQueue = Volley.newRequestQueue(hf.getContext());
         requestQueue.start();
 
@@ -66,56 +64,30 @@ public class HomeFragment extends Fragment {
         {
             @Override
             public void onResponse(JSONArray response) {
-                Toast.makeText(hf.getContext(), "yay stuffs" + response, Toast.LENGTH_SHORT).show();
+//                Toast.makeText(hf.getContext(), "yay stuffs" + response, Toast.LENGTH_SHORT).show();
 
                 if(response.length()==0)return;
 
                 Map<String, Object> theMap = new HashMap<String, Object>();
 
-                try {
-                    theMap = toMap(response.getJSONObject(0));
-                } catch (JSONException e) {
-                    e.printStackTrace();
+                for(int i = 0; i < response.length();i++){
+                    try {
+                        theMap = toMap(response.getJSONObject(i));
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    // todo: change 81537 to the actual senderIDs
+                    Notification notification = new Notification(hf.getContext(),81537, theMap.get("description").toString(), theMap.get("type").toString());
+                    setSenderName(notification);
                 }
-
-                // todo implement
-                // Iterate through the hash map
-                /*
-                Iterator iterator = theMap.entrySet().iterator();
-                while (iterator.hasNext()) {
-                    Map.Entry mapElement = (Map.Entry)iterator.next();
-                    int marks = ((int)mapElement.getValue() + 10);
-                    System.out.println(mapElement.getKey() + " : " + marks);
-                }
-                */
-
-                // "real" data
-//                String description = theMap.get("data").toString();
-//                String type = "";
-//                if(theMap.get("type").toString().contains("announcement")){
-//                    type = "Announce";
-//                }
-
-                // todo: change all these 1s to 81537 for testing with greyson's number
-
-                Notification notification = new Notification(hf.getContext(),81537, theMap.get("description").toString(), theMap.get("type").toString());
-
-                setSenderName(notification);
-
-//                notification.setSenderName();
-//                notifications.add(notification);
 
                 // mocked data
-                notifications.add(new Notification(hf.getContext(),81537,"Hi Hiiiii. Friend meeee","Request"));
-                notifications.add(new Notification(hf.getContext(),81537,"Update soon!","Announce"));
-                notifications.add(new Notification(hf.getContext(),81537,"Nah. Friend me","Request"));
-                notifications.add(new Notification(hf.getContext(),81537,"Update soon!","Announce"));
-                notifications.add(new Notification(hf.getContext(),81537,"Update soon!","Announce"));
-                notifications.add(new Notification(hf.getContext(),81537,"Update soon!","Announce"));
+//                notifications.add(new Notification(hf.getContext(),81537,"Hi Hiiiii. Friend meeee","Request"));
+//                notifications.add(new Notification(hf.getContext(),81537,"Update soon!","Announce"));
+//                notifications.add(new Notification(hf.getContext(),81537,"Nah. Friend me","Request"));
 
                 homeAdapter = new HomeAdapter(hf, hf.getContext(), notifications);
                 resetAdapter(homeAdapter);
-
             }
         },
                 new Response.ErrorListener() {
@@ -173,7 +145,6 @@ public class HomeFragment extends Fragment {
         }   return list;
     }
 
-
     public void setSenderName(Notification notification){
         String databaseName = "api/Students/" + notification.getSenderID();
         String url = "http://coms-309-mc-02.cs.iastate.edu:5000/" + databaseName;
@@ -192,14 +163,11 @@ public class HomeFragment extends Fragment {
 
                 try {
                     theMap = toMap(response);
-//                    theMap = toMap(response.getJSONObject(0));
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-
                 notification.setName(theMap.get("username").toString());
                 notifications.add(notification);
-
                 homeAdapter = new HomeAdapter(hf, hf.getContext(), notifications);
                 resetAdapter(homeAdapter);
 
@@ -215,6 +183,5 @@ public class HomeFragment extends Fragment {
         };
         requestQueue.add(getRequest);
     }
-
 
 }
