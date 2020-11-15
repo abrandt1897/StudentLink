@@ -56,7 +56,7 @@ namespace WebApplication_mc_02.Controllers
             Students student = students[0];
             //Authenticate User, Check if it’s a registered user in Database
             if (loginForm == null)
-                return "No student under that username";
+                return BadRequest("No student under that username");
             string hashedPasswd = hashPassword(loginForm.Password);
             if (hashedPasswd == student.Password)
             {
@@ -83,9 +83,9 @@ namespace WebApplication_mc_02.Controllers
                     HttpContext.Response.Cookies.Append("StudentID", studentID);
                 }
                 catch (Exception e){ }
-                return studentID + " " + token;
+                return Ok(studentID + " " + token);
             }else
-                return "Wrong Password";
+                return BadRequest("Wrong Password");
         }
         public static string hashPassword(string Password)
         {

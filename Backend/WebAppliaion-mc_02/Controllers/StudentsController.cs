@@ -48,6 +48,12 @@ namespace WebApplication_mc_02.Controllers
             return SQLConnection.get<Students>(typeof(Students), $"WHERE Username = '{username}'")[0];
         }
 
+        [HttpGet("Friends/{StudentID}")]
+        public async Task<ActionResult<Students>> GetFriends(int StudentID)
+        {
+            return Ok(SQLConnection.get<Student2StudentMap>(typeof(Student2StudentMap), $"WHERE StudentID = {StudentID}"));
+        }
+
         // PUT: api/Students/{canvasOAuthToken}
         /// <summary>
         /// accept friend request
@@ -80,7 +86,7 @@ namespace WebApplication_mc_02.Controllers
 
             List<Students> checkUser = SQLConnection.get<Students>(typeof(Students), $"WHERE Username='{myuser.Username}'");
             if (checkUser.Count > 0)
-                return BadRequest("username already exists");
+                return BadRequest("Username already taken");
             Networking network = new Networking(_clientFactory);
             Students myStu = null;
             try
@@ -89,13 +95,13 @@ namespace WebApplication_mc_02.Controllers
             }
             catch (Exception e)
             {
-                return BadRequest("error getting student");
+                return BadRequest("Invalid Token");
             }
             myStu.Username = myuser.Username;
             myStu.Password = LoginController.hashPassword(myuser.Password);
             if (SQLConnection.insert(myStu))
                 return Ok(myStu);
-            return BadRequest("couldnt insert user");
+            return BadRequest("Student already has an account");
 
             return Ok(myuser);
         }

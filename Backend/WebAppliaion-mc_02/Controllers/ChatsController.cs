@@ -25,14 +25,14 @@ namespace WebApplication_mc_02.Controllers
     {
         // GET: api/Students
         /// <summary>
-        /// gets a list of all chats
+        /// gets a chats that a student is in
         /// </summary>
         /// <returns> list of all chats</returns>
-        [HttpGet]
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Student,Admin,Host")]
-        public async Task<ActionResult<IEnumerable<Chats>>> GetChat()
+        [HttpGet("Group/{id}")]
+        public async Task<ActionResult<IEnumerable<string>>> GetGroupChat(int id)
         {
-            return SQLConnection.get<Chats>(typeof(Chats));
+            List<Student2ChatMap> chats = SQLConnection.get<Student2ChatMap>(typeof(Student2ChatMap), $"WHERE StudentID = {id}");
+            return Ok(chats);
         }
 
         // GET: api/Students/5
@@ -42,7 +42,6 @@ namespace WebApplication_mc_02.Controllers
         /// <param name="id">Chat ID</param>
         /// <returns>Chats Object</returns>
         [HttpGet("{id}")]
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Student,Admin,Host")]
         public async Task<ActionResult<Chats>> GetChat(int id)
         {
             List<Chats> chat = new List<Chats>();
@@ -78,7 +77,6 @@ namespace WebApplication_mc_02.Controllers
         /// <param name="chat">chat object</param>
         /// <returns>the chat that was sent</returns>
         [HttpPost]
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Student,Admin,Host")]
         public async Task<ActionResult<Chats>> PostChat([FromBody] Chats chat)//TODO this method will allow users to add a message to the database
         {
             if (SQLConnection.get<Chats>(typeof(Student2ChatMap), $"WHERE ChatID={chat.ChatID} and StudentID={chat.SenderID}").Count < 1)
