@@ -9,6 +9,7 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.studentlink.Global;
 
@@ -36,7 +37,7 @@ public class Notification {
         description = d;
         type = t;
         context = c;
-        this.setSenderName();
+        senderName = "empty";
     }
 
     public Notification(Context c, int s, String d, String t, String sName){
@@ -47,48 +48,9 @@ public class Notification {
         senderName = sName;
     }
 
-
-    public String getType(){
-        return type;
+    public void setName(String n){
+        senderName = n;
     }
-
-    public void setSenderName(){
-        String databaseName = "api/Students/" + getSenderID(); // test with 81537
-        String url = "http://coms-309-mc-02.cs.iastate.edu:5000/" + databaseName;
-        RequestQueue requestQueue;
-        requestQueue = Volley.newRequestQueue(context);
-        requestQueue.start();
-
-        JsonArrayRequest getRequest = new JsonArrayRequest(Request.Method.GET, url, null, new Response.Listener<JSONArray>()
-        {
-            @Override
-            public void onResponse(JSONArray response) {
-
-                if(response.length()==0)return;
-
-                Map<String, Object> theMap = new HashMap<String, Object>();
-
-                try {
-                    theMap = toMap(response.getJSONObject(0));
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-
-                senderName = theMap.get("username").toString();
-
-            }
-        },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        error.printStackTrace();
-                    }
-                }
-        ) {
-        };
-        requestQueue.add(getRequest);
-    }
-
 
     public String getSender(){
         return senderName;
@@ -127,6 +89,10 @@ public class Notification {
             }
             list.add(value);
         }   return list;
+    }
+
+    public String getType(){
+        return type;
     }
 
 }

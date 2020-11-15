@@ -102,7 +102,6 @@ public class ChatPageActivity extends AppCompatActivity {
                     }
                 });
 
-
             }
 
             @Override
