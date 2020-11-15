@@ -29,7 +29,7 @@ namespace WebApplication_mc_02.Controllers
         /// </summary>
         /// <returns> list of all chats</returns>
         [HttpGet("Group/{id}")]
-        public async Task<ActionResult<IEnumerable<string>>> GetGroupChat(int id)
+        public async Task<ActionResult<IEnumerable<Student2ChatMap>>> GetGroupChat(int id)
         {
             List<Student2ChatMap> chats = SQLConnection.get<Student2ChatMap>(typeof(Student2ChatMap), $"WHERE StudentID = {id}");
             return Ok(chats);

@@ -42,16 +42,38 @@ namespace WebApplication_mc_02.Controllers
             return SQLConnection.get<Students>(typeof(Students), "WHERE StudentID = " + id)[0];
         }
 
+        /// <summary>
+        /// gets the student associated with a username
+        /// </summary>
+        /// <param name="username">username of the student</param>
+        /// <returns></returns>
         [HttpGet("Username/{username}")]
         public async Task<ActionResult<Students>> GetStudent(string username)
         {
             return SQLConnection.get<Students>(typeof(Students), $"WHERE Username = '{username}'")[0];
         }
 
+        /// <summary>
+        /// gets the friends of the given
+        /// </summary>
+        /// <param name="StudentID">StudentID</param>
+        /// <returns></returns>
         [HttpGet("Friends/{StudentID}")]
-        public async Task<ActionResult<Students>> GetFriends(int StudentID)
+        public async Task<ActionResult<IEnumerable<Student2StudentMap>>> GetFriends(int StudentID)
         {
             return Ok(SQLConnection.get<Student2StudentMap>(typeof(Student2StudentMap), $"WHERE StudentID = {StudentID}"));
+        }
+
+        /// <summary>
+        /// checks if the 2 studentIDs' are friends
+        /// </summary>
+        /// <param name="StudentID1">Student1</param>
+        /// <param name="StudentID2">Student2</param>
+        /// <returns>boolean</returns>
+        [HttpGet("Friends/{StudentID1}/{StudentID2}")]
+        public async Task<ActionResult<bool>> GetFriends(int StudentID1, int StudentID2)
+        {
+            return Ok(SQLConnection.get<Student2StudentMap>(typeof(Student2StudentMap), $"WHERE StudentID = {StudentID1} and FriendID = {StudentID2} or FriendID = {StudentID1} and StudentID = {StudentID2}").Count > 0);
         }
 
         // PUT: api/Students/{canvasOAuthToken}
