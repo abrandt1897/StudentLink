@@ -22,10 +22,10 @@ namespace WebApplication_mc_02.Controllers
         /// </summary>
         /// <returns>a list of courses</returns>
         [HttpGet]
-        public IEnumerable<Courses> Get()
+        public async Task<IEnumerable<Courses>> Get()
         {
             List<Courses> courses = new List<Courses>();
-            courses = SQLConnection.get<Courses>(typeof(Courses));
+            courses = await SQLConnection.Get<Courses>(typeof(Courses));
             return courses;
         }
 
@@ -36,13 +36,13 @@ namespace WebApplication_mc_02.Controllers
         /// <param name="id">Student ID</param>
         /// <returns>List of Courses</returns>
         [HttpGet("{id}")]
-        public IEnumerable<Courses> Get(int id)
+        public async Task<IEnumerable<Courses>> Get(int id)
         {
             List<Courses> courses = new List<Courses>();
-            List<Student2CourseMap> courseIDs = SQLConnection.get<Student2CourseMap>(typeof(Student2CourseMap), $"Where StudentID={id}");
+            List<Student2CourseMap> courseIDs = await SQLConnection.Get<Student2CourseMap>(typeof(Student2CourseMap), $"Where StudentID={id}");
             foreach(Student2CourseMap course in courseIDs)
             {
-                courses.AddRange(SQLConnection.get<Courses>(typeof(Courses), $"Where CourseID={course.CourseID}"));
+                courses.AddRange(await SQLConnection.Get<Courses>(typeof(Courses), $"Where CourseID={course.CourseID}"));
             }
             return courses;
         }

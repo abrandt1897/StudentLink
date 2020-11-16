@@ -23,7 +23,7 @@ namespace NUnitTestProject2
         public void TestLogin()
         {
             Login myLogin = new Login() { Username = "haxor", Password = "yeet" };
-            SQLConnection.insert(myLogin);
+            _ = SQLConnection.Insert(myLogin).Result;
             Students mystu = new Students();
             LoginController loginContoller = new LoginController();
             mystu.StudentID = 2315;
@@ -33,8 +33,8 @@ namespace NUnitTestProject2
             mystu.Classification = "Junior";
             mystu.Major = "Computer Software Person";
             mystu.Role = "ADMIN";
-            SQLConnection.insert(mystu);
-            string temp = loginContoller.PutLogin(myLogin).Value;
+            SQLConnection.Insert(mystu);
+            string temp = loginContoller.PutLogin(myLogin).Result.Value;
             NUnit.Framework.Assert.AreEqual(temp.Split()[0], "2315");
             SQLConnection.delete(mystu);
             SQLConnection.delete(myLogin);
@@ -44,9 +44,9 @@ namespace NUnitTestProject2
         public void TestNotifications()
         {
             Notifications noti = new Notifications() { Data = "lmao testdata lmao", Type = "Announcement meme", StudentID = 6969 };
-            SQLConnection.insert(noti);
-            SQLConnection.insert(noti);
-            List<Notifications> notis = ChatsController.GetNotifications(6969).Result;
+            SQLConnection.Insert(noti);
+            SQLConnection.Insert(noti);
+            List<Notifications> notis = SQLConnection.Get<Notifications>(typeof(Notifications), $"WHERE StudentID={noti.StudentID}").Result;
             NUnit.Framework.Assert.AreEqual(notis.Count, 2);
             NUnit.Framework.Assert.AreEqual(notis[0].Type, "Announcement meme");
             NUnit.Framework.Assert.AreEqual(notis[1].Data, "lmao testdata lmao");
@@ -59,13 +59,13 @@ namespace NUnitTestProject2
         public void TestSQLConnection()
         {
             Chats chat = new Chats() { Data = "lmao text", ChatID = 69, SenderID = 420 };
-            SQLConnection.insert(chat);
-            var chatsBefore = SQLConnection.get<Chats>(typeof(Chats), $"WHERE ChatID={chat.ChatID}");
+            SQLConnection.Insert(chat);
+            var chatsBefore = SQLConnection.Get<Chats>(typeof(Chats), $"WHERE ChatID={chat.ChatID}");
             chat = new Chats() { Data = "lmao text but better", ChatID = 69, SenderID = 420 };
             SQLConnection.update(chat);
-            var chatsAfterUpdate = SQLConnection.get<Chats>(typeof(Chats), $"WHERE ChatID={chat.ChatID}");
+            var chatsAfterUpdate = SQLConnection.Get<Chats>(typeof(Chats), $"WHERE ChatID={chat.ChatID}");
             SQLConnection.delete(chat);
-            var chatsAfterDel = SQLConnection.get<Chats>(typeof(Chats), $"WHERE ChatID={chat.ChatID}");
+            var chatsAfterDel = SQLConnection.Get<Chats>(typeof(Chats), $"WHERE ChatID={chat.ChatID}").Result;
             NUnit.Framework.Assert.AreEqual(chatsAfterDel.Count, 0);
             NUnit.Framework.Assert.AreNotEqual(chatsAfterDel, chatsAfterUpdate);
         }

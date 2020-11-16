@@ -143,14 +143,12 @@ namespace WebApplication_mc_02
 
             app.Use(async (context, next) =>
             {
-                if (Regex.Matches(context.Request.Path, @"\/ws\/\d+").Count > 0)
+                if (Regex.Matches(context.Request.Path, @"\/\d+\/\d+").Count > 0)
                 {
                     if (context.WebSockets.IsWebSocketRequest)
                     {
-                        using (WebSocket webSocket = await context.WebSockets.AcceptWebSocketAsync())
-                        {
-                            await MyWebSocketHandler.websocketHandler(context, webSocket);
-                        }
+                        using WebSocket webSocket = await context.WebSockets.AcceptWebSocketAsync();
+                        await MyWebSocketHandler.websocketHandler(context, webSocket);
                     }
                     else
                     {
@@ -166,7 +164,6 @@ namespace WebApplication_mc_02
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
-                endpoints.MapHub<MyWebSocketHandler>("/api/chat");
             });
         }
     }

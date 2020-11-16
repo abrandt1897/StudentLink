@@ -26,7 +26,7 @@ namespace WebApplication_mc_02.Controllers
         [HttpGet("{user}")]
         public ActionResult<List<Notifications>> Get(int user)
         {
-            return SQLConnection.get<Notifications>(typeof(Notifications), $"WHERE StudentID={user}");
+            return SQLConnection.Get<Notifications>(typeof(Notifications), $"WHERE StudentID={user}").Result;
         }
 
         /// <summary>
@@ -38,11 +38,11 @@ namespace WebApplication_mc_02.Controllers
         public async Task<ActionResult<string>> PutNotification([FromBody] Notifications noti)
         {
             //TODO sanitize data
-            if (Global.websockets.ContainsKey(noti.StudentID) && MyWebSocketHandler.sendDataAsync(Global.websockets[noti.StudentID], noti).Result)
+            if (Global.websockets.ContainsKey(noti.StudentID))
             {
                 return Ok(noti);
             }
-            if (SQLConnection.insert(noti))
+            if (await SQLConnection.Insert<Notifications>(noti))
                 return Ok("Ok");
             return BadRequest("client websocket isnt listening and there was an error inserting into Notification Database");
         }
@@ -57,7 +57,7 @@ namespace WebApplication_mc_02.Controllers
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Student,Admin,Host")]
         public async Task<ActionResult<Students>> PostFriend(int studentID, [Bind("StudentID,Data,Type")] Notifications noti)
         {
-            if (SQLConnection.insert(noti))
+            if (await SQLConnection.Insert<Notifications>(noti))
                 return Ok("Ok");
             return BadRequest("couldnt delete or insert idk");
         }

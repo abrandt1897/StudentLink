@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Nancy.Json.Simple;
+using System.Text.Json;
 using Nancy.Json;
 using WebApplication_mc_02.Models.DTO;
 using WebApplication_mc_02.Models;
@@ -18,82 +19,73 @@ namespace WebApplication_mc_02.Controllers
     /// <summary>
     /// Websocket handler
     /// </summary>
-    public class MyWebSocketHandler : Hub
+    public class MyWebSocketHandler
     {
-        private static WebSocketCollection m_Sessions = new WebSocketCollection();
-
-        public string m_Player;
-
-        public Task SendMessage(string user, string message)
-        {
-            Clients.Groups("").SendAsync("sendMessage", user, message);
-            return Clients.All.SendAsync("ReceiveMessage", user, message);
-        }
-
-        public override async Task OnConnectedAsync()
-        {
-            string StudentID = Context.GetHttpContext().Request.Cookies["StudentID"];
-            await Groups.AddToGroupAsync(StudentID, SQLConnection.get<Student2ChatMap>(typeof(Students), "WHERE Student")[0].ChatID.ToString());
-            await base.OnConnectedAsync();
-        }
-
-        public override async Task OnDisconnectedAsync(Exception exception)
-        {
-            await Groups.RemoveFromGroupAsync(Context.ConnectionId, "SignalR Users");
-            await base.OnDisconnectedAsync(exception);
-        }
 
         /// <summary>
         /// handles the data coming in from the websocket
+        /// loops until the client leaves
         /// </summary>
         /// <param name="context"></param>
-        /// <param name="webSocket"></param>
+        /// <param name="websocket"></param>
         /// <returns></returns>
-        public static async Task websocketHandler(HttpContext context, WebSocket webSocket)
+        public static async Task websocketHandler(HttpContext context, WebSocket websocket)
         {
-            int PATH_FORWARDSLASH_OFFSET = 1;
-            var buffer = new byte[1024 * 4];
-            WebSocketReceiveResult result = await webSocket.ReceiveAsync(new ArraySegment<byte>(buffer), CancellationToken.None);
+            
+            //get add websocket to the list of websockets
+            string path = context.Request.Path.Value;
+            string[] pathSplit = path.Split('/');
+            int ChatID = Int32.Parse(pathSplit[1]);
+            //TODO check if the chatID is real in the database
+            int StudentID = Int32.Parse(pathSplit[2]);
+
+            //add the new person to correct group otherwise create a new list for the group
+            if (Global.websockets.ContainsKey(ChatID))
+                Global.websockets[ChatID].Add(StudentID, websocket);
+            else
+            {
+                var tempDict = new Dictionary<int, WebSocket>();
+                tempDict.Add(StudentID, websocket);
+                Global.websockets.Add(ChatID, tempDict);
+            }
+            var buffertemp = new byte[256];
+            WebSocketReceiveResult result = await websocket.ReceiveAsync(new ArraySegment<byte>(buffertemp), CancellationToken.None);
+            
             while (!result.CloseStatus.HasValue)
             {
-                //get StudentID
-                int number = context.Request.Path.Value.LastIndexOf('/') + PATH_FORWARDSLASH_OFFSET;
-                string value = context.Request.Path.Value.Substring(number);
-                int StudentID = Convert.ToInt32(value);
-                List<Notifications> notifications = await ChatsController.GetNotifications(StudentID);
-                if (Global.websockets.ContainsKey(StudentID))
-                    Global.websockets.Remove(StudentID);
-                string notiString = new JavaScriptSerializer().Serialize(notifications);
-                byte[] bytes2send = Encoding.UTF8.GetBytes(notiString);
-                await webSocket.SendAsync(new ArraySegment<byte>(bytes2send), WebSocketMessageType.Text, true, CancellationToken.None);
+                string _str = Encoding.ASCII.GetString(buffertemp);
+                _str = _str.Remove(_str.IndexOf('\0'));
+                string jsonstring = $"{{\"ChatID\":{ChatID}, \"SenderID\":{StudentID}, \"Data\":\"{_str}\"}}";
+                Chats saveChat = JsonSerializer.Deserialize<Chats>(jsonstring);
+                await SQLConnection.Insert<Chats>(saveChat);
 
-                result = await webSocket.ReceiveAsync(new ArraySegment<byte>(bytes2send), CancellationToken.None);
+                var buffer = new byte[_str.Length];
+                for (int i = 0; i < _str.Length; i++)
+                    buffer[i] = buffertemp[i];
+                foreach (KeyValuePair<int, WebSocket> kvp in Global.websockets[ChatID])
+                {
+                    if (kvp.Key != StudentID)
+                    {
+                        try
+                        {
+                            await kvp.Value.SendAsync(new ArraySegment<byte>(buffer), WebSocketMessageType.Text, true, CancellationToken.None);
+                        }
+                        catch
+                        {
+                            Global.websockets[ChatID].Remove(kvp.Key);
+                        }
+                    }
+                }
+                for (int i = 0; i < buffer.Length; i++)
+                {
+                    buffertemp.SetValue((byte)0, i);
+                    buffer.SetValue((byte)0, i);
+                    Console.Out.WriteLine(i);
+                }
+                _str = "";
+                result = await websocket.ReceiveAsync(new ArraySegment<byte>(buffertemp), CancellationToken.None);
             }
-            //await webSocket.CloseAsync(result.CloseStatus.Value, result.CloseStatusDescription, CancellationToken.None);
-        }
-        public static async Task<bool> sendDataAsync(WebSocket webSocket, object obj)
-        {
-            string notiString = new JavaScriptSerializer().Serialize(obj);
-            byte[] bytes2send = Encoding.UTF8.GetBytes(notiString);
-            try
-            {
-                await webSocket.SendAsync(new ArraySegment<byte>(bytes2send), WebSocketMessageType.Text, true, CancellationToken.None);
-            }
-            catch
-            {
-                if (SQLConnection.insert(obj))
-                    return true;
-            }
-            return true;
-        }
-        public Task ThrowException()
-        {
-            throw new HubException("This error will be sent to the client!");
-        }
-
-        internal static void AddSocket(WebSocket webSocket, TaskCompletionSource<object> socketFinishedTcs)
-        {
-            throw new NotImplementedException();
+            await websocket.CloseAsync(result.CloseStatus.Value, result.CloseStatusDescription, CancellationToken.None);
         }
     }
 }

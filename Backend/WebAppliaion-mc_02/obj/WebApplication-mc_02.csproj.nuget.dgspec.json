@@ -56,14 +56,6 @@
               "target": "Package",
               "version": "[2.2.3, )"
             },
-            "Microsoft.AspNet.Identity.EntityFramework": {
-              "target": "Package",
-              "version": "[2.2.3, )"
-            },
-            "Microsoft.AspNet.Identity.Owin": {
-              "target": "Package",
-              "version": "[2.2.3, )"
-            },
             "Microsoft.AspNet.SignalR.Core": {
               "target": "Package",
               "version": "[2.4.1, )"
@@ -97,18 +89,6 @@
             "Microsoft.OpenApi": {
               "target": "Package",
               "version": "[1.2.3, )"
-            },
-            "Microsoft.Owin.Cors": {
-              "target": "Package",
-              "version": "[4.1.1, )"
-            },
-            "Microsoft.Owin.Host.SystemWeb": {
-              "target": "Package",
-              "version": "[4.1.1, )"
-            },
-            "Microsoft.Owin.Security.OAuth": {
-              "target": "Package",
-              "version": "[4.1.1, )"
             },
             "Microsoft.VisualStudio.Azure.Containers.Tools.Targets": {
               "target": "Package",

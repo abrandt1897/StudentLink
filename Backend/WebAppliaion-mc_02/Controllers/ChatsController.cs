@@ -25,30 +25,35 @@ namespace WebApplication_mc_02.Controllers
     {
         // GET: api/Students
         /// <summary>
-        /// gets a chats that a student is in
+        /// gets all chats that a student is in
         /// </summary>
         /// <returns> list of all chats</returns>
         [HttpGet("Group/{id}")]
         public async Task<ActionResult<IEnumerable<Student2ChatMap>>> GetGroupChat(int id)
         {
-            List<Student2ChatMap> chats = SQLConnection.get<Student2ChatMap>(typeof(Student2ChatMap), $"WHERE StudentID = {id}");
+            List<Student2ChatMap> chats = await SQLConnection.Get<Student2ChatMap>(typeof(Student2ChatMap), $"WHERE StudentID = {id}");
             return Ok(chats);
         }
 
-        // GET: api/Students/5
+        // GET: api/Chats/{StudentID}/{ChatID}
         /// <summary>
-        /// Gets the Chats associated with a student ID
+        /// Gets Chat log of given student and Chat
         /// </summary>
-        /// <param name="id">Chat ID</param>
-        /// <returns>Chats Object</returns>
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Chats>> GetChat(int id)
+        /// <param name="StudentID"></param>
+        /// <param name="ChatID"></param>
+        /// <returns></returns>
+        [HttpGet("{StudentID}/{ChatID}")]
+        public async Task<ActionResult<Chats>> GetChat(int StudentID, int ChatID)
         {
             List<Chats> chat = new List<Chats>();
-            List<Student2ChatMap> chats = SQLConnection.get<Student2ChatMap>(typeof(Student2ChatMap), $"WHERE StudentID = {id}");
-            foreach(Student2ChatMap c in chats)
+            List<Student2ChatMap> chatGroups = await SQLConnection.Get<Student2ChatMap>(typeof(Student2ChatMap), $"WHERE StudentID={StudentID}");
+            foreach (Student2ChatMap map in chatGroups)
             {
-                SQLConnection.get<Chats>(typeof(Chats), $"Where ChatID={c.ChatID}");
+                if (map.ChatID == ChatID)
+                {
+                    chat = await SQLConnection.Get<Chats>(typeof(Chats), $"Where ChatID={ChatID}");
+                    break;
+                }
             }
             if (chat.Count == 0)
                 return BadRequest("There's no chat under that id");
@@ -79,9 +84,9 @@ namespace WebApplication_mc_02.Controllers
         [HttpPost]
         public async Task<ActionResult<Chats>> PostChat([FromBody] Chats chat)//TODO this method will allow users to add a message to the database
         {
-            if (SQLConnection.get<Chats>(typeof(Student2ChatMap), $"WHERE ChatID={chat.ChatID} and StudentID={chat.SenderID}").Count < 1)
+            if (SQLConnection.Get<Chats>(typeof(Student2ChatMap), $"WHERE ChatID={chat.ChatID} and StudentID={chat.SenderID}").Result.Count < 1)
                 return BadRequest("your not allowed to send data in this chat");
-            if (SQLConnection.insert(chat)) //TODO CHECK IF THE DATA IS CLEAN AND SANITIZED
+            if (await SQLConnection.Insert<Chats>(chat)) //TODO CHECK IF THE DATA IS CLEAN AND SANITIZED
                 return Ok(chat);
             return BadRequest();
         }
@@ -95,24 +100,13 @@ namespace WebApplication_mc_02.Controllers
         [HttpDelete("{id}")]
         public async Task<ActionResult<Chats>> DeleteChat(int id)
         {
-            var chat = SQLConnection.get<Chats>(typeof(Chats), $"WHERE ChatID = {id}")[0];
+            var chat = SQLConnection.Get<Chats>(typeof(Chats), $"WHERE ChatID = {id}").Result[0];
             if (SQLConnection.delete(chat))
                 return Ok(chat);
             return BadRequest("sum went wrong, idk");
         }
 
-
-        public async static Task<List<Notifications>> GetNotifications(int StudentID)
-        {
-            List<Notifications> notifications = new List<Notifications>();
-            //TODO make the notification not spam the DB but only update when new data is put in (get gid)
-            notifications = SQLConnection.get<Notifications>(typeof(Notifications), "WHERE StudentID = " + StudentID);
-            foreach (Notifications noti in notifications)
-                SQLConnection.delete(noti);
-            return notifications;
-        }
-
-        private int makeGroupChat(List<int> studIDs)
+        private async Task<int> makeGroupChat(List<int> studIDs)
         {
             string query = "SELECT MAX(ChatID) FROM StudentLink.Student2ChatMap";
             object result = SQLConnection.get(query);
@@ -123,7 +117,7 @@ namespace WebApplication_mc_02.Controllers
                 Student2ChatMap s2cm = new Student2ChatMap();
                 s2cm.ChatID = Convert.ToInt32(result) + 1;
                 s2cm.StudentID = stuID;
-                SQLConnection.insert(s2cm);
+                await SQLConnection.Insert<Student2ChatMap>(s2cm);
             }
             return Convert.ToInt32(result) + 1;
         }
@@ -132,10 +126,10 @@ namespace WebApplication_mc_02.Controllers
         {
             Dictionary<int, int> Student2Course = new Dictionary<int, int>();
             int GroupSize = 7;
-            var courseList = SQLConnection.get<Student2CourseMap>(typeof(Student2CourseMap), $"WHERE StudentID={StudentID} and currentlyEnrolled=1");
+            var courseList = SQLConnection.Get<Student2CourseMap>(typeof(Student2CourseMap), $"WHERE StudentID={StudentID} and currentlyEnrolled=1").Result;
             foreach (var course in courseList)
             {
-                var studentList2 = SQLConnection.get<Student2CourseMap>(typeof(Student2CourseMap), $"WHERE CourseID={course.CourseID}");
+                var studentList2 = SQLConnection.Get<Student2CourseMap>(typeof(Student2CourseMap), $"WHERE CourseID={course.CourseID}").Result;
                 foreach (var student in studentList2)
                 {
                     if (Student2Course.ContainsKey(student.StudentID))

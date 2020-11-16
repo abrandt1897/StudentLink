@@ -89,8 +89,8 @@ namespace WebApplication_mc_02.Controllers
                 s2cm.StudentID = myStu.StudentID;
                 s2cm.UserType = "Student";
                 s2cm.CurrentlyEnrolled = getJsonValue((JsonObject)new JavaScriptSerializer().Deserialize<JsonArray>(getJsonValue(jsonObject, "enrollments"))[0], "enrollment_state") == "active" && getJsonValue(jsonObject, "workflow_state") == "active";
-                SQLConnection.insert(c);
-                SQLConnection.insert(s2cm);
+                await SQLConnection.Insert(c);
+                await SQLConnection.Insert(s2cm);
             }
             return myStu;
         }

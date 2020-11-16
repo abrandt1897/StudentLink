@@ -35,9 +35,9 @@ namespace WebApplication_mc_02.Controllers
         /// <param name="loginForm"></param>
         /// <returns>Student ID and Bearer token split buy a space.</returns>
         [HttpPost]
-        public ActionResult<string> PostLogin([Bind("Username,Password")] Login loginForm)
+        public async Task<ActionResult<string>> PostLogin([Bind("Username,Password")] Login loginForm)
         {
-            return PutLogin(loginForm);
+            return await PutLogin(loginForm);
         }
         
         // PUT api/<LoginController>/5
@@ -48,9 +48,9 @@ namespace WebApplication_mc_02.Controllers
         /// <param name="Password"></param>
         /// <returns>token for users access</returns>
         [HttpPut]
-        public ActionResult<string> PutLogin([Bind("Username,Password")] Login loginForm)
+        public async Task<ActionResult<string>> PutLogin([Bind("Username,Password")] Login loginForm)
         {
-            List<Students> students = SQLConnection.get<Students>(typeof(Students), $"WHERE Username='{loginForm.Username}'");
+            List<Students> students = await SQLConnection.Get<Students>(typeof(Students), $"WHERE Username='{loginForm.Username}'");
             if (students.Count < 1)
                 return BadRequest("student doesnt exist");
             Students student = students[0];
@@ -74,7 +74,7 @@ namespace WebApplication_mc_02.Controllers
                     signingCredentials: new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
                 );
                 var token = new JwtSecurityTokenHandler().WriteToken(JWToken);
-                var studentID = SQLConnection.get<Students>(typeof(Students), $"Where Username='{loginForm.Username}'", "StudentID")[0].StudentID.ToString();
+                var studentID = SQLConnection.Get<Students>(typeof(Students), $"Where Username='{loginForm.Username}'", "StudentID").Result[0].StudentID.ToString();
                 try
                 {
                     HttpContext.Response.Headers.Add("JWToken", token);

@@ -9,7 +9,6 @@ namespace WebApplication_mc_02
 {
     public static class Global
     {
-        public static Dictionary<int, WebSocketCollection> websocketcollection = new Dictionary<int, WebSocketCollection>();
-        public static Dictionary<int, WebSocket> websockets = new Dictionary<int, WebSocket>();
+        public static Dictionary<int, Dictionary<int, WebSocket>> websockets = new Dictionary<int, Dictionary<int, WebSocket>>();
     }
 }

@@ -39,7 +39,7 @@ namespace WebApplication_mc_02.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Students>> GetStudent(int id)
         {
-            return SQLConnection.get<Students>(typeof(Students), "WHERE StudentID = " + id)[0];
+            return SQLConnection.Get<Students>(typeof(Students), "WHERE StudentID = " + id).Result[0];
         }
 
         /// <summary>
@@ -50,7 +50,7 @@ namespace WebApplication_mc_02.Controllers
         [HttpGet("Username/{username}")]
         public async Task<ActionResult<Students>> GetStudent(string username)
         {
-            return SQLConnection.get<Students>(typeof(Students), $"WHERE Username = '{username}'")[0];
+            return SQLConnection.Get<Students>(typeof(Students), $"WHERE Username = '{username}'").Result[0];
         }
 
         /// <summary>
@@ -61,7 +61,7 @@ namespace WebApplication_mc_02.Controllers
         [HttpGet("Friends/{StudentID}")]
         public async Task<ActionResult<IEnumerable<Student2StudentMap>>> GetFriends(int StudentID)
         {
-            return Ok(SQLConnection.get<Student2StudentMap>(typeof(Student2StudentMap), $"WHERE StudentID = {StudentID}"));
+            return Ok(await SQLConnection.Get<Student2StudentMap>(typeof(Student2StudentMap), $"WHERE StudentID = {StudentID}"));
         }
 
         /// <summary>
@@ -73,20 +73,20 @@ namespace WebApplication_mc_02.Controllers
         [HttpGet("Friends/{StudentID1}/{StudentID2}")]
         public async Task<ActionResult<bool>> GetFriends(int StudentID1, int StudentID2)
         {
-            return Ok(SQLConnection.get<Student2StudentMap>(typeof(Student2StudentMap), $"WHERE StudentID = {StudentID1} and FriendID = {StudentID2} or FriendID = {StudentID1} and StudentID = {StudentID2}").Count > 0);
+            return Ok(SQLConnection.Get<Student2StudentMap>(typeof(Student2StudentMap), $"WHERE StudentID = {StudentID1} and FriendID = {StudentID2} or FriendID = {StudentID1} and StudentID = {StudentID2}").Result.Count > 0);
         }
 
         // PUT: api/Students/{canvasOAuthToken}
         /// <summary>
-        /// accept friend request
+        /// accepts friend request
         /// </summary>
-        /// <param name="StudentID">student ID</param>
-        /// <returns></returns>
+        /// <param name="StudentID"></param>
+        /// <param name="noti"></param>
         [HttpPut("{StudentID}")]
         public async void PutStudent(int StudentID, [Bind("StudentID,Data")] Notifications noti)
         {
             if (bool.Parse(noti.Data))
-                SQLConnection.insert(new Student2StudentMap() { StudentID = noti.StudentID, FriendID = StudentID});
+                await SQLConnection.Insert(new Student2StudentMap() { StudentID = noti.StudentID, FriendID = StudentID});
         }
 
 
@@ -106,7 +106,7 @@ namespace WebApplication_mc_02.Controllers
             myuser.Password = loginForm.Password;
             myuser.canvasOAuthToken = canvasOAuthToken;
 
-            List<Students> checkUser = SQLConnection.get<Students>(typeof(Students), $"WHERE Username='{myuser.Username}'");
+            List<Students> checkUser = await SQLConnection.Get<Students>(typeof(Students), $"WHERE Username='{myuser.Username}'");
             if (checkUser.Count > 0)
                 return BadRequest("Username already taken");
             Networking network = new Networking(_clientFactory);
@@ -121,7 +121,7 @@ namespace WebApplication_mc_02.Controllers
             }
             myStu.Username = myuser.Username;
             myStu.Password = LoginController.hashPassword(myuser.Password);
-            if (SQLConnection.insert(myStu))
+            if (await SQLConnection.Insert(myStu))
                 return Ok(myStu);
             return BadRequest("Student already has an account");
 
@@ -138,7 +138,7 @@ namespace WebApplication_mc_02.Controllers
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Student,Admin,Host")]
         public async Task<ActionResult<Students>> DeleteStudent(int id)
         {
-            var student = SQLConnection.get<Students>(typeof(Students), $"WHERE StudentID = {id}")[0];
+            var student = SQLConnection.Get<Students>(typeof(Students), $"WHERE StudentID = {id}").Result[0];
             if (SQLConnection.delete(student))
                 return Ok(student);
             return BadRequest("sum went wrong, idk");
