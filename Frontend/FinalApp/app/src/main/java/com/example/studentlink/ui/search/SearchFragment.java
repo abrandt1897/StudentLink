@@ -67,14 +67,16 @@ public class SearchFragment extends Fragment {
         bAccept.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String databaseName = "api/Notifications/" + theMap.get("studentID");
+                String databaseName = "api/Notifications/" + Global.studentID;
                 String url = "http://coms-309-mc-02.cs.iastate.edu:5000/" + databaseName;
+                Map<String,String> header = new HashMap<String,String>();
+                header.put("Authorization","Bearer " + Global.bearerToken);
                 RequestQueue requestQueue = Volley.newRequestQueue(sf.getContext());
                 requestQueue.start();
 
                 Notification notification = new Notification(sf.getContext(),Global.studentID,"You've got a friend request","Request");
 
-                // todo: post request for sending request
+                // todo: post request for sending request/ getting a timeout error
                 JsonObjectRequest postRequest = new JsonObjectRequest(Request.Method.POST,url,null, new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
@@ -88,6 +90,11 @@ public class SearchFragment extends Fragment {
                     }
 
                 }){
+                    @Override
+                    public Map<String, String> getHeaders() throws AuthFailureError {
+                        //headers.put("Content-Type", "application/json");
+                        return header;
+                    }
                     @Override
                     public byte[] getBody() {
                         JSONObject obj = new JSONObject();
@@ -114,7 +121,7 @@ public class SearchFragment extends Fragment {
                     return "application/json";
                 }
         };
-
+                requestQueue.add(postRequest);
             }
         });
 
