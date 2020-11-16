@@ -30,11 +30,9 @@ import java.net.URISyntaxException;
 public class ChatPageActivity extends AppCompatActivity {
 
     private WebSocketClient mWebSocketClient;
-
     private Button bSend;
     private TextView msgOutput;
     private EditText msgInput;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,7 +73,7 @@ public class ChatPageActivity extends AppCompatActivity {
              * To test the clientside without the backend, simply connect to an echo server such as:
              *  "ws://echo.websocket.org"
              */
-            //todo: change to -->     ws://http://coms-309-mc-02.cs.iastate.edu:5000/ws/{StudentID}
+            //todo: change to -->     ws://coms-309-mc-02.cs.iastate.edu:5000/ws/{StudentID}
             uri = new URI("ws://echo.websocket.org");
 //            uri = new URI("ws://coms-309-mc-02.cs.iastate.edu:5000/ws/" + Global.studentID);
         } catch (URISyntaxException e) {

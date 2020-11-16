@@ -64,7 +64,7 @@ public class HomeFragment extends Fragment {
         {
             @Override
             public void onResponse(JSONArray response) {
-//                Toast.makeText(hf.getContext(), "yay stuffs" + response, Toast.LENGTH_SHORT).show();
+                Toast.makeText(hf.getContext(), "yay stuffs" + response, Toast.LENGTH_SHORT).show();
 
                 if(response.length()==0)return;
 

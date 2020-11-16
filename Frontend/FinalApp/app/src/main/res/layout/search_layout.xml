@@ -10,7 +10,7 @@
         android:id="@+id/SearchText"
         android:layout_width="308dp"
         android:layout_height="63dp"
-        android:layout_marginTop="160dp"
+        android:layout_marginTop="100dp"
         android:hint="Type in a username here"
         app:layout_constraintEnd_toStartOf="@+id/searchButton"
         app:layout_constraintStart_toStartOf="parent"
@@ -20,18 +20,47 @@
         android:id="@+id/searchButton"
         android:layout_width="82dp"
         android:layout_height="61dp"
-        android:layout_marginTop="160dp"
+        android:layout_marginTop="100dp"
         android:text="Search"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <ListView
-        android:id="@+id/listview"
-        android:layout_width="413dp"
-        android:layout_height="489dp"
-        android:layout_marginTop="19dp"
+
+    <RelativeLayout
+        android:layout_width="422dp"
+        android:layout_height="166dp"
+        android:layout_marginTop="50dp"
+        android:padding="16dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/SearchText">
-    </ListView>
+        app:layout_constraintTop_toBottomOf="@+id/textUserNotExist">
+
+        <TextView
+            android:id="@+id/textUserRequest"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="20dp"
+            android:text="Some user"
+            android:textSize="20sp" />
+
+        <Button
+            android:id="@+id/bAccept"
+            android:layout_width="120dp"
+            android:layout_height="60dp"
+            android:layout_below="@id/textUserRequest"
+            android:background="#04DD07"
+            android:text="Send Request" />
+
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/textUserNotExist"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="14dp"
+        android:text=""
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/SearchText" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

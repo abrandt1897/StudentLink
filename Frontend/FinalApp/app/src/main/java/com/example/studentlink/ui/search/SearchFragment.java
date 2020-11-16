@@ -5,6 +5,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -21,6 +23,8 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.studentlink.Global;
 import com.example.studentlink.R;
@@ -38,48 +42,158 @@ import java.util.List;
 import java.util.Map;
 
 public class SearchFragment extends Fragment {
+
+    private SearchAdapter searchAdapter;
+    private SearchFragment sf;
+    private TextView textUserNotExist;
+    private EditText searchText;
+    private Button bAccept;
+    private TextView textUserRequest;
+    private Map<String, Object> theMap;
+
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.search_layout, container, false);
+        bAccept = root.findViewById(R.id.bAccept);
+        textUserRequest = root.findViewById(R.id.textUserRequest);
 
-        TextView searchText = root.findViewById(R.id.SearchText);
+        textUserRequest.setVisibility(View.GONE);
+        bAccept.setVisibility(View.GONE);
+
+        searchText = root.findViewById(R.id.SearchText);
         Button searchButton = root.findViewById(R.id.searchButton);
+        textUserNotExist = root.findViewById(R.id.textUserNotExist);
+        sf = this;
 
-        String databaseName = "api/Students/Username/" + searchText.getText();
-        String url = "http://coms-309-mc-02.cs.iastate.edu:5000/" + databaseName;
+        bAccept.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String databaseName = "api/Notifications/" + theMap.get("studentID");
+                String url = "http://coms-309-mc-02.cs.iastate.edu:5000/" + databaseName;
+                RequestQueue requestQueue = Volley.newRequestQueue(sf.getContext());
+                requestQueue.start();
 
-        RequestQueue requestQueue = Volley.newRequestQueue(this.getContext());
-        requestQueue.start();
+                Notification notification = new Notification(sf.getContext(),Global.studentID,"You've got a friend request","Request");
 
-        Map<String,String> header = new HashMap<String,String>();
-        header.put("Authorization","Bearer " + Global.bearerToken);
+                // todo: post request for sending request
+                JsonObjectRequest postRequest = new JsonObjectRequest(Request.Method.POST,url,null, new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        Toast.makeText(sf.getContext(), "Request Sent Successfully", Toast.LENGTH_SHORT).show();
+                        bAccept.setEnabled(false);
+                    }
+                }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        error.printStackTrace();
+                    }
+
+                }){
+                    @Override
+                    public byte[] getBody() {
+                        JSONObject obj = new JSONObject();
+                    try {
+                        obj.put("studentID", theMap.get("studentID"));
+                        obj.put("data", theMap.get("data"));
+                        obj.put("type", "Request");
+                        obj.put("description",theMap.get("description"));
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+                    byte[] body = new byte[0];
+                    try {
+                        body = obj.toString().getBytes("UTF-8");
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    return body;
+                }
+
+                @Override
+                public String getBodyContentType() {
+                    return "application/json";
+                }
+        };
+
+            }
+        });
+
 
         searchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                String databaseName = "api/Students/Username/" + searchText.getText();
+                String url = "http://coms-309-mc-02.cs.iastate.edu:5000/" + databaseName;
+                RequestQueue requestQueue = Volley.newRequestQueue(sf.getContext());
+                requestQueue.start();
 
-                JsonArrayRequest getRequest = new JsonArrayRequest(Request.Method.GET, url, null, new Response.Listener<JSONArray>()
+                Map<String,String> header = new HashMap<String,String>();
+                header.put("Authorization","Bearer " + Global.bearerToken);
+
+
+                JsonObjectRequest getRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>()
                 {
                     @Override
-                    public void onResponse(JSONArray response) {
-
-                        if(response.length()==0)return;
-
-                        Map<String, Object> theMap = new HashMap<String, Object>();
+                    public void onResponse(JSONObject response) {
+                        theMap = new HashMap<String, Object>();
 
                         try {
-                            theMap = toMap(response.getJSONObject(0));
+                            theMap = toMap(response);
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
 
-                        // todo: get the list of names and display them with Adapter
 
+                        textUserRequest.setVisibility(View.VISIBLE);
+                        bAccept.setVisibility(View.VISIBLE);
+                        bAccept.setEnabled(false);
+
+                        textUserRequest.setText("Username: " + theMap.get("username") + "\nFull Name: " + theMap.get("fullName"));
+
+
+                        String databaseName = "api/Students/Friends/" + Global.studentID + "/" + theMap.get("studentID");
+                        String url = "http://coms-309-mc-02.cs.iastate.edu:5000/" + databaseName;
+                        RequestQueue ifFriendsrequestQueue = Volley.newRequestQueue(sf.getContext());
+                        ifFriendsrequestQueue.start();
+
+                        Map<String,String> header = new HashMap<String,String>();
+                        header.put("Authorization","Bearer " + Global.bearerToken);
+
+                        StringRequest getIfFriendsRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
+                            @Override
+                            public void onResponse(String response) {
+                                if(!Boolean.parseBoolean(response)) {
+                                    bAccept.setEnabled(true);
+
+                                }
+                            }
+                        },
+                                new Response.ErrorListener() {
+                                    @Override
+                                    public void onErrorResponse(VolleyError error) {
+                                        error.printStackTrace();
+                                    }
+                                }
+                        ) {
+                            @Override
+                            public Map<String, String> getHeaders() throws AuthFailureError {
+                                //headers.put("Content-Type", "application/json");
+                                return header;
+                            }
+                        };
+
+                        ifFriendsrequestQueue.add(getIfFriendsRequest);
+
+
+//                        searchAdapter = new SearchAdapter(theMap, sf);
+//                        resetAdapter(searchAdapter);
 
                     }
                 },
                         new Response.ErrorListener() {
                             @Override
                             public void onErrorResponse(VolleyError error) {
+                                textUserNotExist.setText("This username does not correspond to a user.");
                                 error.printStackTrace();
                             }
                         }
@@ -93,9 +207,6 @@ public class SearchFragment extends Fragment {
                 requestQueue.add(getRequest);
             }
         });
-
-
-
 
         return root;
     }
@@ -129,5 +240,10 @@ public class SearchFragment extends Fragment {
         }   return list;
     }
 
-
 }
+
+
+
+
+
+

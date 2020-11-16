@@ -51,7 +51,7 @@ public class LoginActivity extends AppCompatActivity {
         username = findViewById(R.id.LoginUsername);
         password = findViewById(R.id.LoginPassword);
         ErrorText = findViewById(R.id.ShowErrorText);
-//        logic = new LoginLogic(this); // TODO: Change to LoginLogic for actual put request
+//        logic = new LoginLogic(this);
         c = this;
 
         LoginUserButton.setOnClickListener(new View.OnClickListener() {
@@ -89,7 +89,6 @@ public class LoginActivity extends AppCompatActivity {
                             Global.bearerToken = answer[1];
                             ErrorText.setText("Login Successful!");
                             c.startActivity(new Intent(c, PageController.class));
-//                            moveToHome();
                         }
                     },
                             new Response.ErrorListener() {
