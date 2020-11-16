@@ -55,7 +55,7 @@ namespace WebApplication_mc_02.Controllers
             {
                 string _str = Encoding.ASCII.GetString(buffertemp);
                 _str = _str.Remove(_str.IndexOf('\0'));
-                string jsonstring = $"{{\"ChatID\":{ChatID}, \"SenderID\":{StudentID}, \"Data\":\"{_str}\"}}";
+                string jsonstring = $@"{{""ChatID"":{ChatID}, ""SenderID"":{StudentID}, ""Data"":""{_str}""}}";
                 Chats saveChat = JsonSerializer.Deserialize<Chats>(jsonstring);
                 await SQLConnection.Insert(saveChat);
                 Console.Out.WriteLine($"WebSocket********************{jsonstring}****************************");

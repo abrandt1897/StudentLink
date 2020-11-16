@@ -88,7 +88,7 @@ namespace WebApplication_mc_02.Controllers
             if (bool.Parse(noti.Data))
                 await SQLConnection.Insert(new Student2StudentMap() { StudentID = noti.StudentID, FriendID = StudentID});
 
-            SQLConnection.delete(new Notifications() { StudentID=StudentID, });
+            SQLConnection.delete(new Notifications() { Record=noti.Record});
         }
 
 
