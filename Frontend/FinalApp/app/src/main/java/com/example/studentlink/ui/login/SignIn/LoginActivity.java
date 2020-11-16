@@ -72,6 +72,7 @@ public class LoginActivity extends AppCompatActivity {
                     String databaseName = "api/Login";
                     Map<String,String> userLoginData = new HashMap<String,String>();
                     userLoginData.put("Username",username.getText().toString()); //greysonj
+                    Global.username = username.getText().toString();
                     userLoginData.put("Password",password.getText().toString()); //yeet
                     String url = "http://coms-309-mc-02.cs.iastate.edu:5000/" + databaseName;
                     RequestQueue requestQueue;

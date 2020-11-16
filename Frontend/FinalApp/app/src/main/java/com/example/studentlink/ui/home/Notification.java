@@ -30,11 +30,12 @@ public class Notification {
     private String type;
     private int senderID;
     private String senderName;
-//    private String data;
+    private String data;
 
-    public Notification(Context c, int s, String d, String t){
+    public Notification(String theData, Context c, int s, String d, String t){
         senderID = s;
         description = d;
+        data = theData;
         type = t;
         context = c;
         senderName = "empty";
@@ -60,6 +61,10 @@ public class Notification {
 
     public String getDescription(){
         return description;
+    }
+
+    public String getData(){
+        return data;
     }
 
     public static Map<String, Object> toMap(JSONObject jsonobj)  throws JSONException {

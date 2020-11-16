@@ -98,6 +98,7 @@ public class CanvasWebview extends AppCompatActivity {
                 String databaseName = "api/Students/" + CanvasToken.getText().toString();
                 Map<String,String> userLoginData = new HashMap<String,String>();
                 userLoginData.put("Username",username);
+                Global.username = username;
                 userLoginData.put("Password",password);
 //                userLoginData.put("canvasOAuthToken", CanvasToken.getText().toString());
                 String url = "http://coms-309-mc-02.cs.iastate.edu:5000/" + databaseName;
@@ -133,7 +134,7 @@ public class CanvasWebview extends AppCompatActivity {
                             public void onResponse(String response) {
                                 Toast.makeText(c, "You've been logged in!   " + response, Toast.LENGTH_SHORT).show();
                                 String[] answer = response.split(" ");
-//                                Global.studentID = Integer.parseInt(answer[0]);
+                                Global.studentID = Integer.parseInt(answer[0]);
                                 Global.bearerToken = answer[1];
                             }
                         },

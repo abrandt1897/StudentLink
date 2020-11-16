@@ -76,9 +76,9 @@ public class HomeFragment extends Fragment {
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
-                    // todo: change 81537 to the actual senderIDs
-                    Notification notification = new Notification(hf.getContext(),81537, theMap.get("description").toString(), theMap.get("type").toString());
-                    setSenderName(notification);
+                    Notification notification = new Notification(theMap.get("data").toString(), hf.getContext(),Integer.parseInt(theMap.get("studentID").toString()), theMap.get("description").toString(), theMap.get("type").toString());
+                    notifications.add(notification);
+//                    setSenderName(notification);
                 }
 
                 // mocked data

@@ -43,7 +43,6 @@ import java.util.Map;
 
 public class SearchFragment extends Fragment {
 
-    private SearchAdapter searchAdapter;
     private SearchFragment sf;
     private TextView textUserNotExist;
     private EditText searchText;
@@ -74,12 +73,11 @@ public class SearchFragment extends Fragment {
                 RequestQueue requestQueue = Volley.newRequestQueue(sf.getContext());
                 requestQueue.start();
 
-                Notification notification = new Notification(sf.getContext(),Global.studentID,"You've got a friend request","Request");
+                Notification notification = new Notification(Global.username, sf.getContext(), Global.studentID, theMap.get("username").toString(),"Request");
 
-                // todo: post request for sending request/ getting a timeout error
-                JsonObjectRequest postRequest = new JsonObjectRequest(Request.Method.POST,url,null, new Response.Listener<JSONObject>() {
+                StringRequest postRequest = new StringRequest(Request.Method.POST,url, new Response.Listener<String>() {
                     @Override
-                    public void onResponse(JSONObject response) {
+                    public void onResponse(String response) {
                         Toast.makeText(sf.getContext(), "Request Sent Successfully", Toast.LENGTH_SHORT).show();
                         bAccept.setEnabled(false);
                     }
@@ -99,10 +97,11 @@ public class SearchFragment extends Fragment {
                     public byte[] getBody() {
                         JSONObject obj = new JSONObject();
                     try {
+                        obj.put("record",0);
                         obj.put("studentID", theMap.get("studentID"));
-                        obj.put("data", theMap.get("data"));
+                        obj.put("data", Global.username);
+                        obj.put("description","Request");
                         obj.put("type", "Request");
-                        obj.put("description",theMap.get("description"));
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
@@ -150,13 +149,11 @@ public class SearchFragment extends Fragment {
                             e.printStackTrace();
                         }
 
-
                         textUserRequest.setVisibility(View.VISIBLE);
                         bAccept.setVisibility(View.VISIBLE);
                         bAccept.setEnabled(false);
 
                         textUserRequest.setText("Username: " + theMap.get("username") + "\nFull Name: " + theMap.get("fullName"));
-
 
                         String databaseName = "api/Students/Friends/" + Global.studentID + "/" + theMap.get("studentID");
                         String url = "http://coms-309-mc-02.cs.iastate.edu:5000/" + databaseName;

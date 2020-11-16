@@ -156,8 +156,7 @@ public class HomeAdapter extends BaseAdapter {
                 vi = inflater.inflate(R.layout.item_request, null);
                 TextView text = (TextView) vi.findViewById(R.id.requestText);
 
-                text.setText(notifications.get(position).getSender() + " would like to be your friend.");
-//                text.setText(notifications.get(position).getDescription());
+                text.setText(notifications.get(position).getData() + " would like to be your friend.");
 
                 Button acceptButton = (Button) vi.findViewById(R.id.AcceptButton);
                 acceptButton.setTag(position);
