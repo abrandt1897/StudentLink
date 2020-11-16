@@ -42,7 +42,7 @@ namespace WebApplication_mc_02.Controllers
             {
                 return Ok(noti);
             }
-            if (await SQLConnection.Insert<Notifications>(noti))
+            if (await SQLConnection.Insert(noti))
                 return Ok("Ok");
             return BadRequest("client websocket isnt listening and there was an error inserting into Notification Database");
         }
@@ -54,7 +54,7 @@ namespace WebApplication_mc_02.Controllers
         /// <param name="noti">notification object</param>
         /// <returns>'Ok' if good 'couldnt delete or insert idk' if bad</returns>
         [HttpPost("{student}")]
-        public async Task<ActionResult<Students>> PostFriend(int studentID, [Bind("StudentID,Data,Type")] Notifications noti)
+        public async Task<ActionResult<Students>> PostFriend(int studentID, [Bind("p[,Data,Type")] Notifications noti)
         {
             if (await SQLConnection.Insert(noti))
                 return Ok("Ok");

@@ -69,5 +69,13 @@ namespace NUnitTestProject2
             NUnit.Framework.Assert.AreEqual(chatsAfterDel.Count, 0);
             NUnit.Framework.Assert.AreNotEqual(chatsAfterDel, chatsAfterUpdate);
         }
+
+        [Test]
+        public void TestCourse()
+        {
+            CoursesController coursesController = new CoursesController();
+            var allCourses = coursesController.Get().Result;
+
+        }
     }
 }
