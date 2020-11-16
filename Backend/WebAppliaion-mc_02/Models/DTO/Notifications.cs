@@ -10,7 +10,7 @@ namespace WebApplication_mc_02.Models.DTO
         public int Record { get; set; } = 0;
         public int StudentID { get; set; }
         public string Data { get; set; }
-        public string Type { get; set; }
         public string Description { get; set; }
+        public string Type { get; set; }
     }
 }
