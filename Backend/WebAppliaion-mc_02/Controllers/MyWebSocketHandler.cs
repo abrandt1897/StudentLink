@@ -80,7 +80,6 @@ namespace WebApplication_mc_02.Controllers
                 {
                     buffertemp.SetValue((byte)0, i);
                     buffer.SetValue((byte)0, i);
-                    Console.Out.WriteLine(i);
                 }
                 _str = "";
                 result = await websocket.ReceiveAsync(new ArraySegment<byte>(buffertemp), CancellationToken.None);
