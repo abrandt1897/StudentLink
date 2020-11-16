@@ -71,10 +71,65 @@ namespace NUnitTestProject2
         }
 
         [Test]
-        public void TestCourse()
+        public void TestCourses()
         {
             CoursesController coursesController = new CoursesController();
-            var allCourses = coursesController.Get().Result;
+            var allCourses = coursesController.Get();
+            NUnit.Framework.Assert.AreEqual(chatsAfterDel.Count, 0);
+        }
+        [Test]
+        public void createFriend()
+        {
+            Students mystu = new Students();
+            mystu.StudentID = 2315;
+            mystu.Username = "haxman";
+            mystu.Password = "gethax";
+            mystu.FullName = "betterhaxor";
+            mystu.Classification = "Senior";
+            mystu.Major = "Computer Software Engineer Guy";
+            mystu.Role = "ADMIN0";
+            Notifications noti = new Notifications { StudentID = 2315, Data = "New Friend", Type = "Request" };
+            NotificationsController notificationsController = new NotificationsController();
+            String temp = notificationsController.PostFriend(2315, noti).Result.ToString();
+            try
+            {
+                NUnit.Framework.Assert.AreNotEqual(temp, "couldnt delete or insert idk"); //If passed then it inserted
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Test Not Passed, something is wrong");
+            }
+        }
+
+        [Test]
+        public void createChat()
+        {
+            Chats chats = new Chats { ChatID = 985415, Data = "I hate unit testing", SenderID = 2315 };
+            ChatsController chatsController = new ChatsController();
+            string temp = chatsController.PostChat(chats).Result.ToString();
+            try
+            {
+                NUnit.Framework.Assert.AreNotEqual(temp, "your not allowed to send data in this chat"); //If passed then it inserted
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Test Not Passed, something is wrong");
+            }
+        }
+
+        [Test]
+        public void createGroup()
+        {
+            ChatsController chatsController = new ChatsController();
+            String temp = chatsController.PutGroupChat(451561).Result.ToString();
+            try
+            {
+                NUnit.Framework.Assert.AreNotEqual(temp, "Error"); //If passed then it inserted
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Test Not Passed, something is wrong");
+            }
 
         }
     }

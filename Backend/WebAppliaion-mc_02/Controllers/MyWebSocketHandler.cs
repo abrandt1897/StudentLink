@@ -35,9 +35,9 @@ namespace WebApplication_mc_02.Controllers
             //get add websocket to the list of websockets
             string path = context.Request.Path.Value;
             string[] pathSplit = path.Split('/');
-            int ChatID = Int32.Parse(pathSplit[1]);
+            int ChatID = Int32.Parse(pathSplit[2]);
             //TODO check if the chatID is real in the database
-            int StudentID = Int32.Parse(pathSplit[2]);
+            int StudentID = Int32.Parse(pathSplit[3]);
 
             //add the new person to correct group otherwise create a new list for the group
             if (Global.websockets.ContainsKey(ChatID))
@@ -58,7 +58,7 @@ namespace WebApplication_mc_02.Controllers
                 string jsonstring = $"{{\"ChatID\":{ChatID}, \"SenderID\":{StudentID}, \"Data\":\"{_str}\"}}";
                 Chats saveChat = JsonSerializer.Deserialize<Chats>(jsonstring);
                 await SQLConnection.Insert(saveChat);
-
+                Console.Out.WriteLine($"WebSocket********************{jsonstring}****************************");
                 var buffer = new byte[_str.Length];
                 for (int i = 0; i < _str.Length; i++)
                     buffer[i] = buffertemp[i];
