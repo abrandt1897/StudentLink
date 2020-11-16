@@ -54,10 +54,9 @@ namespace WebApplication_mc_02.Controllers
         /// <param name="noti">notification object</param>
         /// <returns>'Ok' if good 'couldnt delete or insert idk' if bad</returns>
         [HttpPost("{student}")]
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Student,Admin,Host")]
         public async Task<ActionResult<Students>> PostFriend(int studentID, [Bind("StudentID,Data,Type")] Notifications noti)
         {
-            if (await SQLConnection.Insert<Notifications>(noti))
+            if (await SQLConnection.Insert(noti))
                 return Ok("Ok");
             return BadRequest("couldnt delete or insert idk");
         }

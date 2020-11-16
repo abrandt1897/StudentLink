@@ -143,7 +143,7 @@ namespace WebApplication_mc_02
 
             app.Use(async (context, next) =>
             {
-                if (Regex.Matches(context.Request.Path, @"\/\d+\/\d+").Count > 0)
+                if (Regex.Matches(context.Request.Path, @"\/ws\/\d+\/\d+").Count > 0)
                 {
                     if (context.WebSockets.IsWebSocketRequest)
                     {

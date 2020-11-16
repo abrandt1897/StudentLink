@@ -57,7 +57,7 @@ namespace WebApplication_mc_02.Controllers
                 _str = _str.Remove(_str.IndexOf('\0'));
                 string jsonstring = $"{{\"ChatID\":{ChatID}, \"SenderID\":{StudentID}, \"Data\":\"{_str}\"}}";
                 Chats saveChat = JsonSerializer.Deserialize<Chats>(jsonstring);
-                await SQLConnection.Insert<Chats>(saveChat);
+                await SQLConnection.Insert(saveChat);
 
                 var buffer = new byte[_str.Length];
                 for (int i = 0; i < _str.Length; i++)
