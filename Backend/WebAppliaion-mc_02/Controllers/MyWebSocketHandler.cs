@@ -41,7 +41,11 @@ namespace WebApplication_mc_02.Controllers
 
             //add the new person to correct group otherwise create a new list for the group
             if (Global.websockets.ContainsKey(ChatID))
+            {
+                if(Global.websockets[ChatID].ContainsKey(StudentID))
+                    Global.websockets[ChatID].Remove(StudentID);
                 Global.websockets[ChatID].Add(StudentID, websocket);
+            }
             else
             {
                 var tempDict = new Dictionary<int, WebSocket>();

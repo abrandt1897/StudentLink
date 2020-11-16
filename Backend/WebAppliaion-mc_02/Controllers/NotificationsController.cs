@@ -53,7 +53,7 @@ namespace WebApplication_mc_02.Controllers
         /// <param name="studentID">student ID of the friend</param>
         /// <param name="noti">notification object</param>
         /// <returns>'Ok' if good 'couldnt delete or insert idk' if bad</returns>
-        [HttpPost("{student}")]
+        [HttpPost("{studentID}")]
         public async Task<ActionResult<Students>> PostFriend(int studentID, [Bind("StudentID,Data,Description,Type")] Notifications noti)
         {
             if (await SQLConnection.Insert(noti))

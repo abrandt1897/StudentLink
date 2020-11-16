@@ -86,12 +86,10 @@ namespace WebApplication_mc_02.Controllers
         public async void PutStudent(int StudentID, [Bind("StudentID,Data")] Notifications noti)
         {
             if (bool.Parse(noti.Data))
-                await SQLConnection.Insert(new Student2StudentMap() { StudentID = noti.StudentID, FriendID = StudentID});
+                await SQLConnection.Insert(new Student2StudentMap() { StudentID = StudentID, FriendID = noti.StudentID });
 
             SQLConnection.delete(new Notifications() { Record=noti.Record});
         }
-
-
 
         // POST: api/Students
         /// /// <summary>
