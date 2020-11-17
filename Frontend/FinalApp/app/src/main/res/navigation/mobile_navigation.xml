@@ -37,5 +37,10 @@
         android:name="com.example.studentlink.ui.search.SearchFragment"
         android:label="search"
         tools:layout="@layout/search_layout" />
+    <fragment
+        android:id="@+id/nav_friends"
+        android:name="com.example.studentlink.ui.friends.FriendsFragment"
+        android:label="friend list"
+        tools:layout="@layout/friends_list_layout" />
 
 </navigation>
