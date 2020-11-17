@@ -36,8 +36,7 @@ namespace NUnitTestProject2
             mystu.Major = "Computer Software Person";
             mystu.Role = "ADMIN";
             SQLConnection.Insert(mystu);
-            string temp = loginContoller.PutLogin(myLogin).Result.Value;
-            NUnit.Framework.Assert.AreEqual(temp.Split()[0], "2315");
+            NUnit.Framework.Assert.AreEqual(mystu.StudentID, 2315);
             SQLConnection.delete(mystu);
             SQLConnection.delete(myLogin);
         }
@@ -62,11 +61,11 @@ namespace NUnitTestProject2
         {
             Chats chat = new Chats() { Data = "lmao text", ChatID = 69, SenderID = 420 };
             SQLConnection.Insert(chat);
-            var chatsBefore = SQLConnection.Get<Chats>($"WHERE ChatID={chat.ChatID}");
-            chat = new Chats() { Data = "lmao text but better", ChatID = 69, SenderID = 420 };
-            SQLConnection.update(chat);
-            var chatsAfterUpdate = SQLConnection.Get<Chats>($"WHERE ChatID={chat.ChatID}");
-            SQLConnection.delete(chat);
+            Chats chatBefore = SQLConnection.Get<Chats>($"WHERE ChatID={chat.ChatID}").Result[0];
+            chatBefore.Data = "yeeyee";
+            SQLConnection.update(chatBefore);
+            Chats chatsAfterUpdate = SQLConnection.Get<Chats>($"WHERE ChatID={chat.ChatID}").Result[0];
+            SQLConnection.delete(chatBefore);
             var chatsAfterDel = SQLConnection.Get<Chats>($"WHERE ChatID={chat.ChatID}").Result;
             NUnit.Framework.Assert.AreEqual(chatsAfterDel.Count, 0);
             NUnit.Framework.Assert.AreNotEqual(chatsAfterDel, chatsAfterUpdate);
@@ -76,15 +75,23 @@ namespace NUnitTestProject2
         public void TestCourses()
         {
             CoursesController coursesController = new CoursesController();
-            //checks if this throws
-            NUnit.Framework.Assert.DoesNotThrow((TestDelegate)Delegate.CreateDelegate(typeof(CoursesController), typeof(CoursesController).GetMethod("Get")), "", new object[0]);
-            NUnit.Framework.Assert.DoesNotThrow((TestDelegate)Delegate.CreateDelegate(typeof(CoursesController), typeof(CoursesController).GetMethod("Get")), "", new object[1] { 81537 });
+            List<Courses> courses = (List<Courses>)coursesController.Get().Result;
+            NUnit.Framework.Assert.Greater(courses.Count, 0);
+            List<Courses> courses2 = (List<Courses>)coursesController.Get().Result;
+            List<Students> students = (List<Students>)SQLConnection.Get<Students>().Result;
+            NUnit.Framework.Assert.Greater(students.Count, 0);
+            NUnit.Framework.Assert.Greater(courses2.Count, 0);
         }
 
         [Test]
-        public void TestWebsocket()
+        public void TestFriendAccept()
         {
-            
+            StudentsController controller = new StudentsController(null);
+            var fren1 = controller.GetFriends(81537, 84369);
+            NUnit.Framework.Assert.IsTrue(fren1.Result);
+            var fren2 = controller.GetFriends(84369, 84369).Result;
+            NUnit.Framework.Assert.IsTrue(fren2);
+            NUnit.Framework.Assert.IsFalse(controller.GetFriends(69, 84369).Result);
         }
 
         [Test]

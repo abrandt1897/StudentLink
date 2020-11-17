@@ -71,9 +71,12 @@ namespace WebApplication_mc_02.Controllers
         /// <param name="StudentID2">Student2</param>
         /// <returns>boolean</returns>
         [HttpGet("Friends/{StudentID1}/{StudentID2}")]
-        public async Task<ActionResult<bool>> GetFriends(int StudentID1, int StudentID2)
+        public async Task<bool> GetFriends(int StudentID1, int StudentID2)
         {
-            return Ok(SQLConnection.Get<Student2StudentMap>($"WHERE StudentID = {StudentID1} and FriendID = {StudentID2} or FriendID = {StudentID1} and StudentID = {StudentID2}").Result.Count > 0);
+            var list = SQLConnection.Get<Student2StudentMap>($"WHERE StudentID = {StudentID1} and FriendID = {StudentID2} or FriendID = {StudentID1} and StudentID = {StudentID2}").Result;
+            if(list.Count > 0)
+                return true;
+            return false;
         }
 
         // PUT: api/Students/{canvasOAuthToken}

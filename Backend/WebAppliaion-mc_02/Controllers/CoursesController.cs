@@ -36,7 +36,7 @@ namespace WebApplication_mc_02.Controllers
         /// <param name="id">Student ID</param>
         /// <returns>List of Courses</returns>
         [HttpGet("{id}")]
-        public async Task<IEnumerable<Courses>> Get(int id)
+        public async Task<IEnumerable<Courses>> GetUser(int id)
         {
             List<Courses> courses = new List<Courses>();
             List<Student2CourseMap> courseIDs = await SQLConnection.Get<Student2CourseMap>( $"Where StudentID={id}");
