@@ -8,7 +8,9 @@ using Moq;
 using WebApplication_mc_02.Controllers;
 using WebApplication_mc_02.Models;
 using WebApplication_mc_02.Models.DTO;
-using Xunit;
+using System.Reflection;
+using System.Net.WebSockets;
+using Microsoft.AspNetCore.Http;
 
 namespace NUnitTestProject2
 {
@@ -74,9 +76,17 @@ namespace NUnitTestProject2
         public void TestCourses()
         {
             CoursesController coursesController = new CoursesController();
-            var allCourses = coursesController.Get();
-            NUnit.Framework.Assert.AreEqual(chatsAfterDel.Count, 0);
+            //checks if this throws
+            NUnit.Framework.Assert.DoesNotThrow((TestDelegate)Delegate.CreateDelegate(typeof(CoursesController), typeof(CoursesController).GetMethod("Get")), "", new object[0]);
+            NUnit.Framework.Assert.DoesNotThrow((TestDelegate)Delegate.CreateDelegate(typeof(CoursesController), typeof(CoursesController).GetMethod("Get")), "", new object[1] { 81537 });
         }
+
+        [Test]
+        public void TestWebsocket()
+        {
+            
+        }
+
         [Test]
         public void createFriend()
         {

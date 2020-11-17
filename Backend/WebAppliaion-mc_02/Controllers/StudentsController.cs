@@ -61,7 +61,7 @@ namespace WebApplication_mc_02.Controllers
         [HttpGet("Friends/{StudentID}")]
         public async Task<ActionResult<IEnumerable<Student2StudentMap>>> GetFriends(int StudentID)
         {
-            return Ok(await SQLConnection.Get<Student2StudentMap>(typeof(Student2StudentMap), $"WHERE StudentID = {StudentID}"));
+            return Ok(await SQLConnection.Get<Student2StudentMap>(typeof(Student2StudentMap), $"WHERE StudentID = {StudentID} and Friends = {StudentID}"));
         }
 
         /// <summary>
