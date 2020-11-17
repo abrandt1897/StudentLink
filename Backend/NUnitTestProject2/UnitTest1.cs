@@ -121,7 +121,7 @@ namespace NUnitTestProject2
         [Test]
         public void createChat()
         {
-            Chats chats = new Chats { ChatID = 985415, Data = "I hate unit testing", SenderID = 2315 };
+            Chats chats = new Chats { ChatID = 985415, Data = "I hate unit testing", SenderID = 2315, Record = 0 };
             ChatsController chatsController = new ChatsController();
             string temp = chatsController.PostChat(chats).Result.ToString();
             try
@@ -148,6 +148,28 @@ namespace NUnitTestProject2
                 Console.WriteLine("Test Not Passed, something is wrong");
             }
 
+        }
+
+        [Test]
+        public void createAccount()
+        {
+            CreateAccount myAccount = new CreateAccount { Username = "test", Password = "test", canvasOAuthToken = "10835~CLiOtauIaEttJog8BA3Mt3rfsatuUoBbAu2cr6dUAadHg8kVzxMEeGqk3AbA8unc" };
+            NUnit.Framework.Assert.AreEqual(myAccount.Username, "test");
+            NUnit.Framework.Assert.AreEqual(myAccount.Password, "test");
+            NUnit.Framework.Assert.AreEqual(myAccount.canvasOAuthToken, "10835~CLiOtauIaEttJog8BA3Mt3rfsatuUoBbAu2cr6dUAadHg8kVzxMEeGqk3AbA8unc");
+        }
+
+        [Test]
+        public void createStudent()
+        {
+            Students mystudent = new Students { StudentID = 1221, Username = "test", Attributes = "cool", Password = "test", FullName = "test test", Classification = "Super Senior", Role = "student" };
+            NUnit.Framework.Assert.AreEqual(mystudent.StudentID, 1221);
+            NUnit.Framework.Assert.AreEqual(mystudent.Username, "test");
+            NUnit.Framework.Assert.AreEqual(mystudent.Attributes, "cool");
+            NUnit.Framework.Assert.AreEqual(mystudent.Password, "test");
+            NUnit.Framework.Assert.AreEqual(mystudent.FullName, "test test");
+            NUnit.Framework.Assert.AreEqual(mystudent.Classification, "Super Senior");
+            NUnit.Framework.Assert.AreEqual(mystudent.Role, "student");
         }
     }
 }
