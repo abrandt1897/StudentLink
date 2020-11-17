@@ -31,6 +31,7 @@ public class Notification {
     private int senderID;
     private String senderName;
     private String data;
+    private int record;
 
     public Notification(String theData, Context c, int s, String d, String t){
         senderID = s;
@@ -47,6 +48,14 @@ public class Notification {
         type = t;
         context = c;
         senderName = sName;
+    }
+
+    public void setRecord(int r){
+        record = r;
+    }
+
+    public int getRecord(){
+        return record;
     }
 
     public void setName(String n){

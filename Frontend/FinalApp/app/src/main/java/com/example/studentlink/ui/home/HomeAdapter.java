@@ -107,8 +107,10 @@ public class HomeAdapter extends BaseAdapter {
             public byte[] getBody() throws AuthFailureError {
                 JSONObject obj = new JSONObject();
                 try {
-                    obj.put("studentID", notifications.get(position).getSenderID());
+                    String[] nameAndID = notifications.get(position).getData().split(",");
+                    obj.put("studentID", Integer.parseInt(nameAndID[1]));
                     obj.put("data", accepted + "");
+                    obj.put("record",notifications.get(position).getRecord());
 //                    obj.put("type", "Request");
 //                    obj.put("description", notifications.get(position).getDescription());
 //                            obj.put("canvasOAuthToken", CanvasToken.getText().toString());
@@ -156,7 +158,8 @@ public class HomeAdapter extends BaseAdapter {
                 vi = inflater.inflate(R.layout.item_request, null);
                 TextView text = (TextView) vi.findViewById(R.id.requestText);
 
-                text.setText(notifications.get(position).getData() + " would like to be your friend.");
+                String[] nameAndID = notifications.get(position).getData().split(",");
+                text.setText(nameAndID[0] + " would like to be your friend.");
 
                 Button acceptButton = (Button) vi.findViewById(R.id.AcceptButton);
                 acceptButton.setTag(position);

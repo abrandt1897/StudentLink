@@ -49,6 +49,7 @@ public class SearchFragment extends Fragment {
     private Button bAccept;
     private TextView textUserRequest;
     private Map<String, Object> theMap;
+    private String senderIDnum;
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.search_layout, container, false);
@@ -73,7 +74,7 @@ public class SearchFragment extends Fragment {
                 RequestQueue requestQueue = Volley.newRequestQueue(sf.getContext());
                 requestQueue.start();
 
-                Notification notification = new Notification(Global.username, sf.getContext(), Global.studentID, theMap.get("username").toString(),"Request");
+//                Notification notification = new Notification(Global.username, sf.getContext(), Global.studentID, theMap.get("username").toString(),"Request");
 
                 StringRequest postRequest = new StringRequest(Request.Method.POST,url, new Response.Listener<String>() {
                     @Override
@@ -99,7 +100,7 @@ public class SearchFragment extends Fragment {
                     try {
                         obj.put("record",0);
                         obj.put("studentID", theMap.get("studentID"));
-                        obj.put("data", Global.username);
+                        obj.put("data", Global.username + "," + Global.studentID);
                         obj.put("description","Request");
                         obj.put("type", "Request");
                     } catch (JSONException e) {
@@ -154,8 +155,8 @@ public class SearchFragment extends Fragment {
                         bAccept.setEnabled(false);
 
                         textUserRequest.setText("Username: " + theMap.get("username") + "\nFull Name: " + theMap.get("fullName"));
-
-                        String databaseName = "api/Students/Friends/" + Global.studentID + "/" + theMap.get("studentID");
+                        senderIDnum = theMap.get("studentID").toString();
+                        String databaseName = "api/Students/Friends/" + Global.studentID + "/" + senderIDnum;
                         String url = "http://coms-309-mc-02.cs.iastate.edu:5000/" + databaseName;
                         RequestQueue ifFriendsrequestQueue = Volley.newRequestQueue(sf.getContext());
                         ifFriendsrequestQueue.start();

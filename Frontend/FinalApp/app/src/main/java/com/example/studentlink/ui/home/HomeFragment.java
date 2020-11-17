@@ -77,6 +77,7 @@ public class HomeFragment extends Fragment {
                         e.printStackTrace();
                     }
                     Notification notification = new Notification(theMap.get("data").toString(), hf.getContext(),Integer.parseInt(theMap.get("studentID").toString()), theMap.get("description").toString(), theMap.get("type").toString());
+                    notification.setRecord(Integer.parseInt(theMap.get("record").toString()));
                     notifications.add(notification);
 //                    setSenderName(notification);
                 }
