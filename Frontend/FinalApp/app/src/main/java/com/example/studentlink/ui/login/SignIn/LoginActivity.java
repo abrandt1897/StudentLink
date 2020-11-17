@@ -51,7 +51,7 @@ public class LoginActivity extends AppCompatActivity {
         username = findViewById(R.id.LoginUsername);
         password = findViewById(R.id.LoginPassword);
         ErrorText = findViewById(R.id.ShowErrorText);
-//        logic = new LoginLogic(this); // TODO: Change to LoginLogic for actual put request
+//        logic = new LoginLogic(this);
         c = this;
 
         LoginUserButton.setOnClickListener(new View.OnClickListener() {
@@ -72,6 +72,7 @@ public class LoginActivity extends AppCompatActivity {
                     String databaseName = "api/Login";
                     Map<String,String> userLoginData = new HashMap<String,String>();
                     userLoginData.put("Username",username.getText().toString()); //greysonj
+                    Global.username = username.getText().toString();
                     userLoginData.put("Password",password.getText().toString()); //yeet
                     String url = "http://coms-309-mc-02.cs.iastate.edu:5000/" + databaseName;
                     RequestQueue requestQueue;
@@ -89,7 +90,6 @@ public class LoginActivity extends AppCompatActivity {
                             Global.bearerToken = answer[1];
                             ErrorText.setText("Login Successful!");
                             c.startActivity(new Intent(c, PageController.class));
-//                            moveToHome();
                         }
                     },
                             new Response.ErrorListener() {

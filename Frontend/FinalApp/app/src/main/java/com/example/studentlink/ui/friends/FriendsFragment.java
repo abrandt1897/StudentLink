@@ -1,5 +1,6 @@
-package com.example.studentlink.ui.home;
+package com.example.studentlink.ui.friends;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,44 +18,38 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.studentlink.Global;
 import com.example.studentlink.R;
+import com.example.studentlink.ui.home.HomeAdapter;
+import com.example.studentlink.ui.home.Notification;
+import com.example.studentlink.ui.search.SearchAdapter;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import javax.xml.transform.ErrorListener;
+public class FriendsFragment extends Fragment {
 
-public class HomeFragment extends Fragment {
-
-    private List<Notification> notifications;
-    private ListView listview;
-    private HomeLogic logic;
-    private HomeAdapter homeAdapter;
-    private HomeFragment hf;
     private RequestQueue requestQueue;
+    private ListView listview;
+    private FriendAdapter friendAdapter;
+    private FriendsFragment ff;
+    private ArrayList<Friend> friends = new ArrayList<Friend>();
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View root = inflater.inflate(R.layout.home_layout, container, false);
-        listview = root.findViewById(R.id.listview);
-        logic = new HomeLogic(this.getContext());
-        notifications = new ArrayList<Notification>();
-//        notifications = logic.MockGetNotifications();
-        hf = this;
-
-        String databaseName = "api/Notifications/" + Global.studentID;
+        View root = inflater.inflate(R.layout.friends_list_layout, container, false);
+        listview = root.findViewById(R.id.friendView);
+        ff=this;
+        String databaseName = "api/Students/Friends/" + Global.studentID;
         String url = "http://coms-309-mc-02.cs.iastate.edu:5000/" + databaseName;
-        requestQueue = Volley.newRequestQueue(hf.getContext());
+        requestQueue = Volley.newRequestQueue(ff.getContext());
         requestQueue.start();
 
         Map<String,String> header = new HashMap<String,String>();
@@ -64,7 +59,7 @@ public class HomeFragment extends Fragment {
         {
             @Override
             public void onResponse(JSONArray response) {
-                Toast.makeText(hf.getContext(), "yay stuffs" + response, Toast.LENGTH_SHORT).show();
+//                Toast.makeText(hf.getContext(), "yay stuffs" + response, Toast.LENGTH_SHORT).show();
 
                 if(response.length()==0)return;
 
@@ -76,19 +71,13 @@ public class HomeFragment extends Fragment {
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
-                    Notification notification = new Notification(theMap.get("data").toString(), hf.getContext(),Integer.parseInt(theMap.get("studentID").toString()), theMap.get("description").toString(), theMap.get("type").toString());
-                    notification.setRecord(Integer.parseInt(theMap.get("record").toString()));
-                    notifications.add(notification);
-//                    setSenderName(notification);
+                    Friend friend = new Friend(Integer.parseInt(theMap.get("friendID").toString()));
+                    setFriendName(friend, Volley.newRequestQueue(ff.getContext()));
+
+
                 }
 
-                // mocked data
-//                notifications.add(new Notification(hf.getContext(),81537,"Hi Hiiiii. Friend meeee","Request"));
-//                notifications.add(new Notification(hf.getContext(),81537,"Update soon!","Announce"));
-//                notifications.add(new Notification(hf.getContext(),81537,"Nah. Friend me","Request"));
 
-                homeAdapter = new HomeAdapter(hf, hf.getContext(), notifications);
-                resetAdapter(homeAdapter);
             }
         },
                 new Response.ErrorListener() {
@@ -109,12 +98,9 @@ public class HomeFragment extends Fragment {
         return root;
     }
 
-    public void resetAdapter(HomeAdapter h){
-        listview.setAdapter(h);
-    }
 
-    public void setListView(ListView aListView){
-        listview = aListView;
+    public void resetAdapter(FriendAdapter f){
+        listview.setAdapter(f);
     }
 
     public static Map<String, Object> toMap(JSONObject jsonobj)  throws JSONException {
@@ -146,11 +132,9 @@ public class HomeFragment extends Fragment {
         }   return list;
     }
 
-    public void setSenderName(Notification notification){
-        String databaseName = "api/Students/" + notification.getSenderID();
+    public void setFriendName(Friend friend, RequestQueue requestQueue){
+        String databaseName = "api/Students/" + friend.getID();
         String url = "http://coms-309-mc-02.cs.iastate.edu:5000/" + databaseName;
-        RequestQueue requestQueue;
-        requestQueue = Volley.newRequestQueue(hf.getContext());
         requestQueue.start();
 
         JsonObjectRequest getRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>()
@@ -167,10 +151,11 @@ public class HomeFragment extends Fragment {
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-                notification.setName(theMap.get("username").toString());
-                notifications.add(notification);
-                homeAdapter = new HomeAdapter(hf, hf.getContext(), notifications);
-                resetAdapter(homeAdapter);
+                friend.setUsername(theMap.get("username").toString());
+                friend.setName(theMap.get("fullName").toString());
+                friends.add(friend);
+                friendAdapter = new FriendAdapter(ff, friends);
+                resetAdapter(friendAdapter);
 
             }
         },
@@ -184,5 +169,6 @@ public class HomeFragment extends Fragment {
         };
         requestQueue.add(getRequest);
     }
+
 
 }
