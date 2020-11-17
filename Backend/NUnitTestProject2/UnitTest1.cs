@@ -48,7 +48,7 @@ namespace NUnitTestProject2
             Notifications noti = new Notifications() { Data = "lmao testdata lmao", Type = "Announcement meme", StudentID = 6969 };
             SQLConnection.Insert(noti);
             SQLConnection.Insert(noti);
-            List<Notifications> notis = SQLConnection.Get<Notifications>(typeof(Notifications), $"WHERE StudentID={noti.StudentID}").Result;
+            List<Notifications> notis = SQLConnection.Get<Notifications>( $"WHERE StudentID={noti.StudentID}").Result;
             NUnit.Framework.Assert.AreEqual(notis.Count, 2);
             NUnit.Framework.Assert.AreEqual(notis[0].Type, "Announcement meme");
             NUnit.Framework.Assert.AreEqual(notis[1].Data, "lmao testdata lmao");
@@ -62,12 +62,12 @@ namespace NUnitTestProject2
         {
             Chats chat = new Chats() { Data = "lmao text", ChatID = 69, SenderID = 420 };
             SQLConnection.Insert(chat);
-            var chatsBefore = SQLConnection.Get<Chats>(typeof(Chats), $"WHERE ChatID={chat.ChatID}");
+            var chatsBefore = SQLConnection.Get<Chats>($"WHERE ChatID={chat.ChatID}");
             chat = new Chats() { Data = "lmao text but better", ChatID = 69, SenderID = 420 };
             SQLConnection.update(chat);
-            var chatsAfterUpdate = SQLConnection.Get<Chats>(typeof(Chats), $"WHERE ChatID={chat.ChatID}");
+            var chatsAfterUpdate = SQLConnection.Get<Chats>($"WHERE ChatID={chat.ChatID}");
             SQLConnection.delete(chat);
-            var chatsAfterDel = SQLConnection.Get<Chats>(typeof(Chats), $"WHERE ChatID={chat.ChatID}").Result;
+            var chatsAfterDel = SQLConnection.Get<Chats>($"WHERE ChatID={chat.ChatID}").Result;
             NUnit.Framework.Assert.AreEqual(chatsAfterDel.Count, 0);
             NUnit.Framework.Assert.AreNotEqual(chatsAfterDel, chatsAfterUpdate);
         }
