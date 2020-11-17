@@ -84,7 +84,7 @@ namespace WebApplication_mc_02.Controllers
         [HttpPost]
         public async Task<ActionResult<Chats>> PostChat([FromBody] Chats chat)
         {
-            if (SQLConnection.Get<Chats>($"WHERE ChatID={chat.ChatID} and StudentID={chat.SenderID}").Result.Count < 1)
+            if (SQLConnection.Get<Chats>($"WHERE ChatID={chat.ChatID} and SenderID={chat.SenderID}").Result.Count < 1)
                 return BadRequest("your not allowed to send data in this chat");
             if (await SQLConnection.Insert<Chats>(chat))
                 return Ok(chat);
