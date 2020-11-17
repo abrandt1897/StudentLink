@@ -50,7 +50,7 @@ namespace WebApplication_mc_02.Controllers
         [HttpPut]
         public async Task<ActionResult<string>> PutLogin([Bind("Username,Password")] Login loginForm)
         {
-            List<Students> students = await SQLConnection.Get<Students>(typeof(Students), $"WHERE Username='{loginForm.Username}'");
+            List<Students> students = await SQLConnection.Get<Students>( $"WHERE Username='{loginForm.Username}'");
             if (students.Count < 1)
                 return BadRequest("student doesnt exist");
             Students student = students[0];
@@ -74,7 +74,7 @@ namespace WebApplication_mc_02.Controllers
                     signingCredentials: new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
                 );
                 var token = new JwtSecurityTokenHandler().WriteToken(JWToken);
-                var studentID = SQLConnection.Get<Students>(typeof(Students), $"Where Username='{loginForm.Username}'", "StudentID").Result[0].StudentID.ToString();
+                var studentID = SQLConnection.Get<Students>( $"Where Username='{loginForm.Username}'", "StudentID").Result[0].StudentID.ToString();
                 try
                 {
                     HttpContext.Response.Headers.Add("JWToken", token);

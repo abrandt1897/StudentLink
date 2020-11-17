@@ -25,7 +25,7 @@ namespace WebApplication_mc_02.Controllers
         public async Task<IEnumerable<Courses>> Get()
         {
             List<Courses> courses = new List<Courses>();
-            courses = await SQLConnection.Get<Courses>(typeof(Courses));
+            courses = await SQLConnection.Get<Courses>();
             return courses;
         }
 
@@ -39,10 +39,10 @@ namespace WebApplication_mc_02.Controllers
         public async Task<IEnumerable<Courses>> Get(int id)
         {
             List<Courses> courses = new List<Courses>();
-            List<Student2CourseMap> courseIDs = await SQLConnection.Get<Student2CourseMap>(typeof(Student2CourseMap), $"Where StudentID={id}");
+            List<Student2CourseMap> courseIDs = await SQLConnection.Get<Student2CourseMap>( $"Where StudentID={id}");
             foreach(Student2CourseMap course in courseIDs)
             {
-                courses.AddRange(await SQLConnection.Get<Courses>(typeof(Courses), $"Where CourseID={course.CourseID}"));
+                courses.AddRange(await SQLConnection.Get<Courses>($"Where CourseID={course.CourseID}"));
             }
             return courses;
         }

@@ -82,8 +82,10 @@ namespace WebApplication_mc_02.Controllers
         /// <param name="column">a string that represents the property of the given type and returns the column of that database. If null it assumes all columns</param>
         /// <param name="filter">a where clause that filters the values to be returned from the database</param>
         /// <returns>a generic list of the given type</returns>
-        public async static Task<List<T>> Get<T>(Type type, string filter = "", string column = "*")//TODO change the filter and the column to take in a variable of the type.
-        {using MySqlConnection conn = new MySqlConnection("server=coms-309-mc-02.cs.iastate.edu;port=3306;database=StudentLink;user=root;password=46988c18374d9b7d;");
+        public async static Task<List<T>> Get<T>(string filter = "", string column = "*")//TODO change the filter and the column to take in a variable of the type.
+        {
+            using MySqlConnection conn = new MySqlConnection("server=coms-309-mc-02.cs.iastate.edu;port=3306;database=StudentLink;user=root;password=46988c18374d9b7d;");
+            Type type = typeof(T);
             conn.Open();
             List<T> list = new List<T>();
             string query = "SELECT " + (column == null ? "*" : column) + " FROM StudentLink." + type.Name + " " + filter;

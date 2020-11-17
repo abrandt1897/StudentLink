@@ -31,7 +31,7 @@ namespace WebApplication_mc_02.Controllers
         [HttpGet("Group/{id}")]
         public async Task<ActionResult<IEnumerable<Student2ChatMap>>> GetGroupChat(int id)
         {
-            List<Student2ChatMap> chats = await SQLConnection.Get<Student2ChatMap>(typeof(Student2ChatMap), $"WHERE StudentID = {id}");
+            List<Student2ChatMap> chats = await SQLConnection.Get<Student2ChatMap>($"WHERE StudentID = {id}");
             return Ok(chats);
         }
 
@@ -46,12 +46,12 @@ namespace WebApplication_mc_02.Controllers
         public async Task<ActionResult<Chats>> GetChat(int StudentID, int ChatID)
         {
             List<Chats> chat = new List<Chats>();
-            List<Student2ChatMap> chatGroups = await SQLConnection.Get<Student2ChatMap>(typeof(Student2ChatMap), $"WHERE StudentID={StudentID}");
+            List<Student2ChatMap> chatGroups = await SQLConnection.Get<Student2ChatMap>($"WHERE StudentID={StudentID}");
             foreach (Student2ChatMap map in chatGroups)
             {
                 if (map.ChatID == ChatID)
                 {
-                    chat = await SQLConnection.Get<Chats>(typeof(Chats), $"Where ChatID={ChatID}");
+                    chat = await SQLConnection.Get<Chats>($"Where ChatID={ChatID}");
                     break;
                 }
             }
@@ -82,11 +82,11 @@ namespace WebApplication_mc_02.Controllers
         /// <param name="chat">chat object</param>
         /// <returns>the chat that was sent</returns>
         [HttpPost]
-        public async Task<ActionResult<Chats>> PostChat([FromBody] Chats chat)//TODO this method will allow users to add a message to the database
+        public async Task<ActionResult<Chats>> PostChat([FromBody] Chats chat)
         {
-            if (SQLConnection.Get<Chats>(typeof(Student2ChatMap), $"WHERE ChatID={chat.ChatID} and StudentID={chat.SenderID}").Result.Count < 1)
+            if (SQLConnection.Get<Chats>($"WHERE ChatID={chat.ChatID} and StudentID={chat.SenderID}").Result.Count < 1)
                 return BadRequest("your not allowed to send data in this chat");
-            if (await SQLConnection.Insert<Chats>(chat)) //TODO CHECK IF THE DATA IS CLEAN AND SANITIZED
+            if (await SQLConnection.Insert<Chats>(chat))
                 return Ok(chat);
             return BadRequest();
         }
@@ -100,7 +100,7 @@ namespace WebApplication_mc_02.Controllers
         [HttpDelete("{id}")]
         public async Task<ActionResult<Chats>> DeleteChat(int id)
         {
-            var chat = SQLConnection.Get<Chats>(typeof(Chats), $"WHERE ChatID = {id}").Result[0];
+            var chat = SQLConnection.Get<Chats>($"WHERE ChatID = {id}").Result[0];
             if (SQLConnection.delete(chat))
                 return Ok(chat);
             return BadRequest("sum went wrong, idk");
@@ -126,10 +126,10 @@ namespace WebApplication_mc_02.Controllers
         {
             Dictionary<int, int> Student2Course = new Dictionary<int, int>();
             int GroupSize = 7;
-            var courseList = SQLConnection.Get<Student2CourseMap>(typeof(Student2CourseMap), $"WHERE StudentID={StudentID} and currentlyEnrolled=1").Result;
+            var courseList = SQLConnection.Get<Student2CourseMap>($"WHERE StudentID={StudentID} and currentlyEnrolled=1").Result;
             foreach (var course in courseList)
             {
-                var studentList2 = SQLConnection.Get<Student2CourseMap>(typeof(Student2CourseMap), $"WHERE CourseID={course.CourseID}").Result;
+                var studentList2 = SQLConnection.Get<Student2CourseMap>($"WHERE CourseID={course.CourseID}").Result;
                 foreach (var student in studentList2)
                 {
                     if (Student2Course.ContainsKey(student.StudentID))

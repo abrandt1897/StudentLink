@@ -26,7 +26,7 @@ namespace WebApplication_mc_02.Controllers
         [HttpGet("{user}")]
         public ActionResult<List<Notifications>> Get(int user)
         {
-            return SQLConnection.Get<Notifications>(typeof(Notifications), $"WHERE StudentID={user}").Result;
+            return SQLConnection.Get<Notifications>( $"WHERE StudentID={user}").Result;
         }
 
         /// <summary>
