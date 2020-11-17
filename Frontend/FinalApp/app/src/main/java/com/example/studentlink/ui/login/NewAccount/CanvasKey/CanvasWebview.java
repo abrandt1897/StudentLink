@@ -83,7 +83,7 @@ public class CanvasWebview extends AppCompatActivity {
                 progDailog.dismiss();
             }
         });
-        webview.loadUrl("https://canvas.iastate.edu/");
+        webview.loadUrl("https://canvas.iastate.edu/profile/settings");
 
         doneButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -98,6 +98,7 @@ public class CanvasWebview extends AppCompatActivity {
                 String databaseName = "api/Students/" + CanvasToken.getText().toString();
                 Map<String,String> userLoginData = new HashMap<String,String>();
                 userLoginData.put("Username",username);
+                Global.username = username;
                 userLoginData.put("Password",password);
 //                userLoginData.put("canvasOAuthToken", CanvasToken.getText().toString());
                 String url = "http://coms-309-mc-02.cs.iastate.edu:5000/" + databaseName;
@@ -105,11 +106,11 @@ public class CanvasWebview extends AppCompatActivity {
                 requestQueue = Volley.newRequestQueue(c);
                 requestQueue.start();
 
-                StringRequest putRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>()
+                StringRequest postRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>()
                 {
                     @Override
                     public void onResponse(String response) {
-                        Toast.makeText(c, "yay connect" + response, Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(c, "yay connect" + response, Toast.LENGTH_SHORT).show();
                         Toast.makeText(c,"Congrats you made your account!",Toast.LENGTH_LONG).show();
                         String ans[] = response.split(",");
                         String studID = ans[0].split(":")[1];
@@ -118,6 +119,43 @@ public class CanvasWebview extends AppCompatActivity {
 //                        Global.studentID = Integer.parseInt(answer[0]);
 //                        Global.bearerToken = answer[1];
 //                        Toast.makeText(c,"Congrats you made your account!  " + Global.studentID + " &  " + Global.bearerToken, Toast.LENGTH_LONG).show();
+
+
+                        // Logging in after account creation
+                        String databaseName = "api/Login";
+                        String url = "http://coms-309-mc-02.cs.iastate.edu:5000/" + databaseName;
+                        RequestQueue requestQueue2;
+                        requestQueue2 = Volley.newRequestQueue(c);
+                        requestQueue2.start();
+
+                        StringRequest putRequest = new StringRequest(Request.Method.PUT, url, new Response.Listener<String>()
+                        {
+                            @Override
+                            public void onResponse(String response) {
+                                Toast.makeText(c, "You've been logged in!   " + response, Toast.LENGTH_SHORT).show();
+                                String[] answer = response.split(" ");
+                                Global.studentID = Integer.parseInt(answer[0]);
+                                Global.bearerToken = answer[1];
+                            }
+                        },
+                                new Response.ErrorListener() {
+                                    @Override
+                                    public void onErrorResponse(VolleyError error) {
+                                        error.printStackTrace();
+                                        Toast.makeText(c,"Error", Toast.LENGTH_LONG).show();
+                                    }
+                                }
+                        ) {
+                            @Override
+                            protected Map<String, String> getParams()
+                            {
+                                return userLoginData;
+                            }
+                        };
+                        requestQueue.add(putRequest);
+
+                        // end of login request
+
                         c.startActivity(new Intent(c, PageController.class));
                     }
                 },
@@ -161,7 +199,7 @@ public class CanvasWebview extends AppCompatActivity {
                     }
 
                 };
-                requestQueue.add(putRequest);
+                requestQueue.add(postRequest);
             }
         });
 

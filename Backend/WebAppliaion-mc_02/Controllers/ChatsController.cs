@@ -86,7 +86,7 @@ namespace WebApplication_mc_02.Controllers
         {
             if (SQLConnection.Get<Chats>($"WHERE ChatID={chat.ChatID} and SenderID={chat.SenderID}").Result.Count < 1)
                 return BadRequest("your not allowed to send data in this chat");
-            if (await SQLConnection.Insert<Chats>(chat))
+            if (await SQLConnection.Insert(chat))
                 return Ok(chat);
             return BadRequest();
         }

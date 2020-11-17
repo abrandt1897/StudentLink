@@ -1,6 +1,7 @@
 package com.example.studentlink.ui.home;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -10,9 +11,23 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+import com.example.studentlink.Global;
+import com.example.studentlink.PageController;
 import com.example.studentlink.R;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class HomeAdapter extends BaseAdapter {
 
@@ -44,9 +59,95 @@ public class HomeAdapter extends BaseAdapter {
     }
 
 
-    public void removeRow(int position) {
-        notifications.remove(position);
-        frag.resetAdapter(this);
+    public void removeRow(int position, boolean accepted, RequestQueue requestQueue) {
+        // Use Put Request to inform the backend of the decision
+        String databaseName = "api/Students/" + Global.studentID;
+        String url = "http://coms-309-mc-02.cs.iastate.edu:5000/" + databaseName;
+        Map<String,String> notificationData = new HashMap<String,String>();
+        notificationData.put("studentID", notifications.get(position).getSenderID() + "");
+        notificationData.put("data", accepted + "");
+        notificationData.put("type", "Request");
+        notificationData.put("description", notifications.get(position).getDescription());
+
+        HomeAdapter ha = this;
+
+        Map<String,String> header = new HashMap<String,String>();
+        header.put("Authorization","Bearer " + Global.bearerToken);
+
+//        RequestQueue requestQueue;
+//        requestQueue = Volley.newRequestQueue(context);
+        requestQueue.start();
+
+        StringRequest putRequest = new StringRequest(Request.Method.PUT, url,
+//                listenerResponse
+                new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                notifications.remove(position);
+                frag.resetAdapter(ha);
+
+                if(accepted){
+                    Toast.makeText(context, "Request Accepted   " + response, Toast.LENGTH_SHORT).show();
+                }
+                else{
+                    Toast.makeText(context, "Request Declined   " + response, Toast.LENGTH_SHORT).show();
+                }
+            }
+        }
+        ,
+                new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                error.printStackTrace();
+            }
+        }
+        ) {
+
+            @Override
+            public byte[] getBody() throws AuthFailureError {
+                JSONObject obj = new JSONObject();
+                try {
+                    String[] nameAndID = notifications.get(position).getData().split(",");
+                    obj.put("studentID", Integer.parseInt(nameAndID[1]));
+                    obj.put("data", accepted + "");
+                    obj.put("record",notifications.get(position).getRecord());
+//                    obj.put("type", "Request");
+//                    obj.put("description", notifications.get(position).getDescription());
+//                            obj.put("canvasOAuthToken", CanvasToken.getText().toString());
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+                byte[] body = new byte[0];
+                try {
+                    body = obj.toString().getBytes("UTF-8");
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                return body;
+            }
+
+            @Override
+            public String getBodyContentType() {
+                return "application/json";
+            }
+
+//            @Override
+//            protected Map<String, String> getParams()
+//            {
+//                return notificationData;
+//            }
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                //headers.put("Content-Type", "application/json");
+                return header;
+            }
+        }
+        ;
+
+//        Volley.newRequestQueue(frag.getContext()).add(putRequest);
+        requestQueue.add(putRequest);
+
     }
 
     @Override
@@ -56,18 +157,23 @@ public class HomeAdapter extends BaseAdapter {
             if (notifications.get(position).getType().equals("Request")) {
                 vi = inflater.inflate(R.layout.item_request, null);
                 TextView text = (TextView) vi.findViewById(R.id.requestText);
-                text.setText(notifications.get(position).getDescription());
+
+                String[] nameAndID = notifications.get(position).getData().split(",");
+                text.setText(nameAndID[0] + " would like to be your friend.");
 
                 Button acceptButton = (Button) vi.findViewById(R.id.AcceptButton);
                 acceptButton.setTag(position);
                 acceptButton.setOnClickListener(v -> {
-                    removeRow(position);
+                    RequestQueue requestQueue = Volley.newRequestQueue(context);
+                    removeRow(position, true, requestQueue);
+
                 });
 
                 Button declineButton = (Button) vi.findViewById(R.id.DeclineButton);
                 declineButton.setTag(position);
                 declineButton.setOnClickListener(v -> {
-                    removeRow(position);
+                    RequestQueue requestQueue = Volley.newRequestQueue(context);
+                    removeRow(position, false, requestQueue);
                 });
 
             } else {
