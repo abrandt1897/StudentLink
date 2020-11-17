@@ -100,7 +100,7 @@ namespace WebApplication_mc_02.Controllers
         [HttpDelete("{id}")]
         public async Task<ActionResult<Chats>> DeleteChat(int id)
         {
-            var chat = SQLConnection.Get<Chats>($"WHERE ChatID = {id}").Result[0];
+            var chat = SQLConnection.Get<Chats>($"WHERE Record = {id}").Result[0];
             if (SQLConnection.delete(chat))
                 return Ok(chat);
             return BadRequest("sum went wrong, idk");
