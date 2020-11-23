@@ -6,12 +6,6 @@
     app:startDestination="@+id/nav_home">
 
     <fragment
-        android:id="@+id/nav_splash"
-        android:name="com.example.studentlink.ui.splash.SplashFragment"
-        android:label="splash"
-        tools:layout="@layout/splash_layout" />
-
-    <fragment
         android:id="@+id/nav_login"
         android:name="com.example.studentlink.ui.login.LoginFragment"
         android:label="login"

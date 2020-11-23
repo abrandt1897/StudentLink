@@ -3,15 +3,9 @@ package com.example.studentlink.ui.login;
 import android.content.Intent;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 
 import com.example.studentlink.ConnectionClass;
 import com.example.studentlink.PageController;
-import com.example.studentlink.R;
-import com.example.studentlink.ui.home.HomeFragment;
-import com.example.studentlink.ui.splash.SplashFragment;
 
 public class AbstractLogic implements ILogic{
 

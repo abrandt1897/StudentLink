@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment;
 
 import androidx.annotation.NonNull;
 
+import com.example.studentlink.ConnectionClass;
 import com.example.studentlink.Global;
 import com.example.studentlink.R;
 import android.text.method.ScrollingMovementMethod;
@@ -19,36 +20,43 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.java_websocket.client.WebSocketClient;
 import org.java_websocket.handshake.ServerHandshake;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.HashMap;
+import java.util.Map;
 
 
 public class ChatPageActivity extends AppCompatActivity {
 
     private WebSocketClient mWebSocketClient;
+
     private Button bSend;
     private TextView msgOutput;
     private EditText msgInput;
+    ConnectionClass connection;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.chatpage_layout);
 
-        msgOutput = findViewById(R.id.chatText);
-        msgOutput.setText("Chat Page Placeholder");
+        connection = new ConnectionClass(this);
+        connectWebSocket();
 
+        msgOutput = findViewById(R.id.chatText);
         bSend = findViewById(R.id.bSend);
         msgInput = findViewById(R.id.msgInput);
 
         // Add scrolling
         msgOutput.setMovementMethod(new ScrollingMovementMethod());
-
-        connectWebSocket();
+        msgOutput.setHint("Chat Page Placeholder");
+        Toast.makeText(this, "ws://coms-309-mc-02.cs.iastate.edu:5000/ws/" + Global.selectedChatID + "/" + Global.studentID, Toast.LENGTH_SHORT).show();
 
         bSend.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -59,6 +67,7 @@ public class ChatPageActivity extends AppCompatActivity {
                 // If the message is not empty, send the message
                 if(message != null && message.length() > 0){
                     mWebSocketClient.send(message);
+                    msgInput.setText("");
                 }
             }
         });
@@ -69,13 +78,10 @@ public class ChatPageActivity extends AppCompatActivity {
     private void connectWebSocket() {
         URI uri;
         try {
-            /*
-             * To test the clientside without the backend, simply connect to an echo server such as:
-             *  "ws://echo.websocket.org"
-             */
-            //todo: change to -->     ws://coms-309-mc-02.cs.iastate.edu:5000/ws/{StudentID}
-            uri = new URI("ws://echo.websocket.org");
-//            uri = new URI("ws://coms-309-mc-02.cs.iastate.edu:5000/ws/" + Global.studentID);
+            // uri = new URI("wss://echo.websocket.org" );
+            uri = new URI("ws://coms-309-mc-02.cs.iastate.edu:5000/ws/" + Global.selectedChatID + "/" + Global.studentID );
+            Toast.makeText(this, uri.toString(), Toast.LENGTH_LONG).show();
+            //uri = ws://coms-309-mc-02.cs.iastate.edu:5000/ws/{chatID}/{StudentID};
         } catch (URISyntaxException e) {
             e.printStackTrace();
             return;

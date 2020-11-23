@@ -1,10 +1,13 @@
 package com.example.studentlink;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 import android.view.Menu;
 
 import com.example.studentlink.R;
+import com.example.studentlink.ui.splash.SplashPage;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.navigation.NavigationView;
@@ -24,7 +27,14 @@ public class PageController extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        int counter = 0;
+        while(counter <= 10000){
+            setContentView(R.layout.splash_layout);
+            counter++;
+        }
         setContentView(R.layout.controller_layout);
+
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -32,7 +42,7 @@ public class PageController extends AppCompatActivity {
         NavigationView navigationView = findViewById(R.id.nav_view);
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
-        mAppBarConfiguration = new AppBarConfiguration.Builder(R.id.nav_splash, R.id.nav_login, R.id.nav_profile, R.id.nav_home, R.id.nav_chatlist)
+        mAppBarConfiguration = new AppBarConfiguration.Builder(R.id.nav_login, R.id.nav_profile, R.id.nav_home, R.id.nav_chatlist)
                 .setDrawerLayout(drawer)
                 .build();
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
